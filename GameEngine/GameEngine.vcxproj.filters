@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SyncSystem\SyncAllocator.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncSystem\SyncObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncSystem\SyncManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\CommandQueue.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Core.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MessageBox.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Thread.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\StringFormat.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\GameEngine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ThreadPool.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Time.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\SameImpl.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\TickLocker.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Component.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjectManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Input.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Config.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\IO.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Serializer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\EngineApplication.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Math\Vector3.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector4.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix3.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix4.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\abs.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\acos.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\acosh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\asin.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\asinh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\atan.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\atan2.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\atanh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\beta.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\binomial_coef.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\ceil.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\cos.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\cosh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\erf.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\erf_inv.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\exp.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\expm1.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\factorial.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\find_exponent.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\find_fraction.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\find_whole.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\floor.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\gcd.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\gcem_options.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\incomplete_beta.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\incomplete_beta_inv.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\incomplete_gamma.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\incomplete_gamma_inv.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\is_even.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\is_finite.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\is_inf.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\is_nan.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\is_odd.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\lbeta.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\lcm.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\lgamma.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\lmgamma.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\log.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\log_binomial_coef.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\log1p.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\mantissa.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\max.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\min.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\neg_zero.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\pow.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\pow_integral.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\round.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\sgn.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\sin.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\sinh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\sqrt.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\tan.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\tanh.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\tgamma.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\trunc.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\quadrature\gauss_legendre_30.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Gcem\gcem_incl\quadrature\gauss_legendre_50.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncSystem\SyncAllocator.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncSystem\SyncObject.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncSystem\SyncManager.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\CommandQueue.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Core.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MessageBox.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ObjectPool.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Sample.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Thread.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\StringFormat.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Debug.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ThreadPool.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Time.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EngineApplication.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\TickLocker.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObject.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Component.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjectManager.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Serializer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Input.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\InputKeys.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ResourceObject.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Config.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\IO.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Any.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
