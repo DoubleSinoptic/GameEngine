@@ -204,7 +204,7 @@ namespace ge
 			markAsDirty(MSF_INDECES);
 	}
 
-	inline void Mesh::setBoneWeights(Vector<BoneIndeces>&& indeces)
+	void Mesh::setBoneWeights(Vector<BoneIndeces>&& indeces)
 	{
 		if (m_bonesIndeces.use_count() == 1)
 			* m_bonesIndeces = std::move(indeces);
@@ -214,7 +214,7 @@ namespace ge
 			markAsDirty(MSF_BONE_INDECES);
 	}
 
-	inline void Mesh::setBoneWeights(Vector<Vector4>&& texcoords)
+	void Mesh::setBoneWeights(Vector<Vector4>&& texcoords)
 	{
 		if (m_boneWeights.use_count() == 1)
 			* m_boneWeights = std::move(texcoords);
@@ -224,7 +224,7 @@ namespace ge
 			markAsDirty(MSF_TEXCOORDS);
 	}
 
-	inline void Mesh::setBoneWeights(const Vector<Vector4>& texcoords)
+	void Mesh::setBoneWeights(const Vector<Vector4>& texcoords)
 	{
 		if (m_boneWeights.use_count() == 1)
 			* m_boneWeights = texcoords;
@@ -234,7 +234,7 @@ namespace ge
 			markAsDirty(MSF_TEXCOORDS);
 	}
 
-	inline void Mesh::setBoneIndeces(const Vector<BoneIndeces>& indeces)
+	void Mesh::setBoneIndeces(const Vector<BoneIndeces>& indeces)
 	{
 		if (m_bonesIndeces.use_count() == 1)
 			* m_bonesIndeces = indeces;
