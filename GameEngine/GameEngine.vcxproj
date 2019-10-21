@@ -276,8 +276,10 @@
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Rendering\Buffer.h" />
     <ClInclude Include="Rendering\Mesh.h" />
+    <ClInclude Include="Rendering\ResourceManager.h" />
     <ClInclude Include="Rendering\Sampler.h" />
     <ClInclude Include="Rendering\Texture.h" />
+    <ClInclude Include="Rendering\Uniform.h" />
     <ClInclude Include="SyncSystem\SyncAllocator.h" />
     <ClInclude Include="SyncSystem\SyncManager.h" />
     <ClInclude Include="SyncSystem\SyncObject.h" />

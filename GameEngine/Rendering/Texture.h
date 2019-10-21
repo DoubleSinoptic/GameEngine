@@ -78,16 +78,21 @@ namespace ge
 
 		PF_R32_FLOAT,
 		PF_R16_FLOAT,
+
+		PF_D32,
+		PF_D24,
+		PF_D16,
+		PF_D8
 	};
 
 	struct TEXTURE2D_DESC 
 	{
-		PixelFormat		format;
-		uint32			width;
-		uint32			height;
-		uint32			mipCount;
-		uint32			layerCount;
-		TextureUsage	usage;
+		PixelFormat		format = PF_R8G8B8A8_UNORM;
+		uint32			width = 1;
+		uint32			height = 1;
+		TextureUsage	usage = TU_SAMPLED_IMAGE;
+		uint32			mipCount = 1;
+		uint32			layerCount = 1;
 	};
 
 	class Texture2D : public ResourceObject

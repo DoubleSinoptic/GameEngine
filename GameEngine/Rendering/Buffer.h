@@ -32,7 +32,7 @@ namespace ge
 	{
 		usize size = 256;
 		MemoryType memType = MT_DYNAMIC;
-		BufferUsage usage = BU_UNDEFINED;
+		BufferUsage usage = BU_UNIFORM;
 	};
 
 	class Buffer : public ResourceObject
