@@ -3,6 +3,7 @@
 #include "Core/Time.h"
 #include "Core/Debug.h"
 #include "GameObject.h"
+#include "Rendering/GpuContext.h"
 
 namespace ge
 {
@@ -39,6 +40,7 @@ namespace ge
 		ThreadPool::setCurrentThreadPool(nullptr);
 		GameObjectManager::setCurrentObjectManager(nullptr);
 		Config::setCurrentConfig(nullptr);
+		GpuContext::setCurrentGpuContext(nullptr);
 	}
 
 	void EngineApplication::run()
