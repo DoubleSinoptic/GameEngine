@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "Buffer.h"
+#include "GpuContext.h"
 
 namespace ge 
 {
@@ -23,7 +24,7 @@ namespace ge
 				bufferDesc.usage = BU_VERTECES;
 				bufferDesc.size = dataSize;
 
-				m_verteces = nullptr/**/;
+				m_verteces = GpuContext::instance().createBuffer(bufferDesc);
 				void* data = m_verteces->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_verteces->data(), dataSize);
 				m_verteces->unmap();
@@ -38,7 +39,7 @@ namespace ge
 				bufferDesc.usage = BU_VERTECES;
 				bufferDesc.size = dataSize;
 
-				m_normals = nullptr/**/;
+				m_normals = GpuContext::instance().createBuffer(bufferDesc);
 				void* data = m_normals->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_normals->data(), dataSize);
 				m_normals->unmap();
@@ -53,7 +54,7 @@ namespace ge
 				bufferDesc.usage = BU_VERTECES;
 				bufferDesc.size = dataSize;
 
-				m_tangents = nullptr/**/;
+				m_tangents = GpuContext::instance().createBuffer(bufferDesc);
 				void* data = m_tangents->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_tangets->data(), dataSize);
 				m_tangents->unmap();
@@ -68,7 +69,7 @@ namespace ge
 				bufferDesc.usage = BU_VERTECES;
 				bufferDesc.size = dataSize;
 
-				m_texcoords = nullptr/**/;
+				m_texcoords = GpuContext::instance().createBuffer(bufferDesc);
 				void* data = m_texcoords->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_texcoords->data(), dataSize);
 				m_texcoords->unmap();
@@ -83,7 +84,7 @@ namespace ge
 				bufferDesc.usage = BU_INDECES;
 				bufferDesc.size = dataSize;
 
-				m_indeces = nullptr/**/;
+				m_indeces = GpuContext::instance().createBuffer(bufferDesc);
 				void* data = m_indeces->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_indeces->data(), dataSize);
 				m_indeces->unmap();

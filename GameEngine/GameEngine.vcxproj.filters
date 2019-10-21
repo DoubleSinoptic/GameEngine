@@ -84,6 +84,9 @@
     <ClCompile Include="Rendering\Mesh.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\GpuContext.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Vector3.h">
@@ -371,7 +374,16 @@
     <ClInclude Include="Rendering\Uniform.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\ResourceManager.h">
+    <ClInclude Include="Rendering\GpuContext.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Pipeline.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ShaderModule.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Framebuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

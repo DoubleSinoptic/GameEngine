@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __BUFFER_H__
-#define __BUFFER_H__
+#ifndef __SAMPLER_H__
+#define __SAMPLER_H__
 
 #include "Core/Core.h"
 #include "Core/ResourceObject.h"
