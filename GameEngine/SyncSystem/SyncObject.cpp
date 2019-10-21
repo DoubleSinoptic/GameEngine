@@ -17,7 +17,8 @@ namespace ge
 			dirtyObjects[m_dirtyIndex] = dirtyObjects.back();
 			dirtyObjects.pop_back();
 		}
-		SyncManager::instance().getQueue().queue(m_rt, &rt::SyncObject::destroy);
+		if (m_rt)
+			SyncManager::instance().getQueue().queue(m_rt, &rt::SyncObject::destroy);
 	}
 
 	void SyncObject::markAsDirty(uint32 flags)

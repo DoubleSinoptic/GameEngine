@@ -69,27 +69,29 @@ namespace ge
 		Ptr<Vector<Vector3>> m_normals;
 		Ptr<Vector<int>>	 m_indeces;
 	public:
-		constexpr const Vector<Vector3>& getVertexces() const noexcept 
+		Mesh();
+
+		const Vector<Vector3>& getVertexces() const noexcept 
 		{
 			return *m_verteces;
 		}
 
-		constexpr const Vector<Vector3>& getNormals() const noexcept
+		const Vector<Vector3>& getNormals() const noexcept
 		{
 			return *m_normals;
 		}
 
-		constexpr const Vector<int>& getIndeces() const noexcept
+		const Vector<int>& getIndeces() const noexcept
 		{
 			return *m_indeces;
 		}
 
-		constexpr const Vector<Vector3>& getTangets() const noexcept
+		const Vector<Vector3>& getTangets() const noexcept
 		{
 			return *m_tangets;
 		}
 
-		constexpr const Vector<Vector2>& getTexcoords() const noexcept
+		const Vector<Vector2>& getTexcoords() const noexcept
 		{
 			return *m_texcoords;
 		}

@@ -7,13 +7,6 @@
 
 namespace ge
 {
-	enum TextureUsage
-	{
-		TU_SAMPLED_IMAGE = 1 << 0,
-		TU_COLORATTACHMENT = 1 << 1,
-		TU_DEPTHATTACHMENT = 1 << 2
-	};
-
 	enum SampledFilter 
 	{
 		SF_NEAREST,

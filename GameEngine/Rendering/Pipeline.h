@@ -36,7 +36,7 @@ namespace ge
 
 		BlendMod srcAlpha = BM_ONE;
 		BlendMod dstAlpha = BM_ZERO;
-		BlendOp  opAlpha = OP_ADD;
+		BlendOp  opAlpha = BO_ADD;
 	};
 
 
