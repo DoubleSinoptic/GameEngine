@@ -189,14 +189,12 @@ public:
 
 int main()
 {
-
 	{
 		EngineApplication eng;
 		GameObject* gm = new GameObject();
 		gm->addComponent<SampleComponent>();
 		eng.run();
 	}
-
 	Debug::log("Engine finished.");
 	return 0;
 }

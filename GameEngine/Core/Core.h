@@ -17,6 +17,12 @@
 #define GE_EXPORT
 #define NONDTR_STATIC
 
+#ifdef _DEBUG
+#	define geAssertDebug(x) {if (!(x)) { throw std::runtime_error(# x); }}
+#else
+#	define geAssertDebug(x)
+#endif
+
 #define geAssert(x) {if (!(x)) { throw std::runtime_error(# x); }}
 #define geAssertFalse(x)  {if (!(x)) { throw std::runtime_error(x); }}
 

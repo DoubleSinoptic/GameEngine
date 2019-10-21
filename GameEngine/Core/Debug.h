@@ -9,10 +9,13 @@ namespace ge
 {
 	class Debug 
 	{
+		static void lock();
+		static void unlock();
 	public:
 		template<typename FormatCharType, typename... Args>
 		static void log(const FormatCharType* str, const Args&... args) 
 		{
+			lock();
 			struct T0 : public ExceptPutProvider
 			{
 				virtual void put(char16_t c) override
@@ -22,11 +25,13 @@ namespace ge
 			} ge;
 			putFormat<FormatCharType, Args...>(&ge, str, args...);
 			ge.put('\n');
+			unlock();
 		}
 
 		template<typename FormatCharType, typename... Args>
 		static void log1(const FormatCharType* str, const Args& ... args)
 		{
+			lock();
 			struct T0 : public ExceptPutProvider
 			{
 				virtual void put(char16_t c) override
@@ -36,6 +41,7 @@ namespace ge
 			} ge;
 			putFormat<FormatCharType, Args...>(&ge, str, args...);
 			ge.put('\n');
+			unlock();
 		}
 	};
 }

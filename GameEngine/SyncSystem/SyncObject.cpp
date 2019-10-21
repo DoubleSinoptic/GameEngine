@@ -3,7 +3,6 @@
 
 namespace ge
 {
-
 	void SyncObject::initialize()
 	{
 		SyncManager::instance().getQueue().queue(m_rt, &rt::SyncObject::initialize);

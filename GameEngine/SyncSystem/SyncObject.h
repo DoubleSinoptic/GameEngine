@@ -44,6 +44,25 @@ namespace ge
 			initialize();
 		}
 
+		SyncObject() noexcept :
+			m_rt(nullptr),
+			m_dirtyIndex(InvalidDirtyIndex),
+			m_dirtyFlags(0)
+		{}
+
+		bool isCreated() const noexcept
+		{
+			return m_rt;
+		}
+
+		template<typename T>
+		void create() 
+		{
+			geAssert(m_rt == nullptr);
+			m_rt = new T(),
+			initialize();
+		}
+
 		virtual ~SyncObject();
 
 		void markAsDirty(uint32 flags);

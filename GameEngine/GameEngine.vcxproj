@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -166,6 +166,7 @@
     <ClCompile Include="Core\CommandQueue.cpp" />
     <ClCompile Include="Core\Config.cpp" />
     <ClCompile Include="Core\Core.cpp" />
+    <ClCompile Include="Core\Debug.cpp" />
     <ClCompile Include="Core\IO.cpp" />
     <ClCompile Include="Core\Serializer.cpp" />
     <ClCompile Include="Core\ThreadPool.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="Game\GameObjectManager.cpp" />
     <ClCompile Include="Game\Input.cpp" />
     <ClCompile Include="Math\SameImpl.cpp" />
+    <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Test\GameEngine.cpp" />
     <ClCompile Include="Core\MessageBox.cpp" />
     <ClCompile Include="Core\StringFormat.cpp" />
@@ -272,6 +274,10 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Rendering\Buffer.h" />
+    <ClInclude Include="Rendering\Mesh.h" />
+    <ClInclude Include="Rendering\Sampler.h" />
+    <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="SyncSystem\SyncAllocator.h" />
     <ClInclude Include="SyncSystem\SyncManager.h" />
     <ClInclude Include="SyncSystem\SyncObject.h" />

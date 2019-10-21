@@ -17,8 +17,14 @@ namespace ge
 		void resetBack();
 		void reset();
 
+		template<typename T>
+		static void destroy(T* o)
+		{
+			o->~T();
+		}
+
 		void* allocate(usize n);
-		void* alignedAllocate(usize size, usize alignment);
+		void* alignedAllocate(usize size, usize alignment = 16);
 
 		template<typename T>
 		T* allocate()
@@ -27,9 +33,9 @@ namespace ge
 		}
 
 		template<typename T>
-		T* alignedAllocate()
+		T* alignedAllocate(usize allign = 16)
 		{
-			return reinterpret_cast<T*>(alignedAllocate(sizeof(T)));
+			return reinterpret_cast<T*>(alignedAllocate(sizeof(T), allign));
 		}
 	};
 
