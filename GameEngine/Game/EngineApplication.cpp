@@ -4,18 +4,26 @@
 #include "Core/Debug.h"
 #include "GameObject.h"
 #include "Rendering/GpuContext.h"
+#include "Physics/Physics.h"
 
 namespace ge
 {
+	void EngineApplication::bind()
+	{
+		Physics::setCurrentPhysics(m_physics);
+		ThreadPool::setCurrentThreadPool(m_pool);
+		GameObjectManager::setCurrentObjectManager(m_manager);
+		Config::setCurrentConfig(m_config);
+	}
+
 	EngineApplication::EngineApplication() :
 		m_pool(snew<ThreadPool>()),
 		m_manager(snew<GameObjectManager>()),
 		m_config(snew<Config>(u"settings.bcfg")),
+		m_physics(snew<Physics>(0)),
 		m_renderFinished(true)
 	{
-		ThreadPool::setCurrentThreadPool(m_pool);
-		GameObjectManager::setCurrentObjectManager(m_manager);
-		Config::setCurrentConfig(m_config);
+		bind();
 
 		int64 tickRate = m_config->getValueInt64(u"tickRate", 60);
 		m_tickLocker.setDelta(tickRate ? (1000000 / tickRate) : 0);
@@ -35,25 +43,33 @@ namespace ge
 	{
 	}
 
+	
+
 	EngineApplication::~EngineApplication()
 	{
+		bind();
+
+		GameObject::clearScene();
 		ThreadPool::setCurrentThreadPool(nullptr);
 		GameObjectManager::setCurrentObjectManager(nullptr);
 		Config::setCurrentConfig(nullptr);
 		GpuContext::setCurrentGpuContext(nullptr);
+		Physics::setCurrentPhysics(nullptr);
 	}
 
 	void EngineApplication::run()
 	{
+		bind();
+
 		uint64 point = 0;
 		while (!m_manager->isExited())
 		{
 			m_tickLocker.lock();
 			uint64 delta = Time::deltaTick(point);
 			Debug::log("{0}", delta);
-			m_manager->fixedUpdate(delta);
+			m_manager->fixedUpdate(delta * 0.000001);
 
-			m_manager->update(delta);
+			m_manager->update(delta * 0.000001);
 
 			SyncManager::instance().sync();
 			SyncManager::instance().collect();

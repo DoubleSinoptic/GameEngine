@@ -17,7 +17,7 @@ namespace ge
 
 		virtual void addRef() const noexcept
 		{
-			m_refCount++;
+			m_refCount.fetch_add(1, std::memory_order_relaxed);
 		}
 
 		size_t refCount() const noexcept 
@@ -26,8 +26,8 @@ namespace ge
 		}
 
 		virtual void release() const noexcept
-		{
-			if (!(--m_refCount)) 
+		{			
+			if (m_refCount.fetch_sub(-1, std::memory_order_relaxed) == 1)
 			{
 				delete this;
 			}
@@ -40,12 +40,33 @@ namespace ge
 		T* m_ptr;
 		friend class RPtr;
 	public:
+		constexpr RPtr() :
+			m_ptr(nullptr)
+		{}
+
+		RPtr(const RPtr& ptr) noexcept :
+			m_ptr(ptr.m_ptr)
+		{
+			if (m_ptr)
+				m_ptr->addRef();
+		}
+
 		template<typename X>
 		RPtr(const RPtr<X>& ptr) noexcept :
 			m_ptr(static_cast<T*>(ptr.m_ptr))
 		{
 			if (m_ptr)
 				m_ptr->addRef();
+		}
+
+		RPtr& operator=(const RPtr& ptr) noexcept
+		{
+			if (m_ptr)
+				m_ptr->release();
+			m_ptr = ptr.m_ptr;
+			if (m_ptr)
+				m_ptr->addRef();
+			return *this;
 		}
 
 		template<typename X>

@@ -1,5 +1,6 @@
 #include "GameObjectManager.h"
 #include "Component.h"
+#include "Physics/Physics.h"
 
 namespace ge 
 {
@@ -98,7 +99,8 @@ namespace ge
 				m_components[i]->setPlace(i);
 			m_componentsDirty = false;
 		}
-		//_M_physicsInstance->update(_M_fixedDelta);
+		
+		Physics::instance().update(dt, false);
 	}
 }
 

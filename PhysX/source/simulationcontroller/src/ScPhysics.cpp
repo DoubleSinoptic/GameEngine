@@ -37,7 +37,7 @@
 using namespace physx;
 
 Sc::Physics* Sc::Physics::mInstance = NULL;
-const PxReal Sc::Physics::sWakeCounterOnCreation = 20.0f*0.02f;
+const PxReal Sc::Physics::sWakeCounterOnCreation = 20.0f * 0.02f;
 
 namespace physx
 {
@@ -48,7 +48,7 @@ namespace physx
 }
 
 Sc::Physics::Physics(const PxTolerancesScale& scale, const PxvOffsetTable& pxvOffsetTable)
-: mScale(scale)
+	: mScale(scale)
 {
 	mInstance = this;
 	PxvInit(pxvOffsetTable);

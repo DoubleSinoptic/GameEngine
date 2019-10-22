@@ -128,7 +128,7 @@ namespace ge
 		Vector<T*> components;
 		for (auto x : m_components) {
 			if (x->is(getTypeName<T>()))
-				components.Add(static_cast<T*>(x));
+				components.push_back(static_cast<T*>(x));
 		}
 		return std::move(components);
 	}

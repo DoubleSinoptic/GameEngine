@@ -167,5 +167,7 @@ namespace ge
 		return v + q.w * t + cross(q.getXYZ(), t);
 	}
 
+	constexpr Quaternion QuaternionIdentity = Quaternion();
+
 }
 #endif
