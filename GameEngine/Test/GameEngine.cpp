@@ -198,8 +198,8 @@ int main()
 		EngineApplication eng;
 		GameObject* gm = new GameObject();
 		gm->addComponent<SampleComponent>();
-	/*	gm->addComponent<RigidBody>()->setMass(1.0);
-		gm->addComponent<BoxCollider>()->setExtents({1.0, 1.0 , 1.0 });*/
+		gm->addComponent<RigidBody>()->setMass(1.0);
+		gm->addComponent<BoxCollider>()->setExtents({1.0, 1.0 , 1.0 });
 		eng.run();
 	}
 	Debug::log("Engine finished.");

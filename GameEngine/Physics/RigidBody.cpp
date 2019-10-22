@@ -9,6 +9,7 @@ namespace ge
 	{
 		activate(CA_TRANSFORM);
 		m_rigiBody = Physics::instance().getPhysics()->createRigidDynamic(PxTransform(toPx(getGameObject()->position()), toPx(getGameObject()->rotation())));
+		geAssert(m_rigiBody);
 		m_rigiBody->userData = this;
 		auto c = getGameObject()->getComponents<Collider>();
 		for (auto& x : c) {

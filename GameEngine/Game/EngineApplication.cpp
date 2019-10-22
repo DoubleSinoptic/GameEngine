@@ -66,9 +66,18 @@ namespace ge
 		{
 			m_tickLocker.lock();
 			uint64 delta = Time::deltaTick(point);
-			Debug::log("{0}", delta);
-			m_manager->fixedUpdate(delta * 0.000001);
 
+			constexpr uint64 fixedDelta = 1000000 / 60;
+			constexpr uint64 maximumDelta = fixedDelta / 2 + fixedDelta;
+
+			uint64 total = delta;
+			while (total >= maximumDelta) 
+			{
+				m_manager->fixedUpdate(fixedDelta * 0.000001);
+				total -= fixedDelta;
+			}
+			m_manager->fixedUpdate(total * 0.000001);
+			
 			m_manager->update(delta * 0.000001);
 
 			SyncManager::instance().sync();

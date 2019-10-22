@@ -4,6 +4,7 @@
 
 #include "Core/Core.h"
 #include "Core/ResourceObject.h"
+#include "Core/Serializer.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"
 #include "Math/Vector3.h"
@@ -58,7 +59,7 @@ namespace ge
 		MSF_BONE_WEIGHTS = 1 << 6
 	};
 
-	class Mesh : public SyncObject
+	class Mesh : public SyncObject, public ISerializable
 	{
 		Ptr<Vector<BoneIndeces>> m_bonesIndeces;
 		Ptr<Vector<Vector4>> m_boneWeights;
@@ -125,6 +126,9 @@ namespace ge
 		void setBoneIndeces(const Vector<BoneIndeces>& indeces);
 
 		virtual void* sync(SyncAllocator* allocator, uint32 flags) const override;
+
+		virtual void serialize(BinaryWriter* writer) const override;
+		virtual void deserialize(BinaryReader* reader) override;
 	};
 }
 

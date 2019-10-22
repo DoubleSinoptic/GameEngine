@@ -29,6 +29,7 @@ namespace ge
 
 	void Collider::setShape(physx::PxShape* shape)
 	{
+		geAssert(shape);
 		RigidBody* rg = getGameObject()->getComponent<RigidBody>();
 		if (m_shape && rg) {
 			rg->removeCollider(this);

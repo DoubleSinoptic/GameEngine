@@ -265,5 +265,52 @@ namespace ge
 		return s;
 	}
 
+	void Mesh::serialize(BinaryWriter* writer) const
+	{
+		writer->writeString(u"__mesh");
+		writer->write<uint32>(
+			(m_verteces ? MSF_VERTECES : 0) |
+			(m_normals ? MSF_NORMALS : 0) |
+			(m_indeces ? MSF_INDECES : 0) |
+			(m_tangets ? MSF_TANGENTS : 0) |
+			(m_texcoords ? MSF_TEXCOORDS : 0) |
+			(m_bonesIndeces ? MSF_BONE_INDECES : 0) |
+			(m_boneWeights ? MSF_BONE_WEIGHTS : 0)
+		);
+		if (m_verteces)
+			writer->writeVector(*m_verteces);
+		if (m_normals)
+			writer->writeVector(*m_normals);
+		if (m_indeces)
+			writer->writeVector(*m_indeces);
+		if (m_tangets)
+			writer->writeVector(*m_tangets);
+		if (m_texcoords)
+			writer->writeVector(*m_texcoords);
+		if (m_bonesIndeces)
+			writer->writeVector(*m_bonesIndeces);
+		if (m_boneWeights)
+			writer->writeVector(*m_boneWeights);
+	}
+
+	void Mesh::deserialize(BinaryReader* reader)
+	{
+		geAssert(reader->readString() == u"__mesh");
+		uint32 flags = reader->read<uint32>();
+		if (flags & MSF_VERTECES)
+			setVerteces(std::move(reader->readVector<Vector3>()));
+		if (flags & MSF_NORMALS)
+			setNormals(std::move(reader->readVector<Vector3>()));
+		if (flags & MSF_INDECES)
+			setIndeces(std::move(reader->readVector<int>()));
+		if (flags & MSF_TANGENTS)
+			setTangents(std::move(reader->readVector<Vector3>()));
+		if (flags & MSF_TEXCOORDS)
+			setTexcoords(std::move(reader->readVector<Vector2>()));
+		if (flags & MSF_BONE_INDECES)
+			setBoneIndeces(std::move(reader->readVector<BoneIndeces>()));
+		if (flags & MSF_BONE_WEIGHTS)
+			setBoneWeights(std::move(reader->readVector<Vector4>()));
+	}
 }
 
