@@ -192,132 +192,14 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class SampleBuffak : public ResourceObject 
-{
-public:
-	SampleBuffak() {}
-};
-
-class SampleRenderable 
-{
-public:
-	RPtr<SampleBuffak> bufferf;
-	SampleRenderable()
-	{
-		bufferf = new SampleBuffak();
-
-	}
-
-};
-
-struct SampleCMd 
-{
-	int asd[15];
-};
-class CommandBuffer 
-{
-public:
-	std::vector<SampleCMd> saf;
-	std::vector<RPtr<SampleBuffak>> buffaks;
-
-	void draw() 
-	{
-		saf.push_back({});
-	}
-
-	void setBuffer(const RPtr<SampleBuffak>& buff, int set, int slot)
-	{
-		buffaks.push_back(buff);
-	}
-
-	void reset() 
-	{
-		saf.clear();
-		buffaks.clear();
-	}
-};
-
 int main()
 {
-	/*std::vector<SampleRenderable*> renderes;
-	for (int i = 0; i < 40000; i++)
-	{
-		renderes.push_back(new SampleRenderable());
-	}
-
-	CommandBuffer bs;
-	while (true)
-	{
-		uint64 x = Time::totalTicks();
-		for (int i = 0; i < 40000; i++)
-		{
-			bs.setBuffer(renderes[0]->bufferf, 0, 1);
-			bs.draw();
-		}
-
-		bs.reset();
-
-		Debug::log("{0}", (Time::totalTicks() - x) * 0.000001);
-	}*/
-
 	{
 		EngineApplication eng;
 		GameObject* gm = new GameObject();
 		gm->addComponent<SampleComponent>();
-		gm->addComponent<RigidBody>()->setMass(1.0);
-		gm->addComponent<BoxCollider>()->setExtents({1.0, 1.0 , 1.0 });
+	/*	gm->addComponent<RigidBody>()->setMass(1.0);
+		gm->addComponent<BoxCollider>()->setExtents({1.0, 1.0 , 1.0 });*/
 		eng.run();
 	}
 	Debug::log("Engine finished.");

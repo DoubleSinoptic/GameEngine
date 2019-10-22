@@ -1,9 +1,9 @@
 #include "Core.h"
+#include "MessageBox.h"
+#include "StringFormat.h"
 
 namespace ge
 {
-
-
 	usize ImplUtf8::charLengthInUtf8(uint32 c) noexcept
 	{
 		if (c >> 7 == 0)
@@ -114,4 +114,12 @@ namespace ge
 		return resultString;
 	}
 
+	void nativeAssert(bool expr, const char* str, const char* file, int line)
+	{
+		if (expr)
+			return;
+		String errorMessage = format("======== GameEngine submited critical error.========\n\n@in file: {0}\n@in line: {1}\n@code: {2}", utf8(file), line, str);
+		MessageBox::showInfo(errorMessage, u"GameEngine submited critical error", MBT_ERROR);
+		exit(-1);
+	}
 }

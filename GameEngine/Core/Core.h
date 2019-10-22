@@ -13,19 +13,34 @@
 #include <stdexcept>
 #include <atomic>
 #include <algorithm>
+#include <cassert>
 
 #define GE_EXPORT
 #define NONDTR_STATIC
 
-#ifdef _DEBUG
-#	define geAssertDebug(x) {if (!(x)) { throw std::runtime_error(# x); }}
+#ifdef _EXCPETIONS
+#	ifdef _DEBUG
+#		define geAssertDebug(x) {if (!(x)) { throw std::runtime_error(# x); }}
+#	else
+#		define geAssertDebug(x)
+#	endif
+
+#	define geAssert(x) {if (!(x)) { throw std::runtime_error(# x); }}
+#	define geAssertFalse(x)  {if (!(x)) { throw std::runtime_error(x); }}
 #else
-#	define geAssertDebug(x)
+	namespace ge
+	{
+		void nativeAssert(bool expr, const char* str, const char*file, int line);
+	}
+#	ifdef _DEBUG
+#		define geAssertDebug(x) nativeAssert(x, # x, __FILE__, __LINE__)
+#	else
+#		define geAssertDebug(x)
+#	endif
+
+#	define geAssert(x) nativeAssert(x, # x, __FILE__, __LINE__)
+#	define geAssertFalse(x) nativeAssert(false, x, __FILE__, __LINE__)
 #endif
-
-#define geAssert(x) {if (!(x)) { throw std::runtime_error(# x); }}
-#define geAssertFalse(x)  {if (!(x)) { throw std::runtime_error(x); }}
-
 namespace ge
 {
 
