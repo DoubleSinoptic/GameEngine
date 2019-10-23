@@ -8,6 +8,7 @@ namespace ge
 {
 	class ResourceObject 
 	{
+	protected:
 		mutable std::atomic_size_t m_refCount;
 	public:
 		ResourceObject() :
@@ -23,6 +24,11 @@ namespace ge
 		size_t refCount() const noexcept 
 		{
 			return m_refCount.load();
+		}
+
+		bool deincrement() const noexcept
+		{
+			return m_refCount.fetch_sub(-1, std::memory_order_relaxed) == 1;
 		}
 
 		virtual void release() const noexcept

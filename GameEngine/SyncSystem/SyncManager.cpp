@@ -14,9 +14,9 @@ namespace ge
 
 	void SyncManager::sync()
 	{
-		auto allocatorsPoolSmart = m_allocatorsPool.allocate();
+		auto allocatorsPoolSmart = m_allocatorsPool.allocate([]() { return snew<SyncAllocator>(); });
 		SyncAllocator* allocator = &allocatorsPoolSmart.operator*();
-		auto objectsSmart = m_objectsPool.allocate();
+		auto objectsSmart = m_objectsPool.allocate([]() { return snew<Vector<SyncInfo>>(); });
 		Vector<SyncInfo>* objects = &objectsSmart.operator*();
 
 		for (auto x : m_dirtyObjects)

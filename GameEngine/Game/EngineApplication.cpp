@@ -14,6 +14,7 @@ namespace ge
 		ThreadPool::setCurrentThreadPool(m_pool);
 		GameObjectManager::setCurrentObjectManager(m_manager);
 		Config::setCurrentConfig(m_config);
+		GpuPool::setCurrentGpuPool(m_gpuPool);
 	}
 
 	EngineApplication::EngineApplication() :
@@ -21,6 +22,7 @@ namespace ge
 		m_manager(snew<GameObjectManager>()),
 		m_config(snew<Config>(u"settings.bcfg")),
 		m_physics(snew<Physics>(0)),
+		m_gpuPool(snew<GpuPool>()),
 		m_renderFinished(true)
 	{
 		bind();
@@ -55,6 +57,7 @@ namespace ge
 		Config::setCurrentConfig(nullptr);
 		GpuContext::setCurrentGpuContext(nullptr);
 		Physics::setCurrentPhysics(nullptr);
+		GpuPool::setCurrentGpuPool(nullptr);
 	}
 
 	void EngineApplication::run()

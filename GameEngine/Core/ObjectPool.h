@@ -10,20 +10,21 @@
 
 namespace ge
 {
-	template<typename T>
+	template<typename T, typename Pointer = Ptr<T>>
 	class ObjectPool
 	{
 		std::mutex m_lock;
 
 		struct PooledObject
 		{
-			Ptr<T> object;
+			Pointer object;
 			usize  age;
 		};
 
 		List<PooledObject> m_pool;
 	public:
-		typedef Ptr<T> pointer_type;
+		typedef Pointer pointer_type;
+		typedef T type;
 
 		void collect(usize age) 
 		{
@@ -45,8 +46,8 @@ namespace ge
 			m_pool.push_back({ x, 0 });
 		}
 
-		template<typename Predicate>
-		pointer_type allocate_great(const Predicate& pred)
+		template<typename Predicate, typename Alloc>
+		pointer_type allocate_great(const Predicate& pred, const Alloc& alloc)
 		{
 			std::lock_guard<std::mutex> _(m_lock);
 			for (auto i = m_pool.begin(); i != m_pool.end(); i++)
@@ -58,10 +59,11 @@ namespace ge
 					return val;
 				}
 			}
-			return pointer_type(new T());
+			return alloc();
 		}
 
-		pointer_type allocate()
+		template<typename Alloc>
+		pointer_type allocate(const Alloc& alloc)
 		{
 			std::lock_guard<std::mutex> _(m_lock);
 			if (m_pool.size())
@@ -70,7 +72,7 @@ namespace ge
 				m_pool.pop_back();
 				return val;
 			}
-			return pointer_type(new T());
+			return alloc();
 		}
 	};
 

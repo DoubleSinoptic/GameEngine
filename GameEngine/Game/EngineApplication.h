@@ -9,6 +9,7 @@
 #include "Core/Thread.h"
 #include "GameObjectManager.h"
 #include "Physics/Physics.h"
+#include "Rendering/GpuPool.h"
 
 namespace ge
 {
@@ -20,6 +21,7 @@ namespace ge
 		Ptr<ThreadPool>		    m_pool;
 		Ptr<Thread>			    m_renderThread;
 		Ptr<Physics>		    m_physics;
+		Ptr<GpuPool>			m_gpuPool;
 		std::condition_variable m_renderVariable;
 		std::mutex				m_renderLock;
 		bool					m_renderFinished;

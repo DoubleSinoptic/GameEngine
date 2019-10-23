@@ -43,7 +43,6 @@
 #endif
 namespace ge
 {
-
 	template <typename T>
 	class ToStringChecker
 	{
@@ -135,6 +134,20 @@ namespace ge
 	inline const char* getTypeName()
 	{
 		return typeid(T).name();
+	}
+
+	template<typename T>
+	int32 compareBinary(const T& a, const T& b)
+	{
+		constexpr usize count = sizeof(T);
+		const byte* s1 = reinterpret_cast<const byte*>(&a);
+		const byte* s2 = reinterpret_cast<const byte*>(&a);
+		while (count-- > 0)
+		{
+			if (*s1++ != *s2++)
+				return s1[-1] < s2[-1] ? -1 : 1;
+		}
+		return 0;
 	}
 }
 

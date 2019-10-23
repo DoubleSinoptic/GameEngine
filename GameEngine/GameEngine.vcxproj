@@ -188,6 +188,7 @@
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Physics\SphereCollider.cpp" />
     <ClCompile Include="Rendering\GpuContext.cpp" />
+    <ClCompile Include="Rendering\GpuPool.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Test\GameEngine.cpp" />
     <ClCompile Include="Core\MessageBox.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Physics\SphereCollider.h" />
     <ClInclude Include="Rendering\Buffer.h" />
     <ClInclude Include="Rendering\Framebuffer.h" />
+    <ClInclude Include="Rendering\GpuPool.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\GpuContext.h" />
     <ClInclude Include="Rendering\Pipeline.h" />
