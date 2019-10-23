@@ -3,7 +3,7 @@
 
 namespace ge
 {
-	void PTexture::release() const
+	void PTexture::release() const noexcept
 	{
 		if (deincrement())
 		{

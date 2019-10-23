@@ -24,7 +24,7 @@ namespace ge
 		RPtr<Texture2D> texture;
 		RPtr<Sampler>	sampler;
 
-		void release() const override;
+		void release() const noexcept override;
 	};
 
 	class GpuPool 

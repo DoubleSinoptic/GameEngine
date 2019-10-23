@@ -139,7 +139,7 @@ namespace ge
 	template<typename T>
 	int32 compareBinary(const T& a, const T& b)
 	{
-		constexpr usize count = sizeof(T);
+		usize count = sizeof(T);
 		const byte* s1 = reinterpret_cast<const byte*>(&a);
 		const byte* s2 = reinterpret_cast<const byte*>(&a);
 		while (count-- > 0)
