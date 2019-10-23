@@ -38,6 +38,13 @@ namespace ge
 		ClearColor4<uint32>  uint;
 	};
 
+	enum GpuContextReleaseFlags
+	{
+		GCRF_SUBMITED = 1 << 0,
+		GCRF_RECORDERED = 1 << 1,
+		GCRF_ALL = 0xFF
+	};
+
 	class GpuContext
 	{
 	public:
@@ -51,13 +58,19 @@ namespace ge
 		virtual Buffer* createBuffer(const BUFFER_DESC& desc) = 0;
 		virtual Sampler* createSampler(const SAMPLER_DESC& desc) = 0;
 
+		virtual Pipeline* createPipeline(const PIPELINE_DESC& desc) = 0;
+		virtual Framebuffer* createFramebuffer(const FRAMEBUFFER_DESC& desc) = 0;
+
+
 		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
 		virtual void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) = 0;
 		virtual void copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter) = 0;
 
-		virtual void drawIndexed(uint32 firstVerteces, uint32 vertexes) = 0;
-		virtual void draw(uint32 firstVerteces, uint32 vertexes) = 0;
-		virtual void drawIndexedInstanced(uint32 firstVerteces, uint32 vertexes, uint32 firstInstance, uint32 instanced) = 0;
+		virtual void drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces) = 0;
+		virtual void draw(uint32 firstVerteces, uint32 numVerteces) = 0;
+		virtual void drawIndexedInstanced(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces, uint32 firstInstnace, uint32 instancesNum) = 0;
+	
+		virtual void notifiyOnFinish(const std::function<void>& f, GpuContextReleaseFlags flags) = 0;
 
 		virtual void submit() = 0;
 

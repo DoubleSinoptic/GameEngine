@@ -12,15 +12,15 @@ namespace ge
 
 	struct RENDERTARGET_DESC 
 	{
-		Texture2D*	texture;
-		uint32		mip;
-		uint32		layer;
+		Texture2D*	texture = nullptr;
+		uint32		mip = 0;
+		uint32		layer = 0;
 	};
 
 	struct FRAMEBUFFER_DESC 
 	{
-		uint32				width;
-		uint32				heigth;
+		uint32				width = 1;
+		uint32				heigth = 1;
 		usize				colorAttachmentsNum;
 		RENDERTARGET_DESC	colorAttachments[16];
 		RENDERTARGET_DESC	depth;

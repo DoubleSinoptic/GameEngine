@@ -36,6 +36,7 @@ namespace ge
 		static GpuPool& instance();
 		static void setCurrentGpuPool(Ptr<GpuPool> pool);
 		RPtr<PTexture> allocate(const TEXTURE2D_DESC& tDesc, const SAMPLER_DESC& sDesc);
+
 		void collect();
 	};
 }
