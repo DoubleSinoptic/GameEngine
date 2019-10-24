@@ -10,14 +10,16 @@ namespace ge
 {
 	void EngineApplication::bind()
 	{
-		Physics::setCurrentPhysics(m_physics);
 		ThreadPool::setCurrentThreadPool(m_pool);
+		SyncManager::setCurrentSyncManager(m_syncManager);
+		Physics::setCurrentPhysics(m_physics);
 		GameObjectManager::setCurrentObjectManager(m_manager);
 		Config::setCurrentConfig(m_config);
 		GpuPool::setCurrentGpuPool(m_gpuPool);
 	}
 
 	EngineApplication::EngineApplication() :
+		m_syncManager(snew<SyncManager>()),
 		m_pool(snew<ThreadPool>()),
 		m_manager(snew<GameObjectManager>()),
 		m_config(snew<Config>(u"settings.bcfg")),
@@ -37,7 +39,8 @@ namespace ge
 	{
 		while (!Thread::isClosed())
 		{
-			SyncManager::instance().playback();
+			if (&SyncManager::instance() == &*m_syncManager)
+				SyncManager::instance().playback();
 		}
 	}
 
@@ -49,6 +52,8 @@ namespace ge
 
 	EngineApplication::~EngineApplication()
 	{
+		m_renderThread->close();
+		m_renderThread->join();
 		bind();
 
 		GameObject::clearScene();
@@ -58,6 +63,7 @@ namespace ge
 		GpuContext::setCurrentGpuContext(nullptr);
 		Physics::setCurrentPhysics(nullptr);
 		GpuPool::setCurrentGpuPool(nullptr);
+		SyncManager::setCurrentSyncManager(nullptr);
 	}
 
 	void EngineApplication::run()

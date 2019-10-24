@@ -53,6 +53,7 @@ namespace ge
 
 		virtual void setSampler(Sampler* sampler, int32 slot) = 0;
 		virtual void setTexture(Texture2D* texture, int32 slot) = 0;
+		virtual void setBuffer(Buffer* buffer, int32 slot) = 0;
 		virtual void setBuffer(Buffer* buffer, usize offset, usize length, int32 slot) = 0;
 	};
 }

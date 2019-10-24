@@ -31,6 +31,10 @@ namespace ge
 		Vector<SyncObject*>               m_dirtyObjects;
 
 	public:
+
+		static void setCurrentSyncManager(Ptr<SyncManager> m_current);
+		static SyncManager& instance();
+
 		void collect();
 
 		constexpr Vector<SyncObject*>& getDirtyObjects() noexcept {
@@ -53,8 +57,6 @@ namespace ge
 
 		void sync();
 		void playback();
-
-		static SyncManager& instance();
 	};
 
 }

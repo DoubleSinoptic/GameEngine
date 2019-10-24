@@ -44,6 +44,12 @@ namespace ge
 		m_isDestroyed[m_id] = true;
 	}
 
+	void Thread::join()
+	{
+		if (m_thread->joinable())
+			m_thread->join();
+	}
+
 	uint32 Thread::currentId() noexcept
 	{
 		return m_thisId;

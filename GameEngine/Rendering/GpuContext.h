@@ -38,11 +38,11 @@ namespace ge
 		ClearColor4<uint32>  uint;
 	};
 
-	enum GpuContextReleaseFlags
+	enum GpuAttachPlace
 	{
-		GCRF_SUBMITED = 1 << 0,
-		GCRF_RECORDERED = 1 << 1,
-		GCRF_ALL = 0xFF
+		GAP_SUBMITED_BUFFER = 1 << 0,
+		GAP_RECORDERED_BUFFER = 1 << 1,
+		GAP_ALL = 0xFF
 	};
 
 	class GpuContext
@@ -70,7 +70,8 @@ namespace ge
 		virtual void draw(uint32 firstVerteces, uint32 numVerteces) = 0;
 		virtual void drawIndexedInstanced(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces, uint32 firstInstnace, uint32 instancesNum) = 0;
 	
-		virtual void notifiyOnFinish(const std::function<void>& f, GpuContextReleaseFlags flags) = 0;
+		virtual void registerRelease(const std::function<void>& f, GpuAttachPlace flags) = 0;
+		virtual void registerResource(RPtr<ResourceObject> resource, GpuAttachPlace flags) = 0;
 
 		virtual void submit() = 0;
 

@@ -20,6 +20,7 @@
 #include "Rendering/Buffer.h"
 #include "Physics/BoxCollider.h"
 #include "Physics/RigidBody.h"
+#include "Window/Window.h"
 using namespace ge;
 
 
@@ -194,6 +195,14 @@ public:
 
 int main()
 {
+	Ptr<Window> window = Window::create(800, 600, u"Pizdec!");
+	while (!window->isClosed())
+	{
+		window->dispatchMessages();
+
+	}
+
+
 	{
 		EngineApplication eng;
 		GameObject* gm = new GameObject();

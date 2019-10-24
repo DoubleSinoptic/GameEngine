@@ -24,6 +24,7 @@ namespace ge
 		static void yield();
 
 		void close();
+		void join();
 
 		static uint32 currentId() noexcept;
 		static bool isClosed() noexcept;

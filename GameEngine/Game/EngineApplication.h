@@ -10,15 +10,17 @@
 #include "GameObjectManager.h"
 #include "Physics/Physics.h"
 #include "Rendering/GpuPool.h"
+#include "SyncSystem/SyncManager.h"
 
 namespace ge
 {
 	class EngineApplication 
 	{
-		TickLocker			    m_tickLocker;
-		Ptr<GameObjectManager>  m_manager;
-		Ptr<Config>			    m_config;
+		TickLocker			    m_tickLocker;		
+		Ptr<SyncManager>		m_syncManager;
 		Ptr<ThreadPool>		    m_pool;
+		Ptr<GameObjectManager>  m_manager;
+		Ptr<Config>			    m_config;		
 		Ptr<Thread>			    m_renderThread;
 		Ptr<Physics>		    m_physics;
 		Ptr<GpuPool>			m_gpuPool;

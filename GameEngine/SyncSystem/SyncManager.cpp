@@ -4,7 +4,17 @@
 namespace ge
 {
 
-	SyncManager globlSyncManager;
+	Ptr<SyncManager> currentSyncManager;
+
+	void SyncManager::setCurrentSyncManager(Ptr<SyncManager> m_current)
+	{
+		currentSyncManager = m_current;
+	}
+
+	SyncManager& SyncManager::instance()
+	{
+		return *currentSyncManager;
+	}
 
 	void SyncManager::collect()
 	{
@@ -43,10 +53,4 @@ namespace ge
 	{
 		m_queue.playback();
 	}
-
-	SyncManager& SyncManager::instance()
-	{
-		return globlSyncManager;
-	}
-
 }
