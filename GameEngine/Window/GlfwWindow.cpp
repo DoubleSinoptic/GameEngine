@@ -1,37 +1,12 @@
 #include "Window.h"
 #include "Core/StringFormat.h"
-#include <Windows.h>
+#include "Core/Library.h"
 
 typedef struct GLFWmonitor GLFWmonitor;
 typedef struct GLFWwindow GLFWwindow;
 
 namespace ge 
 {
-	class Library
-	{
-		HMODULE m_module;
-	public:
-		Library(const String& title) noexcept  :
-			m_module(::LoadLibraryW((const wchar_t*)title.c_str()))
-		{}
-
-		bool isLoad() const noexcept 
-		{
-			return m_module;
-		}
-
-		template<typename Fn>
-		Fn getProcessAddress(const String& path) const noexcept
-		{
-			geAssert(m_module);
-			::std::string symbol(path.begin(), path.end());
-			FARPROC proc = GetProcAddress(m_module, symbol.c_str());
-			if (!proc)
-				return Fn();
-			return reinterpret_cast<Fn>(proc);
-		}
-	};
-
 	class GlfwInstance 
 	{
 		Ptr<Library> m_glfwLibrary;

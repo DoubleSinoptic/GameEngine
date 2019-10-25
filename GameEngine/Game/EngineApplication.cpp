@@ -52,10 +52,11 @@ namespace ge
 
 	EngineApplication::~EngineApplication()
 	{
+		bind();
 		m_renderThread->close();
 		m_renderThread->join();
-		bind();
-
+		m_pool->barrier(BT_STRONG);
+		
 		GameObject::clearScene();
 		ThreadPool::setCurrentThreadPool(nullptr);
 		GameObjectManager::setCurrentObjectManager(nullptr);

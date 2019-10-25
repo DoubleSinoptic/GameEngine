@@ -88,4 +88,26 @@ namespace ge
 	
 	
 	}
+
+	void ThreadPool::barrier(BarrierType waitType)
+	{
+		if (waitType == BT_RELXAED)
+		{
+			while (true)
+			{
+				std::unique_lock<std::mutex> _(m_lock);
+				if (!m_tasks.size())
+					return;
+				Thread::sleep(1);
+			}
+		}
+		else
+		{
+			while (m_tasks.size())
+			{
+				Thread::yield();
+			}
+		}
+
+	}
 }

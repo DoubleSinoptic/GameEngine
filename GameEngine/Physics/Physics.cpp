@@ -24,6 +24,11 @@ namespace ge
 		PxCpFs() : m_sheduler()
 		{}
 
+		ThreadPool& pool() noexcept 
+		{
+			return m_sheduler;
+		}
+
 		virtual void submitTask(PxBaseTask& task) override
 		{
 			m_sheduler.runTask([&]() {
@@ -70,6 +75,7 @@ namespace ge
 
 	Physics::~Physics()
 	{
+		m_staticFileds->fpse.pool().barrier(BT_STRONG);
 		m_defaultMaterial->release();
 		m_scene->release();
 		m_physics->release();

@@ -9,6 +9,11 @@
 
 namespace ge
 {
+	enum BarrierType
+	{
+		BT_STRONG,
+		BT_RELXAED
+	};
 	class ThreadPool 
 	{
 		std::atomic_bool						m_isClosed;
@@ -34,6 +39,8 @@ namespace ge
 		void runTask(std::function<void(void)>&&);
 		void runTask(const std::function<void(void)>&);
 		void parallelFor(usize beg, usize end, const std::function<void(usize beg, usize end)>& fn);
+
+		void barrier(BarrierType waitType);
 	};
 }
 
