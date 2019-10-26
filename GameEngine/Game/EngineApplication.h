@@ -7,6 +7,7 @@
 #include "Core/ThreadPool.h"
 #include "Core/TickLocker.h"
 #include "Core/Thread.h"
+#include "Core/Event.h"
 #include "GameObjectManager.h"
 #include "Physics/Physics.h"
 #include "Rendering/GpuPool.h"
@@ -30,6 +31,8 @@ namespace ge
 		void renderThread();
 		void render();
 	public:
+		Event	disptach;
+		Event	rise;
 
 		void bind();
 

@@ -186,9 +186,7 @@ public:
 	virtual void fixedUpdate() override
 	{
 		Debug::log("Body position: {0}", getGameObject()->position());
-		i++;
-		if (i == 60 * 5)
-			GameObjectManager::instance().exit();
+	
 	}
 };
 
@@ -208,20 +206,21 @@ int main()
 		desc.monitor = nullptr;
 
 		Ptr<Window> window = WindowManager::instance().create(desc);
-		desc.parent = window;
-		Ptr<Window> window2 = WindowManager::instance().create(desc);
-		while (!window->isClosed())
-		{
-			WindowManager::instance().dispatchMessages();
-		}
-
+		
 		{
 			EngineApplication eng;
+			auto callbackId = eng.disptach.insert([&]() {
+				WindowManager::instance().dispatchMessages();
+				if (window->isClosed())
+					GameObjectManager::instance().exit();
+			});
+
 			GameObject* gm = new GameObject();
 			gm->addComponent<SampleComponent>();
 			gm->addComponent<RigidBody>()->setMass(1.0);
 			gm->addComponent<BoxCollider>()->setExtents({ 1.0, 1.0 , 1.0 });
 			eng.run();
+			eng.disptach.remove(callbackId);
 		}
 		WindowManager::setCurrentWindowManager(nullptr);
 	}

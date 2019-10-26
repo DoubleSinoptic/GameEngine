@@ -208,6 +208,7 @@
     <ClInclude Include="Core\Config.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Debug.h" />
+    <ClInclude Include="Core\Event.h" />
     <ClInclude Include="Core\IO.h" />
     <ClInclude Include="Core\Library.h" />
     <ClInclude Include="Core\PoolAllocator.h" />

@@ -90,6 +90,8 @@ namespace ge
 			
 			m_manager->update(delta * 0.000001);
 
+			disptach();
+
 			SyncManager::instance().sync();
 			SyncManager::instance().collect();
 
