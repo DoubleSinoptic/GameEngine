@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 #include "Core/ResourceObject.h"
-#include "Texture.h"
+#include "Texture2D.h"
 #include "Uniform.h"
 #include "ShaderModule.h"
 

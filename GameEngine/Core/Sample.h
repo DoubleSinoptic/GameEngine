@@ -6,7 +6,12 @@
 
 namespace ge
 {
-
+	class S : B
+	{
+	public:
+		S();
+		~S();
+	};
 }
 
 #endif

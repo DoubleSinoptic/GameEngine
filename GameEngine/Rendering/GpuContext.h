@@ -6,7 +6,7 @@
 #include "Core/ResourceObject.h"
 
 #include "Sampler.h"
-#include "Texture.h"
+#include "Texture2D.h"
 #include "Buffer.h"
 #include "Uniform.h"
 #include "Pipeline.h"
@@ -61,6 +61,7 @@ namespace ge
 		virtual Pipeline* createPipeline(const PIPELINE_DESC& desc) = 0;
 		virtual Framebuffer* createFramebuffer(const FRAMEBUFFER_DESC& desc) = 0;
 
+		virtual usize allignUniform(usize length) const = 0;
 
 		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
 		virtual void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) = 0;
@@ -70,8 +71,8 @@ namespace ge
 		virtual void draw(uint32 firstVerteces, uint32 numVerteces) = 0;
 		virtual void drawIndexedInstanced(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces, uint32 firstInstnace, uint32 instancesNum) = 0;
 	
-		virtual void registerRelease(const std::function<void>& f, GpuAttachPlace flags) = 0;
-		virtual void registerResource(RPtr<ResourceObject> resource, GpuAttachPlace flags) = 0;
+		virtual void registerRelease(const std::function<void(void)>& f, GpuAttachPlace flags = GAP_ALL) = 0;
+		virtual void registerResource(RPtr<ResourceObject> resource, GpuAttachPlace flags = GAP_ALL) = 0;
 
 		virtual void submit() = 0;
 

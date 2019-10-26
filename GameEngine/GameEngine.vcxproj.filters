@@ -15,15 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SyncSystem\SyncAllocator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SyncSystem\SyncObject.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SyncSystem\SyncManager.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Core\CommandQueue.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -115,6 +106,27 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Window\GlfwWindowManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanGpuContext.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanBuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanTexture2D.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPIs\Vulkan\vk_mem_alloc.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\SyncSystem\SyncAllocator.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\SyncSystem\SyncManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\SyncSystem\SyncObject.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -314,15 +326,6 @@
     <ClInclude Include="Math\Gcem\gcem_incl\quadrature\gauss_legendre_50.hpp">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SyncSystem\SyncAllocator.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="SyncSystem\SyncObject.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="SyncSystem\SyncManager.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Core\CommandQueue.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -398,9 +401,6 @@
     <ClInclude Include="Rendering\Sampler.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Texture.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\Uniform.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -459,6 +459,30 @@
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Core\Event.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPIs\Vulkan\vk_mem_alloc.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanGpuContext.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Texture2D.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanTexture2D.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\SyncSystem\SyncAllocator.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\SyncSystem\SyncManager.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\SyncSystem\SyncObject.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

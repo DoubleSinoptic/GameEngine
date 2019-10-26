@@ -49,8 +49,7 @@ namespace ge
 		{
 			return m_desc;
 		}
-
-		virtual void* map(usize offset, usize length, AccessFlags flags) const = 0;
+		virtual void* map(usize offset, usize length, AccessFlags flags) = 0;
 		virtual void unmap() = 0;
 	};
 }

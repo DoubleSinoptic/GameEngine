@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 #include "Core/ObjectPool.h"
-#include "Texture.h"
+#include "Texture2D.h"
 #include "Buffer.h"
 #include "Sampler.h"
 #include "Framebuffer.h"

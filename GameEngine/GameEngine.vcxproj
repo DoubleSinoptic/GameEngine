@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -156,7 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -189,15 +189,19 @@
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Physics\SphereCollider.cpp" />
+    <ClCompile Include="RenderAPIs\Vulkan\vk_mem_alloc.cpp" />
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanBuffer.cpp" />
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanGpuContext.cpp" />
+    <ClCompile Include="RenderAPIs\Vulkan\VulkanTexture2D.cpp" />
     <ClCompile Include="Rendering\GpuContext.cpp" />
     <ClCompile Include="Rendering\GpuPool.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Test\GameEngine.cpp" />
     <ClCompile Include="Core\MessageBox.cpp" />
     <ClCompile Include="Core\StringFormat.cpp" />
-    <ClCompile Include="SyncSystem\SyncAllocator.cpp" />
-    <ClCompile Include="SyncSystem\SyncManager.cpp" />
-    <ClCompile Include="SyncSystem\SyncObject.cpp" />
+    <ClCompile Include="Rendering\SyncSystem\SyncAllocator.cpp" />
+    <ClCompile Include="Rendering\SyncSystem\SyncManager.cpp" />
+    <ClCompile Include="Rendering\SyncSystem\SyncObject.cpp" />
     <ClCompile Include="Core\Thread.cpp" />
     <ClCompile Include="Window\GlfwWindowManager.cpp" />
     <ClCompile Include="Window\WindowManager.cpp" />
@@ -300,6 +304,10 @@
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\RigidBody.h" />
     <ClInclude Include="Physics\SphereCollider.h" />
+    <ClInclude Include="RenderAPIs\Vulkan\vk_mem_alloc.h" />
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanBuffer.h" />
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanGpuContext.h" />
+    <ClInclude Include="RenderAPIs\Vulkan\VulkanTexture2D.h" />
     <ClInclude Include="Rendering\Buffer.h" />
     <ClInclude Include="Rendering\Framebuffer.h" />
     <ClInclude Include="Rendering\GpuPool.h" />
@@ -308,11 +316,11 @@
     <ClInclude Include="Rendering\Pipeline.h" />
     <ClInclude Include="Rendering\Sampler.h" />
     <ClInclude Include="Rendering\ShaderModule.h" />
-    <ClInclude Include="Rendering\Texture.h" />
+    <ClInclude Include="Rendering\Texture2D.h" />
     <ClInclude Include="Rendering\Uniform.h" />
-    <ClInclude Include="SyncSystem\SyncAllocator.h" />
-    <ClInclude Include="SyncSystem\SyncManager.h" />
-    <ClInclude Include="SyncSystem\SyncObject.h" />
+    <ClInclude Include="Rendering\SyncSystem\SyncAllocator.h" />
+    <ClInclude Include="Rendering\SyncSystem\SyncManager.h" />
+    <ClInclude Include="Rendering\SyncSystem\SyncObject.h" />
     <ClInclude Include="Core\Thread.h" />
     <ClInclude Include="Window\GlfwWindowManager.h" />
     <ClInclude Include="Window\WindowManager.h" />
