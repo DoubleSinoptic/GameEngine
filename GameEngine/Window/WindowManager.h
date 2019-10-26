@@ -7,13 +7,12 @@
 
 namespace ge
 {
-	class WINDOW_DESC 
+	struct WINDOW_DESC 
 	{
+		Ptr<Window>		parent;
 		String			title;
 		Ptr<Monitor>	monitor;
-		int32			x;
-		int32			y;
-		VideoMod&		videoMod;
+		VideoMod		videoMod;
 	};
 
 	class WindowManager

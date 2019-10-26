@@ -10,7 +10,7 @@ namespace ge
 {
 	struct VideoMod
 	{
-		uint32 refreshRate = 60;
+		int32 refreshRate = -1;
 		uint32 widith = 1;
 		uint32 height = 1;
 	};
@@ -23,7 +23,7 @@ namespace ge
 		virtual ~Monitor() = default;
 		virtual String getName() const = 0;
 		virtual void getPhysicsSize(uint32& w, uint32& h) const = 0;
-		virtual void getWorkArea(uint32& w, uint32& h) const = 0;
+		virtual void getWorkArea(int32& x, int32& y, uint32& w, uint32& h) const = 0;
 		virtual void getLocaiton(int32& w, int32& h) const = 0;
 		virtual void getScale(float& w, float& h) const = 0;
 		virtual Vector<VideoMod> getVideoModes() const = 0;
@@ -51,9 +51,8 @@ namespace ge
 		virtual void setTitle(const String& title) = 0;
 		
 		virtual void setFullscreen(const Ptr<Monitor>& monitor, int32 x, int32 y, const VideoMod& mod) = 0;
-		virtual void setWindowed() = 0;
-		
-		virtual void dispatchMessages() = 0;
+		virtual void setWindowed(int32 x, int32 y, uint32 w, uint32 h) = 0;
+
 		virtual bool isClosed() const noexcept = 0;
 	};
 }

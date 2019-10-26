@@ -67,8 +67,13 @@ namespace ge
 	};
 
 	typedef std::basic_string<char16_t> String;
+	typedef std::basic_string<char> Utf8String;
 
 	String utf8(const char* utf8str);
+	Utf8String to_utf8(const char16_t* string);
+
+	String utf8(const Utf8String& utf8str);
+	Utf8String to_utf8(const String& string);
 
 	template<typename T>
 	using Vector = std::vector<T>;

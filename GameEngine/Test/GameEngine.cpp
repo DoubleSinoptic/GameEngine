@@ -20,7 +20,8 @@
 #include "Rendering/Buffer.h"
 #include "Physics/BoxCollider.h"
 #include "Physics/RigidBody.h"
-#include "Window/Window.h"
+#include "Window/WindowManager.h"
+#include "Window/GlfwWindowManager.h"
 using namespace ge;
 
 
@@ -195,21 +196,34 @@ public:
 
 int main()
 {
-	Ptr<Window> window = Window::create(800, 600, u"Pizdec!");
-	while (!window->isClosed())
 	{
-		window->dispatchMessages();
+		Ptr<GlfwWindowManager> manager = snew<GlfwWindowManager>();
+		WindowManager::setCurrentWindowManager(std::static_pointer_cast<GlfwWindowManager>(manager));
 
-	}
+		WINDOW_DESC desc;
+		desc.videoMod.refreshRate = -1;
+		desc.videoMod.height = 600;
+		desc.videoMod.widith = 800;
+		desc.title = u"pizdec";
+		desc.monitor = nullptr;
 
+		Ptr<Window> window = WindowManager::instance().create(desc);
+		desc.parent = window;
+		Ptr<Window> window2 = WindowManager::instance().create(desc);
+		while (!window->isClosed())
+		{
+			WindowManager::instance().dispatchMessages();
+		}
 
-	{
-		EngineApplication eng;
-		GameObject* gm = new GameObject();
-		gm->addComponent<SampleComponent>();
-		gm->addComponent<RigidBody>()->setMass(1.0);
-		gm->addComponent<BoxCollider>()->setExtents({1.0, 1.0 , 1.0 });
-		eng.run();
+		{
+			EngineApplication eng;
+			GameObject* gm = new GameObject();
+			gm->addComponent<SampleComponent>();
+			gm->addComponent<RigidBody>()->setMass(1.0);
+			gm->addComponent<BoxCollider>()->setExtents({ 1.0, 1.0 , 1.0 });
+			eng.run();
+		}
+		WindowManager::setCurrentWindowManager(nullptr);
 	}
 	Debug::log("Engine finished.");
 	return 0;

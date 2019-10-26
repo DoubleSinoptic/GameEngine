@@ -1,4 +1,3 @@
-#include "Monitor.h"
 #include "WindowManager.h"
 
 namespace ge 

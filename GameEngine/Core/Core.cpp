@@ -101,7 +101,6 @@ namespace ge
 		return c;
 	}
 
-
 	String utf8(const char* utf8str)
 	{
 		String resultString;
@@ -112,6 +111,30 @@ namespace ge
 			resultString.push_back(char16_t(character));
 		}
 		return resultString;
+	}
+
+	Utf8String to_utf8(const char16_t* string) 
+	{
+		Utf8String resultString;
+		while (*string)
+		{
+			byte buffer[4];
+			const usize encodeLength = ImplUtf8::writeUtf8Char(buffer, uint32(*string++));
+			for (usize i = 0; i < encodeLength; i++)
+				resultString.push_back(buffer[i]);
+		}
+		resultString.push_back('\0');
+		return resultString;
+	}
+
+	String utf8(const Utf8String& utf8str)
+	{
+		return utf8(utf8str.c_str());
+	}
+
+	Utf8String to_utf8(const String& string)
+	{
+		return to_utf8(string.c_str());
 	}
 
 	void nativeAssert(bool expr, const char* str, const char* file, int line)

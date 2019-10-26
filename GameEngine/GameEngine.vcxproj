@@ -199,7 +199,7 @@
     <ClCompile Include="SyncSystem\SyncManager.cpp" />
     <ClCompile Include="SyncSystem\SyncObject.cpp" />
     <ClCompile Include="Core\Thread.cpp" />
-    <ClCompile Include="Window\GlfwWindow.cpp" />
+    <ClCompile Include="Window\GlfwWindowManager.cpp" />
     <ClCompile Include="Window\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +313,7 @@
     <ClInclude Include="SyncSystem\SyncManager.h" />
     <ClInclude Include="SyncSystem\SyncObject.h" />
     <ClInclude Include="Core\Thread.h" />
+    <ClInclude Include="Window\GlfwWindowManager.h" />
     <ClInclude Include="Window\WindowManager.h" />
     <ClInclude Include="Window\Window.h" />
   </ItemGroup>
