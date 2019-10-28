@@ -10,9 +10,8 @@
 #include "Core/Event.h"
 #include "GameObjectManager.h"
 #include "Physics/Physics.h"
-#include "Rendering/GpuPool.h"
+#include "RenderAPI//GpuPool.h"
 #include "SyncSystem/SyncManager.h"
-
 namespace ge
 {
 	class EngineApplication 

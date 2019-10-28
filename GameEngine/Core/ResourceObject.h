@@ -46,6 +46,11 @@ namespace ge
 		T* m_ptr;
 		friend class RPtr;
 	public:
+		constexpr operator T* () const noexcept 
+		{
+			return m_ptr;
+		}
+
 		constexpr RPtr() :
 			m_ptr(nullptr)
 		{}

@@ -17,7 +17,7 @@
 #include "Game/GameObjectManager.h"
 #include "Core/Config.h"
 #include "Game/EngineApplication.h"
-#include "Rendering/Buffer.h"
+#include "RenderAPI/Buffer.h"
 #include "Physics/BoxCollider.h"
 #include "Physics/RigidBody.h"
 #include "Window/WindowManager.h"

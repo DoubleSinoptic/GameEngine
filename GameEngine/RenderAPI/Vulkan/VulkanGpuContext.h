@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 #include "Core/Any.h"
-#include "Rendering/GpuContext.h"
+#include "../GpuContext.h"
 #include <vulkan/vulkan.h>
 #include "vk_mem_alloc.h"
 #include <map>

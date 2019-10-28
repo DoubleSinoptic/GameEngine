@@ -75,9 +75,6 @@
     <ClCompile Include="Rendering\Mesh.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\GpuContext.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Physics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
     <ClCompile Include="Physics\SphereCollider.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\GpuPool.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Core\PoolAllocator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -108,25 +102,40 @@
     <ClCompile Include="Window\GlfwWindowManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanGpuContext.cpp">
+    <ClCompile Include="SyncSystem\SyncAllocator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanBuffer.cpp">
+    <ClCompile Include="SyncSystem\SyncManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanTexture2D.cpp">
+    <ClCompile Include="SyncSystem\SyncObject.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPIs\Vulkan\vk_mem_alloc.cpp">
+    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\SyncSystem\SyncAllocator.cpp">
+    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\SyncSystem\SyncManager.cpp">
+    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\SyncSystem\SyncObject.cpp">
+    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\GpuContext.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\GpuPool.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Material.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Renderable.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\RenderManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -392,28 +401,7 @@
     <ClInclude Include="Core\Any.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Buffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\Mesh.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\Sampler.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\Uniform.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\GpuContext.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\Pipeline.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\ShaderModule.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\Framebuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\Indent.h">
@@ -440,9 +428,6 @@
     <ClInclude Include="Physics\SphereCollider.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\GpuPool.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Core\PoolAllocator.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -461,31 +446,61 @@
     <ClInclude Include="Core\Event.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPIs\Vulkan\vk_mem_alloc.h">
+    <ClInclude Include="Rendering\Renderable.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanBuffer.h">
+    <ClInclude Include="SyncSystem\SyncAllocator.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanGpuContext.h">
+    <ClInclude Include="SyncSystem\SyncManager.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Texture2D.h">
+    <ClInclude Include="SyncSystem\SyncObject.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanTexture2D.h">
+    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\SyncSystem\SyncAllocator.h">
+    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\SyncSystem\SyncManager.h">
+    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\SyncSystem\SyncObject.h">
+    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\RenderManager.h">
+    <ClInclude Include="RenderAPI\Buffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Framebuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\GpuContext.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\GpuPool.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Pipeline.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Sampler.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\ShaderModule.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Texture2D.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Uniform.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\RenderManager.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Material.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

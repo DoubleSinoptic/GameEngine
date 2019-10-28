@@ -105,6 +105,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib32\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,6 +123,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,6 +145,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib32\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -164,6 +167,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -189,19 +193,22 @@
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Physics\SphereCollider.cpp" />
-    <ClCompile Include="RenderAPIs\Vulkan\vk_mem_alloc.cpp" />
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanBuffer.cpp" />
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanGpuContext.cpp" />
-    <ClCompile Include="RenderAPIs\Vulkan\VulkanTexture2D.cpp" />
-    <ClCompile Include="Rendering\GpuContext.cpp" />
-    <ClCompile Include="Rendering\GpuPool.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp" />
+    <ClCompile Include="RenderAPI\GpuContext.cpp" />
+    <ClCompile Include="RenderAPI\GpuPool.cpp" />
+    <ClCompile Include="Rendering\Material.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
+    <ClCompile Include="Rendering\Renderable.cpp" />
+    <ClCompile Include="Rendering\RenderManager.cpp" />
     <ClCompile Include="Test\GameEngine.cpp" />
     <ClCompile Include="Core\MessageBox.cpp" />
     <ClCompile Include="Core\StringFormat.cpp" />
-    <ClCompile Include="Rendering\SyncSystem\SyncAllocator.cpp" />
-    <ClCompile Include="Rendering\SyncSystem\SyncManager.cpp" />
-    <ClCompile Include="Rendering\SyncSystem\SyncObject.cpp" />
+    <ClCompile Include="SyncSystem\SyncAllocator.cpp" />
+    <ClCompile Include="SyncSystem\SyncManager.cpp" />
+    <ClCompile Include="SyncSystem\SyncObject.cpp" />
     <ClCompile Include="Core\Thread.cpp" />
     <ClCompile Include="Window\GlfwWindowManager.cpp" />
     <ClCompile Include="Window\WindowManager.cpp" />
@@ -229,7 +236,8 @@
     <ClInclude Include="Game\Indent.h" />
     <ClInclude Include="Game\Input.h" />
     <ClInclude Include="Game\InputKeys.h" />
-    <ClInclude Include="Game\RenderManager.h" />
+    <ClInclude Include="Rendering\Material.h" />
+    <ClInclude Include="Rendering\RenderManager.h" />
     <ClInclude Include="Math\Gcem\gcem.hpp" />
     <ClInclude Include="Math\Gcem\gcem_incl\abs.hpp" />
     <ClInclude Include="Math\Gcem\gcem_incl\acos.hpp" />
@@ -305,23 +313,24 @@
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\RigidBody.h" />
     <ClInclude Include="Physics\SphereCollider.h" />
-    <ClInclude Include="RenderAPIs\Vulkan\vk_mem_alloc.h" />
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanBuffer.h" />
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanGpuContext.h" />
-    <ClInclude Include="RenderAPIs\Vulkan\VulkanTexture2D.h" />
-    <ClInclude Include="Rendering\Buffer.h" />
-    <ClInclude Include="Rendering\Framebuffer.h" />
-    <ClInclude Include="Rendering\GpuPool.h" />
+    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h" />
+    <ClInclude Include="RenderAPI\Buffer.h" />
+    <ClInclude Include="RenderAPI\Framebuffer.h" />
+    <ClInclude Include="RenderAPI\GpuPool.h" />
     <ClInclude Include="Rendering\Mesh.h" />
-    <ClInclude Include="Rendering\GpuContext.h" />
-    <ClInclude Include="Rendering\Pipeline.h" />
-    <ClInclude Include="Rendering\Sampler.h" />
-    <ClInclude Include="Rendering\ShaderModule.h" />
-    <ClInclude Include="Rendering\Texture2D.h" />
-    <ClInclude Include="Rendering\Uniform.h" />
-    <ClInclude Include="Rendering\SyncSystem\SyncAllocator.h" />
-    <ClInclude Include="Rendering\SyncSystem\SyncManager.h" />
-    <ClInclude Include="Rendering\SyncSystem\SyncObject.h" />
+    <ClInclude Include="RenderAPI\GpuContext.h" />
+    <ClInclude Include="RenderAPI\Pipeline.h" />
+    <ClInclude Include="Rendering\Renderable.h" />
+    <ClInclude Include="RenderAPI\Sampler.h" />
+    <ClInclude Include="RenderAPI\ShaderModule.h" />
+    <ClInclude Include="RenderAPI\Texture2D.h" />
+    <ClInclude Include="RenderAPI\Uniform.h" />
+    <ClInclude Include="SyncSystem\SyncAllocator.h" />
+    <ClInclude Include="SyncSystem\SyncManager.h" />
+    <ClInclude Include="SyncSystem\SyncObject.h" />
     <ClInclude Include="Core\Thread.h" />
     <ClInclude Include="Window\GlfwWindowManager.h" />
     <ClInclude Include="Window\WindowManager.h" />

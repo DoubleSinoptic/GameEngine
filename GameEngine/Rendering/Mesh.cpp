@@ -1,13 +1,16 @@
 #include "Mesh.h"
-#include "Buffer.h"
-#include "GpuContext.h"
+#include "RenderAPI/Buffer.h"
+#include "RenderAPI/GpuContext.h"
 
 namespace ge 
 {
 	namespace rt 
 	{
+		uint32 staticMeshId = 0;
+
 		void Mesh::initialize()
 		{
+			m_meshId = staticMeshId++;
 			m_subMeshCount = 0;
 		}
 

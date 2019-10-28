@@ -9,7 +9,7 @@
 #include "SyncSystem/SyncObject.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
-#include "Buffer.h"
+#include "RenderAPI/Buffer.h"
 
 namespace ge
 {
@@ -30,14 +30,14 @@ namespace ge
 	{
 		struct MeshSyncData 
 		{
-			Ptr<Vector<Vector3>> m_verteces;
-			Ptr<Vector<Vector3>> m_tangets;
-			Ptr<Vector<Vector2>> m_texcoords;
-			Ptr<Vector<Vector3>> m_normals;
-			Ptr<Vector<int>>	 m_indeces;	
-			Ptr<Vector<SubMesh>>	 m_subMeshs;
-			Ptr<Vector<BoneIndeces>> m_bonesIndeces;
-			Ptr<Vector<Vector4>> m_boneWeights;
+			Ptr<Vector<Vector3>>		m_verteces;
+			Ptr<Vector<Vector3>>		m_tangets;
+			Ptr<Vector<Vector2>>		m_texcoords;
+			Ptr<Vector<Vector3>>		m_normals;
+			Ptr<Vector<int>>			m_indeces;	
+			Ptr<Vector<SubMesh>>		m_subMeshs;
+			Ptr<Vector<BoneIndeces>>    m_bonesIndeces;
+			Ptr<Vector<Vector4>>		m_boneWeights;
 		};
 
 		class Mesh : public SyncObject
@@ -52,10 +52,21 @@ namespace ge
 			RPtr<Buffer> m_bonesIndeces;
 			RPtr<Buffer> m_boneWeights;
 			SubMesh		 m_firstSubMesh;
+			uint32		 m_meshId;
 		public:
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
 			
+			constexpr uint32 meshId() const 
+			{
+				return m_meshId;
+			}
+
+			constexpr usize subMeshCount() const 
+			{
+				return m_subMeshCount == 0 ? 1 : m_subMeshCount;
+			}
+
 			const SubMesh& subMeshAt(usize index) const 
 			{
 				if (m_subMeshCount)

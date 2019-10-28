@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 #include "VulkanGpuContext.h"
-#include "Rendering/Buffer.h"
+#include "../Buffer.h"
 
 namespace ge
 {

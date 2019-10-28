@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 #include "VulkanGpuContext.h"
-#include "Rendering/Texture2D.h"
+#include "../Texture2D.h"
 
 namespace ge
 {
