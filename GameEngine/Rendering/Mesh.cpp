@@ -8,7 +8,7 @@ namespace ge
 	{
 		void Mesh::initialize()
 		{
-
+			m_subMeshCount = 0;
 		}
 
 		void Mesh::sync(void* data, uint32 flags)
@@ -28,6 +28,9 @@ namespace ge
 				void* data = m_verteces->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_verteces->data(), dataSize);
 				m_verteces->unmap();
+
+				m_firstSubMesh.vertecesOffset = 0;
+				m_firstSubMesh.vertecesCount = realData->m_verteces->size();
 			}
 
 			if (flags & MSF_NORMALS)
@@ -88,8 +91,19 @@ namespace ge
 				void* data = m_indeces->map(0, dataSize, AccessFlags::AF_WRITE);
 				memcpy(data, realData->m_indeces->data(), dataSize);
 				m_indeces->unmap();
+
+				m_firstSubMesh.indecesOffset = 0;
+				m_firstSubMesh.indecesCount = realData->m_indeces->size();
 			}
 
+			if (flags & MSF_SUBMESH)
+			{
+				m_subMeshs = realData->m_subMeshs;
+				if (m_subMeshs)
+					m_subMeshCount = m_subMeshs->size();
+				else
+					m_subMeshCount = 0;
+			}
 
 			if (flags & MSF_BONE_WEIGHTS || flags & MSF_BONE_INDECES)
 			{
@@ -103,6 +117,26 @@ namespace ge
 	Mesh::Mesh() 
 	{
 
+	}
+
+	void Mesh::setSubMeshs(Vector<SubMesh>&& verteces)
+	{
+		if (m_subMeshesh.use_count() == 1)
+			* m_subMeshesh = std::move(verteces);
+		else
+			m_subMeshesh = snew<Vector<SubMesh>>(std::move(verteces));
+		if (isCreated())
+			markAsDirty(MSF_SUBMESH);
+	}
+
+	void Mesh::setSubMeshs(const Vector<SubMesh>& verteces)
+	{
+		if (m_subMeshesh.use_count() == 1)
+			* m_subMeshesh = (verteces);
+		else
+			m_subMeshesh = snew<Vector<SubMesh>>((verteces));
+		if (isCreated())
+			markAsDirty(MSF_SUBMESH);
 	}
 
 	void Mesh::setVerteces(Vector<Vector3>&& verteces)
@@ -253,15 +287,17 @@ namespace ge
 		if (flags & MSF_TANGENTS)
 			s->m_tangets = m_tangets;
 		if (flags & MSF_TEXCOORDS)
-			s->m_texcoords = s->m_texcoords;
+			s->m_texcoords = m_texcoords;
 		if (flags & MSF_VERTECES)
-			s->m_verteces = s->m_verteces;
+			s->m_verteces = m_verteces;
 		if (flags & MSF_NORMALS)
-			s->m_normals = s->m_normals;
+			s->m_normals = m_normals;
 		if (flags & MSF_BONE_INDECES)
-			s->m_bonesIndeces = s->m_bonesIndeces;
+			s->m_bonesIndeces = m_bonesIndeces;
 		if (flags & MSF_BONE_WEIGHTS)
-			s->m_boneWeights = s->m_boneWeights;
+			s->m_boneWeights = m_boneWeights;
+		if (flags & MSF_SUBMESH)
+			s->m_subMeshs = m_subMeshesh;
 		return s;
 	}
 
@@ -275,7 +311,8 @@ namespace ge
 			(m_tangets ? MSF_TANGENTS : 0) |
 			(m_texcoords ? MSF_TEXCOORDS : 0) |
 			(m_bonesIndeces ? MSF_BONE_INDECES : 0) |
-			(m_boneWeights ? MSF_BONE_WEIGHTS : 0)
+			(m_boneWeights ? MSF_BONE_WEIGHTS : 0) |
+			(m_subMeshesh ? MSF_SUBMESH : 0)
 		);
 		if (m_verteces)
 			writer->writeVector(*m_verteces);
@@ -291,6 +328,8 @@ namespace ge
 			writer->writeVector(*m_bonesIndeces);
 		if (m_boneWeights)
 			writer->writeVector(*m_boneWeights);
+		if (m_subMeshesh)
+			writer->writeVector(*m_subMeshesh);
 	}
 
 	void Mesh::deserialize(BinaryReader* reader)
@@ -311,6 +350,8 @@ namespace ge
 			setBoneIndeces(std::move(reader->readVector<BoneIndeces>()));
 		if (flags & MSF_BONE_WEIGHTS)
 			setBoneWeights(std::move(reader->readVector<Vector4>()));
+		if (flags & MSF_SUBMESH)
+			setSubMeshs(std::move(reader->readVector<SubMesh>()));
 	}
 }
 

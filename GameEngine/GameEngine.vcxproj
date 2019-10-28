@@ -229,6 +229,7 @@
     <ClInclude Include="Game\Indent.h" />
     <ClInclude Include="Game\Input.h" />
     <ClInclude Include="Game\InputKeys.h" />
+    <ClInclude Include="Game\RenderManager.h" />
     <ClInclude Include="Math\Gcem\gcem.hpp" />
     <ClInclude Include="Math\Gcem\gcem_incl\abs.hpp" />
     <ClInclude Include="Math\Gcem\gcem_incl\acos.hpp" />

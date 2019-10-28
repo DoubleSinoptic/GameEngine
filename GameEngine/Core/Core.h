@@ -106,6 +106,18 @@ namespace ge
 
 	constexpr usize InvalidPlace = usize(~1);
 
+	constexpr uint8 UInt8Max = 0xFF;
+	constexpr int8 Int8Max = 0x7F;
+
+	constexpr uint16 UInt16Max = 0xFFFF;
+	constexpr int16 Int16Max = 0x7FFF;
+
+	constexpr uint32 UInt32Max = 0xFFFFFFFF;
+	constexpr int32 Int32Max = 0x7FFFFFFF;
+
+	constexpr uint64 UInt64Max = 0xFFFFFFFFFFFFFFFF;
+	constexpr int64 Int64Max = 0x7FFFFFFFFFFFFFFF;
+
 	template<typename T, typename... Args>
 	Ptr<T> snew(Args&& ... args)
 	{

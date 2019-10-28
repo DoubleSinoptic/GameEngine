@@ -18,6 +18,14 @@ namespace ge
 		uint32 a, b, c, d;
 	};
 
+	struct SubMesh
+	{
+		uint32 vertecesOffset;
+		uint32 vertecesCount;
+		uint32 indecesOffset;
+		uint32 indecesCount;
+	};
+
 	namespace rt 
 	{
 		struct MeshSyncData 
@@ -27,24 +35,34 @@ namespace ge
 			Ptr<Vector<Vector2>> m_texcoords;
 			Ptr<Vector<Vector3>> m_normals;
 			Ptr<Vector<int>>	 m_indeces;	
-
+			Ptr<Vector<SubMesh>>	 m_subMeshs;
 			Ptr<Vector<BoneIndeces>> m_bonesIndeces;
 			Ptr<Vector<Vector4>> m_boneWeights;
 		};
 
 		class Mesh : public SyncObject
 		{
+			Ptr<Vector<SubMesh>>	 m_subMeshs;
 			RPtr<Buffer> m_verteces;
 			RPtr<Buffer> m_texcoords;
 			RPtr<Buffer> m_tangents;
 			RPtr<Buffer> m_normals;
 			RPtr<Buffer> m_indeces;
-
+			usize		 m_subMeshCount;
 			RPtr<Buffer> m_bonesIndeces;
 			RPtr<Buffer> m_boneWeights;
+			SubMesh		 m_firstSubMesh;
 		public:
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
+			
+			const SubMesh& subMeshAt(usize index) const 
+			{
+				if (m_subMeshCount)
+					return (*m_subMeshs)[index];
+				else
+					return m_firstSubMesh;
+			}
 		};
 	}
 
@@ -56,7 +74,8 @@ namespace ge
 		MSF_TANGENTS = 1 << 3,
 		MSF_INDECES = 1 << 4,
 		MSF_BONE_INDECES = 1 << 5,
-		MSF_BONE_WEIGHTS = 1 << 6
+		MSF_BONE_WEIGHTS = 1 << 6,
+		MSF_SUBMESH = 1 << 7
 	};
 
 	class Mesh : public SyncObject, public ISerializable
@@ -69,6 +88,7 @@ namespace ge
 		Ptr<Vector<Vector2>> m_texcoords;
 		Ptr<Vector<Vector3>> m_normals;
 		Ptr<Vector<int>>	 m_indeces;
+		Ptr<Vector<SubMesh>> m_subMeshesh;
 	public:
 		Mesh();
 
@@ -96,6 +116,15 @@ namespace ge
 		{
 			return *m_texcoords;
 		}
+
+		const Vector<SubMesh>& getSubMesh() const noexcept
+		{
+			return *m_subMeshesh;
+		}
+
+		void setSubMeshs(Vector<SubMesh>&& verteces);
+
+		void setSubMeshs(const Vector<SubMesh>& verteces);
 
 		void setVerteces(Vector<Vector3>&& verteces);
 
