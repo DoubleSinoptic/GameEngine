@@ -13,14 +13,34 @@ namespace ge
 	{
 		class InstacedInstanceInstance
 		{
+			Material*	 m_material;
+			Mesh*		 m_mesh;
+			RPtr<Buffer> m_buffer;
 		public:
+
+			constexpr Material* material() const 
+			{
+				return m_material;
+			}
+
+			constexpr Mesh* mesh() const
+			{
+				return m_mesh;
+			}
+
+			void  bindBuffers(GpuContext& context);
+			usize instanceCount() const;
+
+			void  updateTransform(const Matrix4& transform, usize index);
+			usize addInstance(const Matrix4& mat);
+			void  removeInstance(usize index);
 		};
 
 		struct InstanceInstance
 		{
-			InstacedInstanceInstance* instance;
-			uint32 materialId;
-			uint32 meshId;
+			Ptr<InstacedInstanceInstance> instance;
+			uint32	materialId;
+			uint32  meshId;
 		};
 
 		struct InstanceInstanceLess
@@ -51,12 +71,13 @@ namespace ge
 		{
 			Vector<RenderElement> m_forwardRenderabees;
 		public:
-			void drawGeometry(RenderChunk& chunk, const std::function<void(rt::Mesh*, GpuContext& context)>& setMeshCall, uint32 transformSet, const Vector3& viewPosition)
+			void drawGeometry(RenderChunk& chunk, const std::function<void(rt::Mesh*, GpuContext& context)>& setMeshCall, const std::function<void(rt::Mesh*, GpuContext& context)>& setMeshInstanced,  uint32 transformSet, const Vector3& viewPosition)
 			{
 				GpuContext& gpuContext = GpuContext::instance();
 				RenderChunk::deffredforward_type& renderables = chunk.renderables;
 				RenderChunk::instanced_type& instancedRenderables = chunk.instanced;
 				uint32 meshId = UInt32Max;
+
 				for (auto& x : renderables)
 				{
 					Renderable* renderable = x.renderable;
@@ -75,10 +96,22 @@ namespace ge
 					gpuContext.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
 				}
 
+				meshId = UInt32Max;
 				for (auto& x : instancedRenderables)
 				{
-					//setMeshCall
-					//drawCall
+					Mesh* mesh = x.instance->mesh();
+					if (x.meshId != meshId)
+					{
+						meshId = x.meshId;
+						setMeshInstanced(mesh, gpuContext);
+					}
+					
+					x.instance->bindBuffers(gpuContext);
+					for (usize i = 0; i < mesh->subMeshCount(); i++)
+					{
+						const SubMesh& subMesh = mesh->subMeshAt(i);
+						gpuContext.drawIndexedInstanced(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset, 0, x.instance->instanceCount());
+					}		
 				}
 			}
 
@@ -127,11 +160,29 @@ namespace ge
 						
 				}
 
+				meshId = UInt32Max;
+				materialId = UInt32Max;
+
 				for (auto& x : instancedRenderables)
 				{
-					//setPassCall
-					//setMeshCall
-					//drawCall
+					Mesh* mesh = x.instance->mesh();
+					if (x.materialId != materialId)
+					{
+						materialId = x.materialId;
+						x.instance->material()->setPassInstancedCall(gpuContext);
+					}
+					if (x.meshId != meshId)
+					{
+						meshId = x.meshId;
+						x.instance->material()->setMeshInstancedCall(mesh, gpuContext);
+					}
+
+					x.instance->bindBuffers(gpuContext);
+					for (usize i = 0; i < mesh->subMeshCount(); i++)
+					{
+						const SubMesh& subMesh = mesh->subMeshAt(i);
+						gpuContext.drawIndexedInstanced(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset, 0, x.instance->instanceCount());
+					}
 				}
 
 				std::sort(m_forwardRenderabees.begin(), m_forwardRenderabees.end(), RenderElement::distanceComporator);
@@ -158,14 +209,6 @@ namespace ge
 
 				m_forwardRenderabees.clear();
 			}
-
-
-		};
-
-
-		struct RenderSettings
-		{
-
 		};
 
 		class RenderManager

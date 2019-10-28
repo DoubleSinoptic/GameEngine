@@ -34,6 +34,7 @@ namespace ge
 		uint32			m_dirtyFlags;
 		rt::SyncObject* m_rt;
 		void			initialize();
+		
 	public:
 		template<typename T>
 		SyncObject(SyncTag<T> fn) :
@@ -55,10 +56,12 @@ namespace ge
 			return m_rt;
 		}
 
+		void destroy();
+
 		template<typename T>
 		void create() 
 		{
-			geAssert(m_rt == nullptr);
+			destroy();
 			m_rt = new T(),
 			initialize();
 		}

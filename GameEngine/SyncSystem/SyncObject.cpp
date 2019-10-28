@@ -8,6 +8,15 @@ namespace ge
 		SyncManager::instance().getQueue().queue(m_rt, &rt::SyncObject::initialize);
 	}
 
+	void SyncObject::destroy()
+	{
+		if (m_rt) 
+		{
+			SyncManager::instance().getQueue().queue(m_rt, &rt::SyncObject::destroy);
+			m_rt = nullptr;
+		}			
+	}
+
 	SyncObject::~SyncObject()
 	{
 		if (m_dirtyIndex != (size_t)-1)

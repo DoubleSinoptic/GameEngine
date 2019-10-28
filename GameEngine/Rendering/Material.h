@@ -26,6 +26,9 @@ namespace ge
 
 			virtual void setMeshCall(rt::Mesh* mesh, GpuContext& context) = 0;
 			virtual void setPassCall(GpuContext& context) = 0;
+
+			virtual void setMeshInstancedCall(rt::Mesh* mesh, GpuContext& context) = 0;
+			virtual void setPassInstancedCall(GpuContext& context) = 0;
 		};
 	
 	}

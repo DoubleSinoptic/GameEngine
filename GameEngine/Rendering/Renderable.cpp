@@ -31,6 +31,8 @@ namespace ge
 
 		void Renderable::initialize()
 		{
+			m_mesh = nullptr;
+
 			BUFFER_DESC transformBufferDesc = {};
 			transformBufferDesc.size = sizeof(Matrix4);
 			transformBufferDesc.memType = MT_DYNAMIC;
@@ -99,11 +101,80 @@ namespace ge
 				SyncAllocator::destroy(syncData);
 			}
 		}
+
+		void InstancedRenderable::initialize()
+		{
+			m_materials = nullptr;
+			m_mesh = nullptr;
+		}
+
+		InstancedRenderable::~InstancedRenderable()
+		{
+			m_materials = nullptr;
+			m_mesh = nullptr;
+		}
+
+		void InstancedRenderable::sync(void* data, uint32 flags)
+		{
+			if (flags == RSF_TRANSFORM)
+			{
+				m_transform = *reinterpret_cast<Matrix4*>(data);
+				if (m_instance)
+					m_instance->updateTransform(m_transform, m_instanceId);
+			}
+			else
+			{
+				RenderableAllSyncInfo* syncData = reinterpret_cast<RenderableAllSyncInfo*>(data);
+
+				if (flags & RSF_TRANSFORM)
+				{
+					m_transform = syncData->m_transform;
+					if (m_instance)
+						m_instance->updateTransform(m_transform, m_instanceId);
+				}
+
+				if (m_instance)
+				{
+					m_instance->removeInstance(m_instanceId);
+					m_instance = nullptr;
+					m_instanceId = (usize)-1;
+				}
+	
+				if (flags & RSF_MATERIAL)
+					m_materials = syncData->m_materials[0];
+
+				if (flags & RSF_MESH)
+					m_mesh = syncData->m_mesh;
+				
+				if (m_mesh && m_materials)
+				{
+					InstanceInstance wantedInstance = {};
+					wantedInstance.materialId = m_materials->materialId();
+					wantedInstance.meshId = m_mesh->meshId();
+
+					auto& instances = RenderManager::instance().globalChunk.instanced;
+					auto foundedInstnace = instances.find(wantedInstance);
+					if (foundedInstnace != instances.end())
+						m_instance = foundedInstnace->instance;
+					else 
+					{
+						wantedInstance.instance = snew<InstacedInstanceInstance>(m_mesh, m_materials);
+						instances.insert(wantedInstance);
+						m_instance = wantedInstance.instance;
+					}
+
+					m_instanceId = m_instance->addInstance(m_transform);
+				}
+
+				SyncAllocator::destroy(syncData);
+			}
+		}
 	}
 
 
 	Renderable::Renderable() :
-		SyncObject(SyncTag<rt::Renderable>())
+		SyncObject(SyncTag<rt::Renderable>()),
+		m_isInstanced(false)
 	{
 	}
 
@@ -167,13 +238,21 @@ namespace ge
 
 	void Renderable::setInstanced(bool isInstanced)
 	{
-		geAssertFalse("Not impl.");
+		if (m_isInstanced != isInstanced)
+		{
+			if (isInstanced)
+				create<rt::InstancedRenderable>();		
+			else 
+				create<rt::Renderable>();
+			
+			markAsDirty(RSF_ALL);
+			m_isInstanced = isInstanced;
+		}
 	}
 
 	bool Renderable::isInstanced() const
 	{
-		geAssertFalse("Not impl.");
-		return false;
+		return m_isInstanced;
 	}
 
 	void Renderable::setTechqueId(uint32 index)

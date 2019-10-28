@@ -13,14 +13,15 @@
 
 namespace ge
 {
-	enum RenderableSyncFlags 
+	enum RenderableSyncFlags
 	{
-		RSF_TRANSFORM,
-		RSF_MESH,
-		RSF_MATERIAL,
-		RSF_TECHQUE,
-		RSF_CULL_DISTANCE,
-		RSF_LOD_RANGE
+		RSF_TRANSFORM = 1 << 0,
+		RSF_MESH = 1 << 1,
+		RSF_MATERIAL = 1 << 2,
+		RSF_TECHQUE = 1 << 3,
+		RSF_CULL_DISTANCE = 1 << 4,
+		RSF_LOD_RANGE = 1 << 5,
+		RSF_ALL = 0xFFFFFFFF
 	};
 
 	struct LodRange 
@@ -33,6 +34,8 @@ namespace ge
 	namespace rt 
 	{
 		class Renderable;
+		class InstacedInstanceInstance;
+
 		struct RenderElement
 		{
 			Renderable* renderable;
@@ -119,6 +122,34 @@ namespace ge
 
 			virtual void initialize() override;
 			~Renderable();
+			virtual void sync(void* data, uint32 flags) override;
+		};
+
+		class InstancedRenderable : public SyncObject
+		{
+			Ptr<InstacedInstanceInstance>	m_instance;
+			Material*						m_materials;
+			Mesh*							m_mesh;
+			Matrix4							m_transform;
+			usize							m_instanceId;
+		public:
+			const Material* material() const
+			{
+				return m_materials;
+			}
+
+			constexpr Mesh* mesh() const
+			{
+				return m_mesh;
+			}
+
+			constexpr const Matrix4& transform() const
+			{
+				return m_transform;
+			}
+
+			virtual void initialize() override;
+			~InstancedRenderable();
 			virtual void sync(void* data, uint32 flags) override;
 		};
 	}
