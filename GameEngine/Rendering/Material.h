@@ -5,6 +5,7 @@
 #include "Core/Core.h"
 #include "RenderAPI/Texture2D.h"
 #include "RenderAPI/Buffer.h"
+#include "RenderAPI/GpuContext.h"
 #include "Mesh.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"

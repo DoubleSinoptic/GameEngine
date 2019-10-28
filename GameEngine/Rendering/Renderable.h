@@ -34,7 +34,7 @@ namespace ge
 	namespace rt 
 	{
 		class Renderable;
-		class InstacedInstanceInstance;
+		class InstacedInstance;
 
 		struct RenderElement
 		{
@@ -127,7 +127,7 @@ namespace ge
 
 		class InstancedRenderable : public SyncObject
 		{
-			Ptr<InstacedInstanceInstance>	m_instance;
+			Ptr<InstacedInstance>	m_instance;
 			Material*						m_materials;
 			Mesh*							m_mesh;
 			Matrix4							m_transform;

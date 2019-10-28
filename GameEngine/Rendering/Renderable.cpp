@@ -148,7 +148,7 @@ namespace ge
 				
 				if (m_mesh && m_materials)
 				{
-					InstanceInstance wantedInstance = {};
+					InstanceElement wantedInstance = {};
 					wantedInstance.materialId = m_materials->materialId();
 					wantedInstance.meshId = m_mesh->meshId();
 
@@ -158,7 +158,7 @@ namespace ge
 						m_instance = foundedInstnace->instance;
 					else 
 					{
-						wantedInstance.instance = snew<InstacedInstanceInstance>(m_mesh, m_materials);
+						wantedInstance.instance = snew<InstacedInstance>(m_mesh, m_materials);
 						instances.insert(wantedInstance);
 						m_instance = wantedInstance.instance;
 					}

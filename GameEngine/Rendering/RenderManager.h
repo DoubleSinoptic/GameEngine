@@ -11,12 +11,16 @@ namespace ge
 {
 	namespace rt 
 	{
-		class InstacedInstanceInstance
+		class InstacedInstance
 		{
 			Material*	 m_material;
 			Mesh*		 m_mesh;
 			RPtr<Buffer> m_buffer;
 		public:
+			InstacedInstance(Mesh* mesh, Material* material) :
+				m_mesh(mesh),
+				m_material(material)
+			{}
 
 			constexpr Material* material() const 
 			{
@@ -36,16 +40,16 @@ namespace ge
 			void  removeInstance(usize index);
 		};
 
-		struct InstanceInstance
+		struct InstanceElement
 		{
-			Ptr<InstacedInstanceInstance> instance;
-			uint32	materialId;
-			uint32  meshId;
+			Ptr<InstacedInstance>	instance;
+			uint32							materialId;
+			uint32							meshId;
 		};
 
 		struct InstanceInstanceLess
 		{
-			constexpr bool operator ()(const InstanceInstance& a, const InstanceInstance& b)
+			constexpr bool operator ()(const InstanceElement& a, const InstanceElement& b)
 			{
 				uint32 hl =
 					(a.materialId > b.materialId) << 1 |
@@ -62,7 +66,7 @@ namespace ge
 		struct RenderChunk
 		{
 			typedef std::set<rt::RenderElement, rt::RenderElement::RenderablesLess> deffredforward_type;
-			typedef std::set<InstanceInstance, InstanceInstanceLess> instanced_type;
+			typedef std::set<InstanceElement, InstanceInstanceLess> instanced_type;
 			deffredforward_type renderables;
 			instanced_type		instanced;
 		};
@@ -88,7 +92,7 @@ namespace ge
 					if (x.meshId != meshId)
 					{
 						meshId = x.meshId;
-						setMeshCall(renderable->mesh, gpuContext);
+						setMeshCall(renderable->mesh(), gpuContext);
 					}
 					
 					auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
@@ -140,7 +144,7 @@ namespace ge
 						if (x.meshId != meshId)
 						{
 							meshId = x.meshId;
-							renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh, gpuContext);
+							renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh(), gpuContext);
 						}
 				
 						auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
@@ -199,7 +203,7 @@ namespace ge
 					if (x.meshId != meshId)
 					{
 						meshId = x.meshId;
-						renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh, gpuContext);
+						renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh(), gpuContext);
 					}
 					
 					auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
