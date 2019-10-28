@@ -5,6 +5,7 @@
 #include "Core/Core.h"
 #include "RenderAPI/Texture2D.h"
 #include "RenderAPI/Buffer.h"
+#include "Mesh.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"
 
@@ -22,6 +23,9 @@ namespace ge
 			}
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
+
+			virtual void setMeshCall(rt::Mesh* mesh, GpuContext& context) = 0;
+			virtual void setPassCall(GpuContext& context) = 0;
 		};
 	
 	}

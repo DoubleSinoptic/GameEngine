@@ -202,7 +202,6 @@ namespace ge
 			syncData->m_techque = m_techque;
 			syncData->m_transform = m_globalTransform;
 			syncData->m_lodRange = m_lodRange;
-			syncData->m_isInstanced = false;
 			if (flags & RSF_MESH)
 			{
 				if (m_mesh)

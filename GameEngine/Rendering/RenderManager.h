@@ -51,8 +51,7 @@ namespace ge
 		{
 			Vector<RenderElement> m_forwardRenderabees;
 		public:
-
-			void drawGeometry(RenderChunk& chunk)
+			void drawGeometry(RenderChunk& chunk, const std::function<void(rt::Mesh*, GpuContext& context)>& setMeshCall, uint32 transformSet, const Vector3& viewPosition)
 			{
 				GpuContext& gpuContext = GpuContext::instance();
 				RenderChunk::deffredforward_type& renderables = chunk.renderables;
@@ -60,12 +59,20 @@ namespace ge
 				uint32 meshId = UInt32Max;
 				for (auto& x : renderables)
 				{
+					Renderable* renderable = x.renderable;
+					scalar distance = /*squareLength(renderable->positon() - viewPosition)*/0.0;
+					if (distance > renderable->cullDistance())
+						continue;
+
 					if (x.meshId != meshId)
 					{
 						meshId = x.meshId;
-						//setVertecesCall
+						setMeshCall(renderable->mesh, gpuContext);
 					}
-					//drawCall (subMeshInfo)
+					
+					auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
+					gpuContext.setUniform(renderable->transform(), transformSet);
+					gpuContext.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
 				}
 
 				for (auto& x : instancedRenderables)
@@ -75,7 +82,7 @@ namespace ge
 				}
 			}
 
-			void draw(RenderChunk& chunk)
+			void draw(RenderChunk& chunk, uint32 transformSet, const Vector3& viewPosition)
 			{
 				GpuContext& gpuContext = GpuContext::instance();
 				RenderChunk::deffredforward_type& renderables = chunk.renderables;
@@ -84,24 +91,40 @@ namespace ge
 				uint32 materialId = UInt32Max;
 
 				for (auto& x : renderables)
-				{
+				{				
 					if (x.techqueId == 0)
 					{
+						Renderable* renderable = x.renderable;
+						scalar distance = /*squareLength(renderable->positon() - viewPosition)*/0.0;
+						if (distance > renderable->cullDistance())
+							continue;
+
 						if (x.materilId != materialId)
 						{
 							materialId = x.materilId;
-							//setPassCall
+							renderable->materials()[x.subMeshId]->setPassCall(gpuContext);
 						}
 						if (x.meshId != meshId)
 						{
 							meshId = x.meshId;
-							//setVertecesCall
+							renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh, gpuContext);
 						}
+				
+						auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
 
-						//drawCall (subMeshInfo)
+						gpuContext.setUniform(renderable->transform(), transformSet);
+						gpuContext.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
 					}
 					else
+					{
+						Renderable* renderable = x.renderable;
+						scalar distance = /*squareLength(renderable->positon() - viewPosition)*/0.0;
+						if (distance > renderable->cullDistance())
+							continue;
 						m_forwardRenderabees.push_back(x);
+						m_forwardRenderabees.back().distance = distance;
+					}
+						
 				}
 
 				for (auto& x : instancedRenderables)
@@ -115,18 +138,22 @@ namespace ge
 
 				for (auto& x : m_forwardRenderabees)
 				{
+					Renderable* renderable = x.renderable;
+
 					if (x.materilId != materialId)
 					{
 						materialId = x.materilId;
-						//setPassCall
+						renderable->materials()[x.subMeshId]->setPassCall(gpuContext);
 					}
 					if (x.meshId != meshId)
 					{
 						meshId = x.meshId;
-						//setVertecesCall
+						renderable->materials()[x.subMeshId]->setMeshCall(renderable->mesh, gpuContext);
 					}
-
-					//drawCall (subMeshInfo)	
+					
+					auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
+					gpuContext.setUniform(renderable->transform(), transformSet);
+					gpuContext.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
 				}
 
 				m_forwardRenderabees.clear();

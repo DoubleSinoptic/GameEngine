@@ -96,6 +96,27 @@ namespace ge
 
 			void updateRenderables();
 		public:
+
+			constexpr scalar cullDistance() const 
+			{
+				return m_cullDistance;
+			}
+
+			const Vector<Material*>& materials() const 
+			{
+				return m_materials;
+			}
+
+			constexpr Mesh* mesh() const
+			{
+				return m_mesh;
+			}
+
+			constexpr Uniform* transform() const 
+			{
+				return m_globalTransformUniform;
+			}
+
 			virtual void initialize() override;
 			~Renderable();
 			virtual void sync(void* data, uint32 flags) override;
@@ -108,7 +129,6 @@ namespace ge
 		rt::Mesh*			  m_mesh;
 		Matrix4				  m_transform;
 		scalar				  m_cullDistance;
-		bool				  m_isInstanced;
 		uint32				  m_techque;
 		LodRange			  m_lodRange;
 	};
