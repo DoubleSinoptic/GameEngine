@@ -18,18 +18,17 @@ namespace ge
 		{
 			uint32 m_materialId;
 		public:
+			~Material();
+
 			constexpr uint32 materialId() const 
 			{
 				return m_materialId;
 			}
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
-
-			virtual void setMeshCall(rt::Mesh* mesh, GpuContext& context) = 0;
-			virtual void setPassCall(GpuContext& context) = 0;
-
-			virtual void setMeshInstancedCall(rt::Mesh* mesh, GpuContext& context) = 0;
+	
 			virtual void setPassInstancedCall(GpuContext& context) = 0;
+			virtual void setPassCall(GpuContext& context) = 0;	
 		};
 	
 	}

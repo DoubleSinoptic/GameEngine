@@ -10,7 +10,7 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 #include "RenderAPI/Buffer.h"
-
+#include "RenderAPI/GpuContext.h"
 namespace ge
 {
 	struct BoneIndeces
@@ -56,7 +56,8 @@ namespace ge
 		public:
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
-			
+			virtual ~Mesh();
+
 			constexpr uint32 meshId() const 
 			{
 				return m_meshId;
@@ -74,6 +75,9 @@ namespace ge
 				else
 					return m_firstSubMesh;
 			}
+
+			void setMeshCall(GpuContext& context);
+			void setMeshInstancedCall(GpuContext& context);
 		};
 	}
 

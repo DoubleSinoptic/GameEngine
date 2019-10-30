@@ -1,17 +1,23 @@
 #include "Material.h"
+#include "RenderManager.h"
 
 namespace ge 
 {
 	namespace rt 
 	{
-		uint32 staticMaterialId = 0;
+		Material::~Material()
+		{
+			RenderManager::instance().materialsStorage().free(m_materialId);
+		}
+
 		void Material::initialize()
 		{
-			m_materialId = staticMaterialId++;
+			m_materialId = RenderManager::instance().materialsStorage().insert(this);
 		}
 
 		void Material::sync(void* data, uint32 flags)
 		{
+
 		}
 	}
 

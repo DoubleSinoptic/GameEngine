@@ -1,17 +1,30 @@
 #include "Mesh.h"
 #include "RenderAPI/Buffer.h"
 #include "RenderAPI/GpuContext.h"
+#include "RenderManager.h"
 
 namespace ge 
 {
 	namespace rt 
 	{
-		uint32 staticMeshId = 0;
-
 		void Mesh::initialize()
 		{
-			m_meshId = staticMeshId++;
+			m_meshId = RenderManager::instance().meshStorage().insert(this);
 			m_subMeshCount = 0;
+		}
+
+		Mesh::~Mesh()
+		{
+			RenderManager::instance().meshStorage().free(m_meshId);
+			m_subMeshCount = 0;
+		}
+
+		void Mesh::setMeshCall(GpuContext& context)
+		{
+		}
+
+		void Mesh::setMeshInstancedCall(GpuContext& context)
+		{
 		}
 
 		void Mesh::sync(void* data, uint32 flags)

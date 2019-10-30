@@ -202,6 +202,7 @@
     <ClCompile Include="Rendering\Material.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Renderable.cpp" />
+    <ClCompile Include="Rendering\RenderGraph.cpp" />
     <ClCompile Include="Rendering\RenderManager.cpp" />
     <ClCompile Include="Test\GameEngine.cpp" />
     <ClCompile Include="Core\MessageBox.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Debug.h" />
     <ClInclude Include="Core\Event.h" />
+    <ClInclude Include="Core\IndexedStorage.h" />
     <ClInclude Include="Core\IO.h" />
     <ClInclude Include="Core\Library.h" />
     <ClInclude Include="Core\PoolAllocator.h" />
@@ -237,6 +239,8 @@
     <ClInclude Include="Game\Input.h" />
     <ClInclude Include="Game\InputKeys.h" />
     <ClInclude Include="Rendering\Material.h" />
+    <ClInclude Include="Rendering\RenderBase.h" />
+    <ClInclude Include="Rendering\RenderGraph.h" />
     <ClInclude Include="Rendering\RenderManager.h" />
     <ClInclude Include="Math\Gcem\gcem.hpp" />
     <ClInclude Include="Math\Gcem\gcem_incl\abs.hpp" />
