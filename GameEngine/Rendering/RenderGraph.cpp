@@ -1,5 +1,6 @@
 #include "RenderGraph.h"
 #include "RenderManager.h"
+#include "RenderBase.h"
 
 namespace ge
 {

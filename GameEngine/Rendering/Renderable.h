@@ -47,7 +47,7 @@ namespace ge
 
 			struct RenderablesLess
 			{
-				constexpr bool operator ()(const RenderElement& a, const RenderElement& b)
+				bool operator ()(const RenderElement& a, const RenderElement& b) const noexcept
 				{
 					uint32 hl =
 						(a.techqueId < b.techqueId) << 4 |

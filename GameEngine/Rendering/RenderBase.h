@@ -3,6 +3,7 @@
 #define __RENDERBASE_H__
 
 #include "Core/Core.h"
+#include <set>
 
 namespace ge
 {

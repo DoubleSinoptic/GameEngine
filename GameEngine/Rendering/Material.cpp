@@ -19,6 +19,13 @@ namespace ge
 		{
 
 		}
+
+		void Material::setPassInstancedCall(GpuContext& context)
+		{
+		}
+		void Material::setPassCall(GpuContext& context)
+		{
+		}
 	}
 
 	Material::Material() :
