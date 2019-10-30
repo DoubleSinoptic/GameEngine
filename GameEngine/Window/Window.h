@@ -26,6 +26,7 @@ namespace ge
 		virtual void getWorkArea(int32& x, int32& y, uint32& w, uint32& h) const = 0;
 		virtual void getLocaiton(int32& w, int32& h) const = 0;
 		virtual void getScale(float& w, float& h) const = 0;
+		virtual VideoMod getCurrentVideoMod() const = 0;
 		virtual Vector<VideoMod> getVideoModes() const = 0;
 	};
 

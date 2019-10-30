@@ -141,6 +141,9 @@
     <ClCompile Include="Rendering\RenderGraph.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\RenderBase.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Vector3.h">

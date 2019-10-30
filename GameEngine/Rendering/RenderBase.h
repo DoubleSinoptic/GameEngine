@@ -3,6 +3,11 @@
 #define __RENDERBASE_H__
 
 #include "Core/Core.h"
+#include "Math/Matrix4.h"
+#include "RenderAPI/GpuContext.h"
+#include "Mesh.h"
+#include "Material.h"
+#include "Renderable.h"
 #include <set>
 
 namespace ge
@@ -40,14 +45,14 @@ namespace ge
 
 		struct InstanceElement
 		{
-			Ptr<InstacedInstance>	instance;
+			Ptr<InstacedInstance>			instance;
 			uint32							materialId;
 			uint32							meshId;
 		};
 
 		struct InstanceInstanceLess
 		{
-			constexpr bool operator ()(const InstanceElement& a, const InstanceElement& b)
+			constexpr bool operator ()(const InstanceElement& a, const InstanceElement& b) const
 			{
 				uint32 hl =
 					(a.materialId > b.materialId) << 1 |

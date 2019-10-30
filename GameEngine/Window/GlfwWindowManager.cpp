@@ -66,6 +66,12 @@ namespace ge
 			return modes;
 		}
 
+		virtual VideoMod getCurrentVideoMod() const override
+		{
+			auto vd = m_instance->glfwGetVideoMode(m_monitor);
+			return {vd->refreshRate, uint32(vd->width), uint32(vd->height) };;
+		}
+
 	};
 
 	class GlfwWindow : public Window
@@ -215,6 +221,7 @@ namespace ge
 		LinkProc(glfwGetMonitorPos);
 		LinkProc(glfwGetPrimaryMonitor);
 		LinkProc(glfwGetMonitors);
+		LinkProc(glfwGetVideoMode);
 
 		glfwInit();
 	}

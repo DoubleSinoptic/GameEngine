@@ -199,14 +199,11 @@ int main()
 		WindowManager::setCurrentWindowManager(std::static_pointer_cast<GlfwWindowManager>(manager));
 
 		WINDOW_DESC desc;
-		desc.videoMod.refreshRate = -1;
-		desc.videoMod.height = 600;
-		desc.videoMod.widith = 800;
+		desc.videoMod = WindowManager::instance().primaryMonitor()->getCurrentVideoMod();
 		desc.title = u"pizdec";
-		desc.monitor = nullptr;
-
+		desc.monitor = WindowManager::instance().primaryMonitor();	
 		Ptr<Window> window = WindowManager::instance().create(desc);
-		
+	
 		{
 			EngineApplication eng;
 			auto callbackId = eng.disptach.insert([&]() {

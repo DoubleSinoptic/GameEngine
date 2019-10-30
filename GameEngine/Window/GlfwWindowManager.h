@@ -55,6 +55,7 @@ namespace ge
 		void				(*glfwSetWindowTitle)(glfw::GLFWwindow* window, const char* title);
 
 
+		const glfw::GLFWvidmode* (*glfwGetVideoMode)(glfw::GLFWmonitor* monitor);
 		void				(*glfwGetMonitorWorkarea)(glfw::GLFWmonitor* monitor, int* xpos, int* ypos, int* width, int* height);
 		void				(*glfwGetMonitorPhysicalSize)(glfw::GLFWmonitor* monitor, int* widthMM, int* heightMM);
 		void				(*glfwGetMonitorContentScale)(glfw::GLFWmonitor* monitor, float* xscale, float* yscale);
