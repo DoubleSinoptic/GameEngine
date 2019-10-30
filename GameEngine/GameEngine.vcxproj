@@ -196,6 +196,7 @@
     <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp" />
     <ClCompile Include="RenderAPI\GpuContext.cpp" />
     <ClCompile Include="RenderAPI\GpuPool.cpp" />
@@ -239,6 +240,8 @@
     <ClInclude Include="Game\Indent.h" />
     <ClInclude Include="Game\Input.h" />
     <ClInclude Include="Game\InputKeys.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h" />
     <ClInclude Include="Rendering\Material.h" />
     <ClInclude Include="Rendering\RenderBase.h" />
     <ClInclude Include="Rendering\RenderGraph.h" />

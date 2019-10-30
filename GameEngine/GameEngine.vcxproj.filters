@@ -144,6 +144,9 @@
     <ClCompile Include="Rendering\RenderBase.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Vector3.h">
@@ -516,6 +519,12 @@
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Core\IndexedStorage.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
