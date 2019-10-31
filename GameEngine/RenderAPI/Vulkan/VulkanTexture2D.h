@@ -59,8 +59,7 @@ namespace ge
 			VkPipelineStageFlags stage;
 		};
 
-		LayoutAccessStageState switchToRelease();
-		LayoutAccessStageState switchToAcquire();
+		LayoutAccessStageState baseLayoutInfo() const;
 	};
 }
 

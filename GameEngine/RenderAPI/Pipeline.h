@@ -86,6 +86,7 @@ namespace ge
 		UNIFORM_DESC			uniforms[32];
 		usize					enabledUniforms = 0;
 		BLEND_STATE				blendStates[32];
+		usize					enabledBlendStates = 0;
 		RPtr<ShaderModule>		vertex;
 		RPtr<ShaderModule>		fragment;
 		RPtr<ShaderModule>		geometry;

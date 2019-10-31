@@ -47,7 +47,7 @@ namespace ge
 
 		CHECK_VULKAN(vkBindImageMemory(instance->device, m_image, m_mem, m_memOff));
 
-		auto toInfo = switchToAcquire();
+		auto toInfo = baseLayoutInfo();
 		m_instance->switchLayout(m_image, m_aspectFlags, 0, 0, desc.mipCount, desc.layerCount, 
 			{ VK_IMAGE_LAYOUT_UNDEFINED, 0, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT},
 			{ toInfo.layout, toInfo.access, toInfo.stage }
@@ -125,32 +125,7 @@ namespace ge
 		return view;
 	}
 
-	VulkanTexture2D::LayoutAccessStageState VulkanTexture2D::switchToRelease()
-	{
-		const auto& desc = getDesc();
-		LayoutAccessStageState result = {};
-		if (TU_SAMPLED_IMAGE & desc.usage)
-		{
-			result.access |= VK_ACCESS_SHADER_WRITE_BIT;
-			result.layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			result.stage |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
-		}
-		if (TU_COLORATTACHMENT & desc.usage)
-		{
-			result.access |= VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-			result.layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			result.stage |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		}
-		if (TU_DEPTHATTACHMENT & desc.usage)
-		{
-			result.access |= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-			result.layout = VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL;
-			result.stage |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-		}
-		return result;
-	}
-
-	VulkanTexture2D::LayoutAccessStageState VulkanTexture2D::switchToAcquire()
+	VulkanTexture2D::LayoutAccessStageState VulkanTexture2D::baseLayoutInfo() const
 	{
 		const auto& desc = getDesc();
 		LayoutAccessStageState result = {};
@@ -174,4 +149,6 @@ namespace ge
 		}
 		return result;
 	}
+
+	
 }

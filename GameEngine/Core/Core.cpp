@@ -137,6 +137,42 @@ namespace ge
 		return to_utf8(string.c_str());
 	}
 
+	usize byteArrayHash(const byte* ptr, usize len)
+	{	
+		usize seed = 0x0256;
+		const usize m = 0x5bd1e995;
+		usize hash = seed ^ len;
+		const byte* buf = static_cast<const byte*>(ptr);
+
+		while (len >= 4)
+		{
+			usize k = *reinterpret_cast<const usize*>(buf);
+			k *= m;
+			k ^= k >> 24;
+			k *= m;
+			hash *= m;
+			hash ^= k;
+			buf += 4;
+			len -= 4;
+		}
+
+		switch (len)
+		{
+		case 3:
+			hash ^= static_cast<byte>(buf[2]) << usize(16);
+		case 2:
+			hash ^= static_cast<byte>(buf[1]) << usize(8);
+		case 1:
+			hash ^= static_cast<byte>(buf[0]);
+			hash *= m;
+		};
+
+		hash ^= hash >> 13;
+		hash *= m;
+		hash ^= hash >> 15;
+		return hash;	
+	}
+
 	void nativeAssert(bool expr, const char* str, const char* file, int line)
 	{
 		if (expr)

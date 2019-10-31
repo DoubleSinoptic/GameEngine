@@ -75,4 +75,50 @@ namespace ge
 		geAssert(iter != m_toGeFormats.end());
 		return iter->second;
 	}
+
+	VkDescriptorSetLayout VulkanGpuContext::getLayoutFromDesc(const UNIFORM_DESC& a)
+	{
+		auto iter = m_descriptorSetLayouts.find(a);
+		if (iter != m_descriptorSetLayouts.end())
+			return iter->second;
+
+		VkDescriptorSetLayoutCreateInfo fon = {};
+		fon.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+		usize index = 0;
+		VkDescriptorSetLayoutBinding bindigs[16];
+		memset((void*)bindigs, 0, sizeof(bindigs));
+		while (true)
+		{
+			const UNIFORM_RESOURCE& b = a.resources[index];
+			if (b.type == UT_NONE)
+				break;
+			VkDescriptorSetLayoutBinding& binding = bindigs[index];
+			binding.binding = index;
+			binding.stageFlags =
+				((b.stages & PS_VERTEX) ? VK_SHADER_STAGE_VERTEX_BIT : 0) |
+				((b.stages & PS_PIXEL) ? VK_SHADER_STAGE_FRAGMENT_BIT : 0);
+			binding.descriptorCount = 1;
+			switch (b.type) {
+			case UniformType::UT_SAMPLER:
+				binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
+				break;
+			case UniformType::UT_BUFFER:
+				binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+				break;
+			case UniformType::UT_TEXTURE:
+				binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+				break;
+			default:
+				geAssertFalse("Invalid logic.");
+			}
+			binding.descriptorCount = 1;
+			index++;
+		}
+		VkDescriptorSetLayout newObject;
+		fon.bindingCount = index;
+		fon.pBindings = bindigs;
+		CHECK_VULKAN(vkCreateDescriptorSetLayout(device, &fon, nullptr, &newObject));
+		m_descriptorSetLayouts.emplace(a, newObject);
+		return newObject;
+	}
 }

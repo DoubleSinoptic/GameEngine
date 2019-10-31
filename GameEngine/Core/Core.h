@@ -166,6 +166,8 @@ namespace ge
 		}
 		return 0;
 	}
+
+	usize byteArrayHash(const byte* data, usize dataSize);
 }
 
 #endif
