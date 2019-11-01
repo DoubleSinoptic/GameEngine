@@ -50,6 +50,7 @@ namespace ge
 		ObjectPool<Sampler, RPtr<Sampler>> m_samplers;
 		ObjectPool<Framebuffer, RPtr<Framebuffer>> m_framebuffers;
 	public:
+		~GpuPool();
 		static GpuPool& instance();
 		static void setCurrentGpuPool(Ptr<GpuPool> pool);
 		RPtr<PTexture> allocate(const TEXTURE2D_DESC& tDesc, const SAMPLER_DESC& sDesc);

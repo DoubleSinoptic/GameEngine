@@ -9,11 +9,14 @@
 #include "vk_mem_alloc.h"
 #include <map>
 #include <unordered_map>
+#include <set>
 
 #define CHECK_VULKAN(x) {if ((x) != VK_SUCCESS) { geAssertFalse(# x); }}	
 
 namespace ge
 {
+	class VulkanCommandBuffer;
+
 	class VulkanGpuContext : public GpuContext
 	{
 		std::unordered_map<PixelFormat, VkFormat>				m_toVkFormats;
@@ -33,11 +36,18 @@ namespace ge
 				return !memcmp((const void*)&a, (const void*)&b, sizeof(UNIFORM_DESC));
 			}
 		};
+
+
 		std::unordered_map<UNIFORM_DESC, VkDescriptorSetLayout, UniformDescHash, UniformDescEqual> m_descriptorSetLayouts;
 	public:
 		VkDevice			device;
 		VkPhysicalDevice	physicalDevice;
 		VmaAllocator		allocator;
+
+		std::set<RPtr<VulkanCommandBuffer>>	 activeCommandBuffers;
+
+		void updateCommandBuffers();
+
 		VulkanGpuContext();
 		~VulkanGpuContext();
 

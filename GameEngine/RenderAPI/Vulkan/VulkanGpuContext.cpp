@@ -1,6 +1,7 @@
 #include "VulkanGpuContext.h"
 #include "VulkanTexture2D.h"
 #include "VulkanBuffer.h"
+#include "VulkanCommandBuffer.h"
 
 namespace ge
 {
@@ -48,6 +49,22 @@ namespace ge
 		{ PixelFormat::PF_D32, VK_FORMAT_D32_SFLOAT },
 	};
 
+
+	void VulkanGpuContext::updateCommandBuffers()
+	{
+		std::vector<typename std::set<RPtr<VulkanCommandBuffer>>::iterator> removeIterators;
+		for (auto iter = activeCommandBuffers.begin(); iter != activeCommandBuffers.end(); iter++)
+		{
+			VulkanCommandBuffer* commandBuffer = *iter;
+			commandBuffer->update();
+			if (commandBuffer->state() == VCBS_FINISHED)
+				removeIterators.push_back(iter);
+			if (commandBuffer->state() == VCBS_RECORDERING && commandBuffer->refCount() == 1)
+				removeIterators.push_back(iter);
+		}
+		for (auto& x : removeIterators)
+			activeCommandBuffers.erase(x);
+	}
 
 	VulkanGpuContext::VulkanGpuContext()
 	{

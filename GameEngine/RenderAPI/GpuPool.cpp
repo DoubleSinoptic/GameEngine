@@ -25,6 +25,10 @@ namespace ge
 
 	Ptr<GpuPool> currentGpuPool;
 
+	GpuPool::~GpuPool()
+	{
+	}
+
 	GpuPool& GpuPool::instance()
 	{
 		return *currentGpuPool;
