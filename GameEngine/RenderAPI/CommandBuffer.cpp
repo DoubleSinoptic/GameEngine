@@ -8,10 +8,9 @@ namespace ge
 		gpuContext().m_commandBuffers.erase(this);
 	}
 
-	CommandBuffer::CommandBuffer(const COMMAND_BUFFER_DESC& desc, bool track, GpuContext* context) :
+	CommandBuffer::CommandBuffer(const COMMAND_BUFFER_DESC& desc, GpuContext* context) :
 		m_desc(desc),
-		GpuResource(context),
-		m_enabledTraking(track)
+		GpuResource(context)
 	{
 		gpuContext().m_commandBuffers.insert(this);
 	}

@@ -68,7 +68,7 @@ namespace ge
 		bool									m_enabledTraking;
 	public:
 		~CommandBuffer();
-		CommandBuffer(const COMMAND_BUFFER_DESC& desc, bool track, GpuContext* context);
+		CommandBuffer(const COMMAND_BUFFER_DESC& desc, GpuContext* context);
 		const COMMAND_BUFFER_DESC& getDesc() const;
 		void trackResource(const RPtr<GpuResource>& resource);
 		

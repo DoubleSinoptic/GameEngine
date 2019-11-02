@@ -24,7 +24,7 @@ namespace ge
 		}
 	}
 
-	CommandBuffer* GpuContext::mainCb()
+	CommandBuffer& GpuContext::mainCb()
 	{
 		if (!m_mainCb)
 		{
@@ -35,10 +35,10 @@ namespace ge
 			cmdBuffersDesc.usePredictedResourceTrack = true;
 			m_mainCb = createCommandBuffer(cmdBuffersDesc);
 		}
-		return m_mainCb;
+		return *m_mainCb;
 	}
 
-	CommandBuffer* GpuContext::transferCb()
+	CommandBuffer& GpuContext::transferCb()
 	{
 		if (!m_transferCb)
 		{
@@ -49,7 +49,7 @@ namespace ge
 			cmdBuffersDesc.usePredictedResourceTrack = false;
 			m_transferCb = createCommandBuffer(cmdBuffersDesc);
 		}
-		return m_transferCb;
+		return *m_transferCb;
 	}
 
 	void GpuContext::sumbit(CommandBufferTypeFlags types)

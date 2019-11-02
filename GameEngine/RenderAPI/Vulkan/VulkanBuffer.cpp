@@ -4,7 +4,7 @@ namespace ge
 {
 	VulkanBuffer::VulkanBuffer(const BUFFER_DESC& desc, bool transferSrc, VulkanGpuContext* instance) :
 		m_instance(instance),
-		Buffer(desc),
+		Buffer(desc, instance),
 		m_hasMapped(false),
 		m_mappedBuffer(nullptr),
 		m_mappedOffset(0),
@@ -49,16 +49,8 @@ namespace ge
 			delete m_mappedBuffer;
 			m_mappedBuffer = nullptr;
 		}
-
-		VmaAllocation all = m_allocation;
-		VkBuffer buffer = m_buffer;
-		VulkanGpuContext* ctx = m_instance;
-
-		ctx->registerRelease([=]() 
-		{
-			vmaFreeMemory(ctx->allocator, all);
-			vkDestroyBuffer(ctx->device, buffer, nullptr);
-		});
+		vmaFreeMemory(m_instance->allocator, m_allocation);
+		vkDestroyBuffer(m_instance->device, m_buffer, nullptr);		
 	}
 
 	void* VulkanBuffer::map(usize offset, usize size, AccessFlags access)
@@ -106,7 +98,7 @@ namespace ge
 			if (m_hasMapped) 
 			{
 				m_mappedBuffer->unmap();
-				m_instance->copyBuffer(const_cast<ge::VulkanBuffer*>(this), m_mappedBuffer, m_mappedSize, m_mappedSize, m_mappedSize);
+				m_instance->transferCb().copyBuffer(const_cast<ge::VulkanBuffer*>(this), m_mappedBuffer, m_mappedSize, m_mappedSize, m_mappedSize);
 				//m_instance->BufferBarirer(this, m_copyBufferSize, m_copyBufferOffset);
 				m_hasMapped = false;
 			}

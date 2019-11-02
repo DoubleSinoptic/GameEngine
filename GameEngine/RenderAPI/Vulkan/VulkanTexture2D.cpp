@@ -3,7 +3,8 @@ namespace ge
 {
 	VulkanTexture2D::VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance) :
 		m_instance(instance),
-		Texture2D(desc)
+		Texture2D(desc, instance),
+		m_isInternal(false)
 	{
 		VkImageCreateInfo imageCreateInfo = {};
 		imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -74,26 +75,16 @@ namespace ge
 
 	VulkanTexture2D::~VulkanTexture2D()
 	{
-		std::unordered_map<MipLayerView, VkImageView, MipLayerViewHash> views = std::move(m_views);
-		VkImageView samplerView = m_samplerView;
-		VkDevice device = m_instance->device;
-		bool deleteResources = m_isInternal;
-		VkImage image = m_image;
-		VmaAllocation allocation = m_allocation;
-		VmaAllocator all = m_instance->allocator;
-
-		m_instance->registerRelease([=]() {
-			vkDestroyImageView(device, samplerView, nullptr);
-			for (auto& x : views) {
-				if (x.second) {
-					vkDestroyImageView(device, x.second, nullptr);
-				}
+		vkDestroyImageView(m_instance->device, m_samplerView, nullptr);
+		for (auto& x : m_views) {
+			if (x.second) {
+				vkDestroyImageView(m_instance->device, x.second, nullptr);
 			}
-			if (deleteResources) {
-				vkDestroyImage(device, image, nullptr);
-				vmaFreeMemory(all, allocation);
-			}
-		});
+		}
+		if (!m_isInternal) {
+			vkDestroyImage(m_instance->device, m_image, nullptr);
+			vmaFreeMemory(m_instance->allocator, m_allocation);
+		}
 	}
 
 	VkImageView VulkanTexture2D::getImageView(uint32 mip, uint32 layer)

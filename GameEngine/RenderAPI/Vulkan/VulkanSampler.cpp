@@ -4,7 +4,7 @@ namespace ge
 {
 	VulkanSampler::VulkanSampler(const SAMPLER_DESC& desc, VulkanGpuContext* context) :
 		m_instance(context),
-		Sampler(desc)
+		Sampler(desc, context)
 	{
 		static std::map<AddressMod, VkSamplerAddressMode> addresse =
 		{
@@ -39,12 +39,7 @@ namespace ge
 
 	VulkanSampler::~VulkanSampler()
 	{
-		VulkanGpuContext* instance = m_instance;
-		VkSampler	sampler = m_sampler;
-		instance->registerRelease([=]() 
-		{
-			vkDestroySampler(instance->device, sampler, nullptr);		
-		});
+		vkDestroySampler(m_instance->device, m_sampler, nullptr);
 	}
 
 }

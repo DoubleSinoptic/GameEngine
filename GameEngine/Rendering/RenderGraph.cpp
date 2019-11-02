@@ -9,7 +9,7 @@ namespace ge
 		void RenderGraph::drawGeometryAll(RenderChunk& chunk, const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshCall, const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshInstanced, uint32 transformSet, const Vector3& viewPosition)
 		{
 			GpuContext& gpuContext = GpuContext::instance();
-			CommandBuffer& commandBuffer = *gpuContext.mainCb();
+			CommandBuffer& commandBuffer = gpuContext.mainCb();
 			RenderChunk::deffredforward_type& renderables = chunk.renderables;
 			RenderChunk::instanced_type& instancedRenderables = chunk.instanced;
 			uint32 meshId = UInt32Max;
@@ -56,7 +56,7 @@ namespace ge
 			auto& materials = RenderManager::instance().materialsStorage();
 			auto& meshs = RenderManager::instance().meshStorage();
 			GpuContext& gpuContext = GpuContext::instance();
-			CommandBuffer& commandBuffer = *gpuContext.mainCb();
+			CommandBuffer& commandBuffer = gpuContext.mainCb();
 			RenderChunk::deffredforward_type& renderables = chunk.renderables;
 			RenderChunk::instanced_type& instancedRenderables = chunk.instanced;
 

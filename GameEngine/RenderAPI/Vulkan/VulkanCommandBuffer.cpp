@@ -12,10 +12,11 @@ namespace ge
 		}
 	}
 
-	VulkanCommandBuffer::VulkanCommandBuffer(VulkanCommandPool* m_pool, VkCommandBuffer buffer) :
-		m_state(VCBS_RECORDERING),
+	VulkanCommandBuffer::VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer) :
 		m_buffer(buffer),
-		m_pool(m_pool)
+		m_pool(m_pool),
+		m_instance(context),
+		CommandBuffer(desc, context)
 	{
 		m_instance->activeCommandBuffers.insert(this);
 		VkCommandBufferBeginInfo begin = {};
@@ -23,35 +24,58 @@ namespace ge
 		vkBeginCommandBuffer(m_buffer, &begin);
 	}
 
-	void VulkanCommandBuffer::setState(VulkanCommandBufferState state)
+	bool VulkanCommandBuffer::isFinished()
 	{
-		switch (state)
-		{
-		case ge::VCBS_RECORDERING:
-			geAssertFalse("Invalid buffer state.");
-			break;
-		case ge::VCBS_IN_FLIGHT:
-			vkEndCommandBuffer(m_buffer);
-			break;
-		case ge::VCBS_FINISHED:
-			for (auto& x : m_registredReleases)
-				x();
-			m_registredReleases.clear();
-			break;
-		default:
-			geAssertFalse("Invalid buffer usage.");
-			break;
-		}	
-		m_state = state;
+		return false;
 	}
 
-	VulkanCommandBufferState VulkanCommandBuffer::state() const noexcept
+	void VulkanCommandBuffer::copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart)
 	{
-		return m_state;
 	}
 
-	void VulkanCommandBuffer::registerRelease(const std::function<void(void)>& releaseFunction)
+	void VulkanCommandBuffer::copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg)
 	{
-		m_registredReleases.push_back(releaseFunction);
 	}
+
+	void VulkanCommandBuffer::copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter)
+	{
+	}
+
+	void VulkanCommandBuffer::drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces)
+	{
+	}
+
+	void VulkanCommandBuffer::draw(uint32 firstVerteces, uint32 numVerteces)
+	{
+	}
+
+	void VulkanCommandBuffer::drawIndexedInstanced(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces, uint32 firstInstnace, uint32 instancesNum)
+	{
+	}
+
+	void VulkanCommandBuffer::setClearColors(const CLEAR_COLOR* clearColors, usize num)
+	{
+	}
+
+	void VulkanCommandBuffer::setPipeline(Pipeline* pipeline)
+	{
+	}
+
+	void VulkanCommandBuffer::setFrameBuffer(Framebuffer* framebuffer)
+	{
+	}
+
+	void VulkanCommandBuffer::setUniforms(Uniform* const* uniform, uint32 start, uint32 num)
+	{
+	}
+
+	void VulkanCommandBuffer::setUniform(Uniform* uniform, uint32 start = 0)
+	{
+	}
+
+	void VulkanCommandBuffer::execute(CommandBuffer* secondryCommandBuffer)
+	{
+	}
+
+
 }

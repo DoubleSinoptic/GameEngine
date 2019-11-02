@@ -3,7 +3,7 @@ namespace ge
 {
 	VulkanPipeline::VulkanPipeline(const PIPELINE_DESC& desc, VulkanGpuContext* context) :
 		m_instance(context),
-		Pipeline(desc)
+		Pipeline(desc, context)
 	{
 		VkDescriptorSetLayout descirptorSetsLayouts[16];
 		for (usize i = 0; i < desc.enabledUniforms; i++) {
@@ -21,17 +21,11 @@ namespace ge
 
 	VulkanPipeline::~VulkanPipeline()
 	{
-		std::unordered_map<VkSizedRenderPass, VkPipeline, VkSizedRenderPassHash, VkSizedRenderPassEqual> pipelines = std::move(m_pipelines);
-		VulkanGpuContext* instance = m_instance;
-		VkPipelineLayout layout = m_pipelineLayout;
-
-		instance->registerRelease([=]() {
-			for (auto& x : pipelines) {
-				if (x.second)
-					vkDestroyPipeline(instance->device, x.second, nullptr);
-			}
-			vkDestroyPipelineLayout(instance->device, layout, nullptr);
-		});
+		for (auto& x : m_pipelines) {
+			if (x.second)
+				vkDestroyPipeline(m_instance->device, x.second, nullptr);
+		}
+		vkDestroyPipelineLayout(m_instance->device, m_pipelineLayout, nullptr);
 	}
 
 

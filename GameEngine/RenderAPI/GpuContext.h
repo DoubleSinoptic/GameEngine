@@ -42,8 +42,8 @@ namespace ge
 		static GpuContext&	instance();
 
 		void				releaseResource(const RPtr<GpuResource>& resource);
-		CommandBuffer*		mainCb();
-		CommandBuffer*		transferCb();
+		CommandBuffer&		mainCb();
+		CommandBuffer&		transferCb();
 		void				sumbit(CommandBufferTypeFlags types);
 
 		virtual ~GpuContext() = default;
