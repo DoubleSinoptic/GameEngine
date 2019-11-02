@@ -4,7 +4,7 @@ namespace ge
 {
 	namespace rt
 	{
-		void InstacedInstance::bindBuffers(GpuContext& context)
+		void InstacedInstance::bindBuffers(CommandBuffer& context)
 		{
 		}
 		usize InstacedInstance::instanceCount() const

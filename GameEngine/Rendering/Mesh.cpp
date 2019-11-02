@@ -19,11 +19,11 @@ namespace ge
 			m_subMeshCount = 0;
 		}
 
-		void Mesh::setMeshCall(GpuContext& context)
+		void Mesh::setMeshCall(CommandBuffer& context)
 		{
 		}
 
-		void Mesh::setMeshInstancedCall(GpuContext& context)
+		void Mesh::setMeshInstancedCall(CommandBuffer& context)
 		{
 		}
 

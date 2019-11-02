@@ -3,7 +3,7 @@
 #define __PIPELINE_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 #include "Texture2D.h"
 #include "Uniform.h"
 #include "ShaderModule.h"
@@ -98,14 +98,15 @@ namespace ge
 		float					zfar = 1.0;
 	};
 
-	class Pipeline : public ResourceObject
+	class Pipeline : public GpuResource
 	{
 		PIPELINE_DESC m_desc;
 	public:
 		virtual ~Pipeline() = default;
 
-		Pipeline(const PIPELINE_DESC& desc) noexcept :
-			m_desc(desc)
+		Pipeline(const PIPELINE_DESC& desc, GpuContext* context) noexcept :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const PIPELINE_DESC& getDesk() const noexcept

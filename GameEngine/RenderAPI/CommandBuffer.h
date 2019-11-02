@@ -3,7 +3,7 @@
 #define __COMMADNBUFFER_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 #include "Sampler.h"
 #include "Texture2D.h"
 #include "Buffer.h"
@@ -48,20 +48,30 @@ namespace ge
 		bool isSecondary = false;
 		uint32 poolIndex = 0;
 		QueueType queueType;
-		GpuContext* context = nullptr;
+		/**
+		* @brief
+		* очень важный параметр для Low-level 
+		* фреймворков, которые не умеют отслеживать,
+		* удаленные на момент полёта, ресурсы.
+		* 
+		* Если стоит true то все ресурсы удаленные
+		* на момент существования этого коммандного буфера
+		* будут зарегестрированны в него,
+		*/
+		bool	usePredictedResourceTrack = true;
 	};
-	class GpuContext;
-	class CommandBuffer : public ResourceObject
-	{		
-		friend class GpuContext;
-		COMMAND_BUFFER_DESC						m_desc;
-		bool									m_isInRecrodering;
-		std::vector<std::function<void(void)>>	m_releaseCallbacks;
-	public:
-		CommandBuffer(const COMMAND_BUFFER_DESC& desc);
-		const COMMAND_BUFFER_DESC& getDesc() const;
-		bool isRecordering() const;
 
+	class CommandBuffer : public GpuResource
+	{		
+		COMMAND_BUFFER_DESC						m_desc;
+		Vector<RPtr<GpuResource>>				m_resources;
+		bool									m_enabledTraking;
+	public:
+		~CommandBuffer();
+		CommandBuffer(const COMMAND_BUFFER_DESC& desc, bool track, GpuContext* context);
+		const COMMAND_BUFFER_DESC& getDesc() const;
+		void trackResource(const RPtr<GpuResource>& resource);
+		
 		virtual bool isFinished() = 0;
 		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
 		virtual void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) = 0;
@@ -75,10 +85,8 @@ namespace ge
 		virtual void setPipeline(Pipeline* pipeline) = 0;
 		virtual void setFrameBuffer(Framebuffer* framebuffer) = 0;
 		virtual void setUniforms(Uniform* const* uniform, uint32 start, uint32 num) = 0;
-		inline void  setUniform(Uniform* uniform, uint32 start = 0)
-		{
-			setUniforms(&uniform, start, 1);
-		}
+		virtual void setUniform(Uniform* uniform, uint32 start = 0) = 0;
+		virtual void execute(CommandBuffer* secondryCommandBuffer) = 0;
 	};
 }
 

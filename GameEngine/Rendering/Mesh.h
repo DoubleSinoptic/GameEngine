@@ -76,8 +76,8 @@ namespace ge
 					return m_firstSubMesh;
 			}
 
-			void setMeshCall(GpuContext& context);
-			void setMeshInstancedCall(GpuContext& context);
+			void setMeshCall(CommandBuffer& context);
+			void setMeshInstancedCall(CommandBuffer& context);
 		};
 	}
 

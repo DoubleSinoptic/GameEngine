@@ -3,7 +3,7 @@
 #define __SAMPLER_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 
 namespace ge
 {
@@ -37,12 +37,13 @@ namespace ge
 		AddressMod		addressModW = AM_REPEAT;
 	};
 
-	class Sampler : public ResourceObject
+	class Sampler : public GpuResource
 	{
 		const SAMPLER_DESC m_desc;
 	public:
-		Sampler(const SAMPLER_DESC& desc) :
-			m_desc(desc)
+		Sampler(const SAMPLER_DESC& desc, GpuContext* context) :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const SAMPLER_DESC& getDesc() const noexcept

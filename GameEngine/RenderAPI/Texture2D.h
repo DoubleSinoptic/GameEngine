@@ -3,7 +3,7 @@
 #define __TEXTURE2D_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 
 namespace ge
 {
@@ -70,12 +70,13 @@ namespace ge
 		uint32			layerCount = 1;
 	};
 
-	class Texture2D : public ResourceObject
+	class Texture2D : public GpuResource
 	{
 		const TEXTURE2D_DESC m_desc;
 	public:
-		Texture2D(const TEXTURE2D_DESC& desc) :
-			m_desc(desc)
+		Texture2D(const TEXTURE2D_DESC& desc, GpuContext* context) :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const TEXTURE2D_DESC& getDesc() const noexcept 

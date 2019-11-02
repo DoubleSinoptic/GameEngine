@@ -35,7 +35,7 @@ namespace ge
 				return m_mesh;
 			}
 
-			void  bindBuffers(GpuContext& context);
+			void  bindBuffers(CommandBuffer& context);
 			usize instanceCount() const;
 
 			void  updateTransform(const Matrix4& transform, usize index);

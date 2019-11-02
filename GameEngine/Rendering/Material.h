@@ -27,8 +27,8 @@ namespace ge
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
 	
-			virtual void setPassInstancedCall(GpuContext& context);
-			virtual void setPassCall(GpuContext& context);	
+			virtual void setPassInstancedCall(CommandBuffer& context);
+			virtual void setPassCall(CommandBuffer& context);
 		};
 	
 	}

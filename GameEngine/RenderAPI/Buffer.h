@@ -3,7 +3,7 @@
 #define __BUFFER_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 
 namespace ge
 {
@@ -35,14 +35,15 @@ namespace ge
 		BufferUsage usage = BU_UNIFORM;
 	};
 
-	class Buffer : public ResourceObject
+	class Buffer : public GpuResource
 	{
 		BUFFER_DESC m_desc;
 	public:
 		virtual ~Buffer() = default;
 
-		Buffer(const BUFFER_DESC& desc) noexcept :
-			m_desc(desc)
+		Buffer(const BUFFER_DESC& desc, GpuContext* context) noexcept :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const BUFFER_DESC& getDesk() const noexcept

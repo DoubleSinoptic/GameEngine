@@ -3,7 +3,7 @@
 #define __UNIFORM_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 
 namespace ge
 {
@@ -38,12 +38,13 @@ namespace ge
 		UNIFORM_RESOURCE resources[16];
 	};
 
-	class Uniform : public ResourceObject
+	class Uniform : public GpuResource
 	{
 		UNIFORM_DESC m_desc;
 	public:
-		Uniform(const UNIFORM_DESC& desc) :
-			m_desc(desc)
+		Uniform(const UNIFORM_DESC& desc, GpuContext* context) :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const UNIFORM_DESC& getDesc() const noexcept

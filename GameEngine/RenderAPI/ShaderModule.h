@@ -3,7 +3,7 @@
 #define __SHADERMODULE_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 #include "Uniform.h"
 
 namespace ge
@@ -15,12 +15,13 @@ namespace ge
 		String			  entryPoint;
 	};
 
-	class ShaderModule : public ResourceObject 
+	class ShaderModule : public GpuResource
 	{
 		const SHADER_MODULE_DESC m_desc;
 	public:
-		ShaderModule(const SHADER_MODULE_DESC& desc) :
-			m_desc(desc)
+		ShaderModule(const SHADER_MODULE_DESC& desc, GpuContext* context) :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const SHADER_MODULE_DESC& getDesc() const noexcept

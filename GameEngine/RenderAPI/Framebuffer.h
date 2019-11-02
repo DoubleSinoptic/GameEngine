@@ -3,7 +3,7 @@
 #define __FRAMEBUFFER_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
+#include "GpuResource.h"
 #include "Uniform.h"
 
 namespace ge
@@ -27,12 +27,13 @@ namespace ge
 		RENDERTARGET_DESC	stencil;
 	};
 
-	class Framebuffer : public ResourceObject
+	class Framebuffer : public GpuResource
 	{
 		const FRAMEBUFFER_DESC m_desc;
 	public:
-		Framebuffer(const FRAMEBUFFER_DESC& desc) :
-			m_desc(desc)
+		Framebuffer(const FRAMEBUFFER_DESC& desc, GpuContext* context) :
+			m_desc(desc),
+			GpuResource(context)
 		{}
 
 		constexpr const FRAMEBUFFER_DESC& getDesc() const noexcept

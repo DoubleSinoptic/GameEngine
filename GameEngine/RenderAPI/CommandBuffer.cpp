@@ -2,12 +2,18 @@
 #include "GpuContext.h"
 namespace ge 
 {
-	CommandBuffer::CommandBuffer(const COMMAND_BUFFER_DESC& desc) :
-		m_desc(desc),
-		m_isInRecrodering(true)
+	CommandBuffer::~CommandBuffer()
 	{
-		geAssert(desc.context);
-		desc.context->m_activeCommandBuffers.insert(this);
+		m_resources.clear();
+		gpuContext().m_commandBuffers.erase(this);
+	}
+
+	CommandBuffer::CommandBuffer(const COMMAND_BUFFER_DESC& desc, bool track, GpuContext* context) :
+		m_desc(desc),
+		GpuResource(context),
+		m_enabledTraking(track)
+	{
+		gpuContext().m_commandBuffers.insert(this);
 	}
 
 	const COMMAND_BUFFER_DESC& CommandBuffer::getDesc() const
@@ -15,9 +21,12 @@ namespace ge
 		return m_desc;
 	}
 
-	bool CommandBuffer::isRecordering() const
+	void CommandBuffer::trackResource(const RPtr<GpuResource>& resource)
 	{
-		return m_isInRecrodering;
+		if (m_enabledTraking)
+			m_resources.push_back(resource);
 	}
+
+	
 }
 

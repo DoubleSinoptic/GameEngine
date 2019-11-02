@@ -3,7 +3,6 @@
 namespace ge 
 {
 	Ptr<GpuContext> currentGpuContext;
-
 	void GpuContext::setCurrentGpuContext(Ptr<GpuContext> context)
 	{
 		currentGpuContext = context;
@@ -14,35 +13,66 @@ namespace ge
 		return *currentGpuContext;
 	}
 
-	void GpuContext::submit(CommandBuffer* cmdBuffer)
-	{	
-		geAssert(!cmdBuffer->isFinished());
-
-		std::vector<typename std::set<RPtr<CommandBuffer>>::iterator> removeIterators;
-		for (auto iter = m_activeCommandBuffers.begin(); iter != m_activeCommandBuffers.end(); iter++)
+	void GpuContext::releaseResource(const RPtr<GpuResource>& resource)
+	{
+		resource->markAsReleased();
+		for (auto commandBuffer : m_commandBuffers)
 		{
-			CommandBuffer* commandBuffer = *iter;
-			if (commandBuffer->isFinished())
-			{
-				for (auto& x : commandBuffer->m_releaseCallbacks)
-					x();
-				commandBuffer->m_releaseCallbacks.clear();
-				removeIterators.push_back(iter);		
-			}
-				
-			if (commandBuffer->isRecordering() && commandBuffer->refCount() == 1)
-				removeIterators.push_back(iter);
+			GpuResource* commandBufferAsResource = static_cast<GpuResource*>(commandBuffer);
+			if (commandBufferAsResource != resource.get())
+				commandBuffer->trackResource(resource);
 		}
-		for (auto& x : removeIterators)
-			m_activeCommandBuffers.erase(x);
+	}
 
-		sumbmitCommandBuffer(cmdBuffer);
-		cmdBuffer->isRecordering = false;
-	}
-	void GpuContext::registerRelease(const std::function<void(void)>& f, GpuAttachPlace flags)
+	CommandBuffer* GpuContext::mainCb()
 	{
+		if (!m_mainCb)
+		{
+			COMMAND_BUFFER_DESC cmdBuffersDesc = {};
+			cmdBuffersDesc.isSecondary = false;
+			cmdBuffersDesc.poolIndex = 0;
+			cmdBuffersDesc.queueType = QT_GRAPHICS;
+			cmdBuffersDesc.usePredictedResourceTrack = true;
+			m_mainCb = createCommandBuffer(cmdBuffersDesc);
+		}
+		return m_mainCb;
 	}
-	void GpuContext::registerResource(RPtr<ResourceObject> resource, GpuAttachPlace flags)
+
+	CommandBuffer* GpuContext::transferCb()
 	{
+		if (!m_transferCb)
+		{
+			COMMAND_BUFFER_DESC cmdBuffersDesc = {};
+			cmdBuffersDesc.isSecondary = false;
+			cmdBuffersDesc.poolIndex = 0;
+			cmdBuffersDesc.queueType = QT_TRANSFER;
+			cmdBuffersDesc.usePredictedResourceTrack = false;
+			m_transferCb = createCommandBuffer(cmdBuffersDesc);
+		}
+		return m_transferCb;
 	}
+
+	void GpuContext::sumbit(CommandBufferTypeFlags types)
+	{
+		Vector<typename std::vector<RPtr<CommandBuffer>>::iterator> removedCommandBuffers;
+		for (auto i = m_submitedBuffers.begin(); i != m_submitedBuffers.end(); i++)
+			if ((*i)->isFinished())
+				removedCommandBuffers.push_back(i);
+		for (auto& x : removedCommandBuffers)
+			m_submitedBuffers.erase(x);
+
+		if (types & CBT_MAIN)
+		{
+			submit(m_mainCb);
+			m_submitedBuffers.push_back(m_mainCb);
+			m_mainCb = nullptr;
+		}
+		if (types & CBT_TRANSFER)
+		{
+			submit(m_transferCb);
+			m_submitedBuffers.push_back(m_transferCb);
+			m_transferCb = nullptr;
+		}
+	}
+
 }
