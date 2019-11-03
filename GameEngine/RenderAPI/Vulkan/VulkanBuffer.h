@@ -25,6 +25,11 @@ namespace ge
 		VulkanBuffer(const BUFFER_DESC& desc, bool transferSrc, VulkanGpuContext* instance);
 		~VulkanBuffer();
 
+		constexpr VkBuffer vulkanHandle() const noexcept 
+		{
+			return m_buffer;
+		}
+
 		virtual void* map(usize offset, usize length, AccessFlags flags) override;
 		virtual void unmap() override;
 	};

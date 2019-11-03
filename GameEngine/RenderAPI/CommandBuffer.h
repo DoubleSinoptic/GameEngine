@@ -64,13 +64,13 @@ namespace ge
 	class CommandBuffer : public GpuResource
 	{		
 		COMMAND_BUFFER_DESC						m_desc;
-		Vector<RPtr<GpuResource>>				m_resources;
+		Vector<RPtr<const GpuResource>>			m_resources;
 		bool									m_enabledTraking;
 	public:
 		~CommandBuffer();
 		CommandBuffer(const COMMAND_BUFFER_DESC& desc, GpuContext* context);
 		const COMMAND_BUFFER_DESC& getDesc() const;
-		void trackResource(const RPtr<GpuResource>& resource);
+		void trackResource(const RPtr<const GpuResource>& resource);
 		
 		virtual bool isFinished() = 0;
 		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
@@ -80,6 +80,9 @@ namespace ge
 		virtual void drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces) = 0;
 		virtual void draw(uint32 firstVerteces, uint32 numVerteces) = 0;
 		virtual void drawIndexedInstanced(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces, uint32 firstInstnace, uint32 instancesNum) = 0;
+
+		virtual void setIndecesBuffer(Buffer* buffer, uint32 offset, bool x32bit) = 0;
+		virtual void setVertexBuffer(Buffer* vertexBuffer, uint32 first, uint32 offset) = 0;
 
 		virtual void setClearColors(const CLEAR_COLOR* clearColors, usize num) = 0;
 		virtual void setPipeline(Pipeline* pipeline) = 0;

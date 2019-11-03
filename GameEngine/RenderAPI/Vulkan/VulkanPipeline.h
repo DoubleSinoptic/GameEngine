@@ -42,6 +42,11 @@ namespace ge
 		VulkanPipeline(const PIPELINE_DESC& desc, VulkanGpuContext* context);
 		~VulkanPipeline();
 
+		constexpr VkPipelineLayout vulkanPipelineLayout() const noexcept
+		{
+			return m_pipelineLayout;
+		}
+
 		VkPipeline get(VkRenderPass renerPass, uint32 w, uint32 h);
 	};
 }

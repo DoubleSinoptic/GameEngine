@@ -20,7 +20,7 @@ namespace ge
 		return m_desc;
 	}
 
-	void CommandBuffer::trackResource(const RPtr<GpuResource>& resource)
+	void CommandBuffer::trackResource(const RPtr<const GpuResource>& resource)
 	{
 		if (m_enabledTraking)
 			m_resources.push_back(resource);

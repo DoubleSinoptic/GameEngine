@@ -13,12 +13,12 @@ namespace ge
 		return *currentGpuContext;
 	}
 
-	void GpuContext::releaseResource(const RPtr<GpuResource>& resource)
+	void GpuContext::releaseResource(const RPtr<const GpuResource>& resource)
 	{
 		resource->markAsReleased();
 		for (auto commandBuffer : m_commandBuffers)
 		{
-			GpuResource* commandBufferAsResource = static_cast<GpuResource*>(commandBuffer);
+			const GpuResource* commandBufferAsResource = static_cast<const GpuResource*>(commandBuffer);
 			if (commandBufferAsResource != resource.get())
 				commandBuffer->trackResource(resource);
 		}

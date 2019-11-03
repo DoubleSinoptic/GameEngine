@@ -111,18 +111,6 @@
     <ClCompile Include="SyncSystem\SyncObject.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="RenderAPI\GpuContext.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -144,6 +132,21 @@
     <ClCompile Include="Rendering\RenderBase.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="RenderAPI\CommandBuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\GpuResource.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
     <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -153,10 +156,7 @@
     <ClCompile Include="RenderAPI\Vulkan\VulkanCommandBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPI\CommandBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\GpuResource.cpp">
+    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -479,18 +479,6 @@
     <ClInclude Include="SyncSystem\SyncObject.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="RenderAPI\Buffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -533,22 +521,37 @@
     <ClInclude Include="Core\IndexedStorage.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h">
+    <ClInclude Include="RenderAPI\CommandBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h">
+    <ClInclude Include="RenderAPI\GpuResource.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h">
+    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="RenderAPI\Vulkan\VulkanCommandBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\CommandBuffer.h">
+    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\GpuResource.h">
+    <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanUniform.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

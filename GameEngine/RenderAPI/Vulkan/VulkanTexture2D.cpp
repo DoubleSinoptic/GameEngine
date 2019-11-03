@@ -1,4 +1,6 @@
 #include "VulkanTexture2D.h"
+#include "VulkanCommandBuffer.h"
+
 namespace ge 
 {
 	VulkanTexture2D::VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance) :
@@ -49,7 +51,7 @@ namespace ge
 		CHECK_VULKAN(vkBindImageMemory(instance->device, m_image, m_mem, m_memOff));
 
 		auto toInfo = baseLayoutInfo();
-		m_instance->switchLayout(m_image, m_aspectFlags, 0, 0, desc.mipCount, desc.layerCount, 
+		static_cast<VulkanCommandBuffer&>(m_instance->transferCb()).switchLayout(m_image, m_aspectFlags, 0, 0, desc.mipCount, desc.layerCount, 
 			{ VK_IMAGE_LAYOUT_UNDEFINED, 0, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT},
 			{ toInfo.layout, toInfo.access, toInfo.stage }
 		);
@@ -116,10 +118,10 @@ namespace ge
 		return view;
 	}
 
-	VulkanTexture2D::LayoutAccessStageState VulkanTexture2D::baseLayoutInfo() const
+	ImageBarrierTriple VulkanTexture2D::baseLayoutInfo() const
 	{
 		const auto& desc = getDesc();
-		LayoutAccessStageState result = {};
+		ImageBarrierTriple result = {};
 		if (TU_SAMPLED_IMAGE & desc.usage)
 		{
 			result.access |= VK_ACCESS_SHADER_READ_BIT;

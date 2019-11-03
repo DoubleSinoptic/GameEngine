@@ -50,16 +50,19 @@ namespace ge
 		VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance);
 		~VulkanTexture2D();
 
+		constexpr VkImageAspectFlags aspectFlags() const noexcept 
+		{
+			return m_aspectFlags;
+		}
+
+		constexpr VkImage vulkanHandle() const noexcept 
+		{
+			return m_image;
+		}
+
 		VkImageView getImageView(uint32 mip, uint32 layer);
 
-		struct LayoutAccessStageState
-		{
-			VkImageLayout		 layout;
-			VkAccessFlags		 access;
-			VkPipelineStageFlags stage;
-		};
-
-		LayoutAccessStageState baseLayoutInfo() const;
+		ImageBarrierTriple baseLayoutInfo() const;
 	};
 }
 

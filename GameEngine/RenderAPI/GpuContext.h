@@ -28,6 +28,7 @@ namespace ge
 	};
 
 	class CommandBuffer;
+
 	class GpuContext
 	{
 		friend class					 CommandBuffer;
@@ -41,7 +42,7 @@ namespace ge
 		static void			setCurrentGpuContext(Ptr<GpuContext> context);
 		static GpuContext&	instance();
 
-		void				releaseResource(const RPtr<GpuResource>& resource);
+		void				releaseResource(const RPtr<const GpuResource>& resource);
 		CommandBuffer&		mainCb();
 		CommandBuffer&		transferCb();
 		void				sumbit(CommandBufferTypeFlags types);

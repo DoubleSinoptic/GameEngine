@@ -10,8 +10,9 @@
 
 namespace ge
 {
+	class VulkanTexture2D;
 	class VulkanCommandBuffer;
-
+	class VulkanFramebuffer;
 	class VulkanCommandPool
 	{
 		VkCommandPool				 m_cmdPool;
@@ -36,13 +37,22 @@ namespace ge
 		VulkanGpuContext*						m_instance;
 		VkCommandBuffer							m_buffer;
 		VulkanCommandPool*						m_pool;
+		VulkanFramebuffer*						m_currentFramebuffer;
+		VkPipelineLayout						m_currentPipelineLayout;
+		CLEAR_COLOR								m_clearColors[16];
+		usize								    m_clearColorsNum;
 	public:
 		virtual void release() const noexcept override;
 
+		constexpr VkCommandBuffer vulkanCb() const noexcept
+		{
+			return m_buffer;
+		}
+
 		VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer);
 
+		void endRecord();
 
-		// Унаследовано через CommandBuffer
 		virtual bool isFinished() override;
 
 		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) override;
@@ -68,6 +78,18 @@ namespace ge
 		virtual void setUniform(Uniform* uniform, uint32 start = 0) override;
 
 		virtual void execute(CommandBuffer* secondryCommandBuffer) override;
+
+		virtual void setIndecesBuffer(Buffer* buffer, uint32 offset, bool x32bit) override;
+
+		virtual void setVertexBuffer(Buffer* vertexBuffer, uint32 first, uint32 offset) override;
+
+		void switchLayout(
+			VkImage image, VkImageAspectFlags aspectFlags,
+			uint32 mip, uint32 layer, uint32 mN, uint32 lN,
+			ImageBarrierTriple oldState,
+			ImageBarrierTriple newState
+		);
+
 
 	};
 }
