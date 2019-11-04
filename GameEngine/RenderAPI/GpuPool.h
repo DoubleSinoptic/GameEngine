@@ -16,6 +16,7 @@ namespace ge
 	{
 		GpuPool* m_pool;
 	public:
+		~PTexture();
 		PTexture(GpuPool* pool, const RPtr<Texture2D>& t, const RPtr<Sampler>& samp) :
 			m_pool(pool),
 			texture(t),
@@ -32,6 +33,7 @@ namespace ge
 	{
 		GpuPool* m_pool;
 	public:
+		~PFramebuffer();
 		PFramebuffer(GpuPool* pool, const RPtr<Framebuffer>& f) :
 			m_pool(pool),
 			framebuffer(f)

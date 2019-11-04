@@ -18,18 +18,16 @@ namespace ge
 		VkCommandPool				 m_cmdPool;
 		VulkanGpuContext*			 m_instance;
 		std::vector<VkCommandBuffer> m_buffers;
+		COMMAND_BUFFER_DESC			 m_desc;
 
 	public:
-		void freeBuffer(VkCommandBuffer buffer)
-		{
-			m_buffers.push_back(buffer);
-			vkResetCommandBuffer(buffer, 0);
-		}
+		VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& desc);
 
-		VulkanCommandBuffer* allocate() 
-		{
-			return PoolAllocator::allocate<VulkanCommandBuffer>(this, (VkCommandBuffer)nullptr);	
-		}
+		~VulkanCommandPool();
+
+		void freeBuffer(VkCommandBuffer buffer);
+
+		VulkanCommandBuffer* allocate();
 	};
 
 	class VulkanCommandBuffer : public CommandBuffer
@@ -41,17 +39,17 @@ namespace ge
 		VkPipelineLayout						m_currentPipelineLayout;
 		CLEAR_COLOR								m_clearColors[16];
 		usize								    m_clearColorsNum;
+		VkFence									m_finishFence;
 	public:
-		virtual void release() const noexcept override;
-
 		constexpr VkCommandBuffer vulkanCb() const noexcept
 		{
 			return m_buffer;
 		}
 
 		VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer);
+		~VulkanCommandBuffer();
 
-		void endRecord();
+		VkFence prepareForSubmit();
 
 		virtual bool isFinished() override;
 
@@ -89,8 +87,6 @@ namespace ge
 			ImageBarrierTriple oldState,
 			ImageBarrierTriple newState
 		);
-
-
 	};
 }
 

@@ -9,7 +9,7 @@ namespace ge
 	class ResourceObject 
 	{
 	protected:
-		mutable std::atomic_size_t m_refCount;
+		mutable std::atomic_ptrdiff_t m_refCount;
 	public:
 		ResourceObject() :
 			m_refCount(0)
@@ -26,14 +26,28 @@ namespace ge
 			return m_refCount.load();
 		}
 
+		/**
+		* @brief протзводит деинкрементацию счётчика ссылок на еденицу
+		* @return true - если ресурс потерял все ссылки и его
+		* требуется удалить.
+		*/
 		bool deincrement() const noexcept
 		{
-			return m_refCount.fetch_sub(-1, std::memory_order_relaxed) == 1;
+			return m_refCount.fetch_sub(1, std::memory_order_relaxed) < 1;
 		}
 
+		/**
+		* @brief освобождает ресурс если количество ссылок на него равно еденице
+		* Перезагружать только в том случаи, если this
+		* после освобождения должен быть дополнителео
+		* сохранён, или спецефически удалён.
+		* 
+		* для отдачи или удаления любых внутренних ресурсов
+		* использовать деконструктор.
+		*/
 		virtual void release() const noexcept
 		{			
-			if (m_refCount.fetch_sub(-1, std::memory_order_relaxed) == 1)
+			if (m_refCount.fetch_sub(1, std::memory_order_relaxed) < 1)
 			{
 				delete this;
 			}

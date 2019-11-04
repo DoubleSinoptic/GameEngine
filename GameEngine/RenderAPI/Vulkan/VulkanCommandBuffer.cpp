@@ -7,37 +7,44 @@
 #include "VulkanTexture2D.h"
 namespace ge 
 {
-	void VulkanCommandBuffer::release() const noexcept
-	{
-		if (deincrement())
-		{
-			m_pool->freeBuffer(m_buffer);
-			PoolAllocator::free(this);
-		}
-	}
-
 	VulkanCommandBuffer::VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer) :
 		m_buffer(buffer),
 		m_pool(m_pool),
 		m_instance(context),
 		CommandBuffer(desc, context),
-		m_clearColorsNum(0)
+		m_clearColorsNum(0),
+		m_finishFence(VK_NULL_HANDLE)
 	{
 		m_instance->activeCommandBuffers.insert(this);
 		VkCommandBufferBeginInfo begin = {};
 		begin.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		vkBeginCommandBuffer(m_buffer, &begin);
+		CHECK_VULKAN(vkBeginCommandBuffer(m_buffer, &begin));
 	}
 
-	void VulkanCommandBuffer::endRecord()
+	VulkanCommandBuffer::~VulkanCommandBuffer()
 	{
+		m_pool->freeBuffer(m_buffer);
+		vkDestroyFence(m_instance->device, m_finishFence, nullptr);
 	}
 
-
+	VkFence VulkanCommandBuffer::prepareForSubmit()
+	{
+		CHECK_VULKAN(vkEndCommandBuffer(m_buffer));
+		VkFenceCreateInfo fenceCreateInfo = {};
+		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+		CHECK_VULKAN(vkCreateFence(m_instance->device, &fenceCreateInfo, nullptr, &m_finishFence));
+		return m_finishFence;
+	}
 
 	bool VulkanCommandBuffer::isFinished()
 	{
-		return false;
+		if (m_finishFence == VK_NULL_HANDLE)
+			return false;
+		auto result = vkWaitForFences(m_instance->device, 1, &m_finishFence, true, 0);
+		if (result == VK_TIMEOUT)
+			return false;
+		geAssert(result == VK_SUCCESS);
+		return true;
 	}
 
 	void VulkanCommandBuffer::copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart)
@@ -55,7 +62,7 @@ namespace ge
 
 	void VulkanCommandBuffer::copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg)
 	{
-		/*VulkanTexture* tx = static_cast<VulkanTexture*>(dst);
+		VulkanTexture2D* tx = static_cast<VulkanTexture2D*>(dst);
 		VulkanBuffer* bf = static_cast<VulkanBuffer*>(src);
 		VkBufferImageCopy region = {};
 		region.bufferOffset = srcStart;
@@ -66,20 +73,26 @@ namespace ge
 		region.imageSubresource.baseArrayLayer = dstReg->arrayLayer;
 		region.imageSubresource.layerCount = 1;
 
-		region.imageOffset = { SInt(dstReg->x), SInt(dstReg->y), 0 };
+		region.imageOffset = { int32(dstReg->x), int32(dstReg->y), 0 };
 		region.imageExtent = {
 			dstReg->width,
 			dstReg->heght,
 			1
 		};
 
-		tx->SwithLayout2C(this, tx->m_baseLayout, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, dstReg->mipLevel, dstReg->arrayLayer);
-		vkCmdCopyBufferToImage(m_commandBuffer, bf->m_buffer, tx->m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
-		tx->SwithLayout2C(this, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, tx->m_baseLayout, dstReg->mipLevel, dstReg->arrayLayer);
-
+		auto& commandBuffer = static_cast<VulkanCommandBuffer&>(m_instance->transferCb());
+		commandBuffer.switchLayout(tx->vulkanHandle(), tx->aspectFlags(), dstReg->mipLevel, dstReg->arrayLayer, 1, 1,
+			tx->baseLayoutInfo(),
+			{ VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT }
+		);
+		vkCmdCopyBufferToImage(m_buffer, bf->vulkanHandle(), tx->vulkanHandle(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+		commandBuffer.switchLayout(tx->vulkanHandle(), tx->aspectFlags(), dstReg->mipLevel, dstReg->arrayLayer, 1, 1,
+			{ VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT },
+			tx->baseLayoutInfo()
+		);
 
 		trackResource(dst);
-		trackResource(src);*/
+		trackResource(src);
 	}
 
 	void VulkanCommandBuffer::copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter)
@@ -215,5 +228,46 @@ namespace ge
 		barrier.dstAccessMask = newState.access;
 
 		vkCmdPipelineBarrier(m_buffer, oldState.stage, newState.stage, 0, 0, 0, 0, 0, 1, &barrier);
+	}
+
+	VulkanCommandPool::VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& desc) :
+		m_desc(desc),
+		m_instance(instance)
+	{
+		VkCommandPoolCreateInfo cmdPoolCreationInfo = {};
+		cmdPoolCreationInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+		cmdPoolCreationInfo.queueFamilyIndex = m_instance->getQueueFamailyIndex(desc.queueType);
+		cmdPoolCreationInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+		CHECK_VULKAN(vkCreateCommandPool(m_instance->device, &cmdPoolCreationInfo, nullptr, &m_cmdPool));
+	}
+
+	VulkanCommandPool::~VulkanCommandPool()
+	{
+		vkDestroyCommandPool(m_instance->device, m_cmdPool, nullptr);
+	}
+
+	void VulkanCommandPool::freeBuffer(VkCommandBuffer buffer)
+	{
+		m_buffers.push_back(buffer);
+
+	}
+
+	VulkanCommandBuffer* VulkanCommandPool::allocate()
+	{
+		if (m_buffers.size())
+		{
+			VkCommandBuffer buffer = m_buffers.back();
+			m_buffers.pop_back();
+			vkResetCommandBuffer(buffer, 0);
+			return new VulkanCommandBuffer(m_desc, m_instance, this, buffer);
+		}
+		VkCommandBufferAllocateInfo bufferAllocInfo = {};
+		bufferAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+		bufferAllocInfo.commandBufferCount = 1;
+		bufferAllocInfo.commandPool = m_cmdPool;
+		bufferAllocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+		VkCommandBuffer allocatedBuffer;
+		CHECK_VULKAN(vkAllocateCommandBuffers(m_instance->device, &bufferAllocInfo, &allocatedBuffer));
+		return new VulkanCommandBuffer(m_desc, m_instance, this, allocatedBuffer);
 	}
 }

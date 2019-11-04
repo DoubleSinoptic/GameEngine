@@ -54,6 +54,8 @@ namespace ge
 		VulkanGpuContext();
 		~VulkanGpuContext();
 
+		int32 getQueueFamailyIndex(QueueType type) const;
+
 		VkFormat	getVkFormat(PixelFormat fmt) const;
 		PixelFormat getGeFormat(VkFormat fmt) const;
 

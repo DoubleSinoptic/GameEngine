@@ -4,23 +4,27 @@
 
 namespace ge
 {
+	PTexture::~PTexture()
+	{
+		m_pool->m_samplers.free(sampler);
+		m_pool->m_textures.free(texture);
+	}
+
 	void PTexture::release() const noexcept
 	{
 		if (deincrement())
-		{
-			m_pool->m_samplers.free(sampler);
-			m_pool->m_textures.free(texture);
 			PoolAllocator::free(this);
-		}
+	}
+
+	PFramebuffer::~PFramebuffer()
+	{
+		m_pool->m_framebuffers.free(framebuffer);
 	}
 
 	void PFramebuffer::release() const noexcept
 	{
 		if (deincrement())
-		{
-			m_pool->m_framebuffers.free(framebuffer);
 			PoolAllocator::free(this);
-		}
 	}
 
 	Ptr<GpuPool> currentGpuPool;
