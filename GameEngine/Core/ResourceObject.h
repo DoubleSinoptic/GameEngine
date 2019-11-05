@@ -33,7 +33,7 @@ namespace ge
 		*/
 		bool deincrement() const noexcept
 		{
-			return m_refCount.fetch_sub(1, std::memory_order_relaxed) < 1;
+			return m_refCount.fetch_sub(1, std::memory_order_relaxed) < 2;
 		}
 
 		/**
@@ -47,7 +47,7 @@ namespace ge
 		*/
 		virtual void release() const noexcept
 		{			
-			if (m_refCount.fetch_sub(1, std::memory_order_relaxed) < 1)
+			if (m_refCount.fetch_sub(1, std::memory_order_relaxed) < 2)
 			{
 				delete this;
 			}

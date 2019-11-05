@@ -9,7 +9,7 @@ namespace ge
 		return new char[length];
 	}
 
-	void PoolAllocator::freeBlock(void* a)
+	void PoolAllocator::freeBlock(void* a, usize length)
 	{
 		delete[] ((char*)a);
 	}

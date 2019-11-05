@@ -27,7 +27,7 @@ namespace ge
 		UT_TEXTURE		
 	};
 
-	struct UNIFORM_RESOURCE 
+	struct DESCRIPTOR_DESC 
 	{
 		UniformType   type = UT_NONE;
 		PipelineStage stages = PS_NONE;
@@ -35,7 +35,7 @@ namespace ge
 
 	struct UNIFORM_DESC 
 	{
-		UNIFORM_RESOURCE resources[16];
+		DESCRIPTOR_DESC resources[16];
 	};
 
 	class Uniform : public GpuResource

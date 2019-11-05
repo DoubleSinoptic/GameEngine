@@ -159,6 +159,15 @@
     <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanFrameBuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanUniform.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAPI\Vulkan\VulkanShaderModule.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Vector3.h">
@@ -552,6 +561,12 @@
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\AllignTools.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

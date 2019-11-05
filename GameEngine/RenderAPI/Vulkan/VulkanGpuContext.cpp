@@ -65,6 +65,11 @@ namespace ge
 	{
 	}
 
+	int32 VulkanGpuContext::getQueueFamailyIndex(QueueType type) const
+	{
+		return int32();
+	}
+
 	VkFormat VulkanGpuContext::getVkFormat(PixelFormat fmt) const
 	{
 		auto iter = m_toVkFormats.find(fmt);
@@ -92,7 +97,7 @@ namespace ge
 		memset((void*)bindigs, 0, sizeof(bindigs));
 		while (true)
 		{
-			const UNIFORM_RESOURCE& b = a.resources[index];
+			const DESCRIPTOR_DESC& b = a.resources[index];
 			if (b.type == UT_NONE)
 				break;
 			VkDescriptorSetLayoutBinding& binding = bindigs[index];
@@ -123,5 +128,40 @@ namespace ge
 		CHECK_VULKAN(vkCreateDescriptorSetLayout(device, &fon, nullptr, &newObject));
 		m_descriptorSetLayouts.emplace(a, newObject);
 		return newObject;
+	}
+	void VulkanGpuContext::submit(CommandBuffer* cmdBuffer)
+	{
+	}
+	Uniform* VulkanGpuContext::createUniform(const UNIFORM_DESC& desc)
+	{
+		return nullptr;
+	}
+	Texture2D* VulkanGpuContext::createTexture2D(const TEXTURE2D_DESC& desc)
+	{
+		return nullptr;
+	}
+	Buffer* VulkanGpuContext::createBuffer(const BUFFER_DESC& desc)
+	{
+		return nullptr;
+	}
+	Sampler* VulkanGpuContext::createSampler(const SAMPLER_DESC& desc)
+	{
+		return nullptr;
+	}
+	CommandBuffer* VulkanGpuContext::createCommandBuffer(const COMMAND_BUFFER_DESC& desc)
+	{
+		return nullptr;
+	}
+	Pipeline* VulkanGpuContext::createPipeline(const PIPELINE_DESC& desc)
+	{
+		return nullptr;
+	}
+	Framebuffer* VulkanGpuContext::createFramebuffer(const FRAMEBUFFER_DESC& desc)
+	{
+		return nullptr;
+	}
+	usize VulkanGpuContext::allignUniform(usize length) const
+	{
+		return usize();
 	}
 }

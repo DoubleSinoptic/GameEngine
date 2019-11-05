@@ -35,7 +35,7 @@ namespace ge
 
 	class VulkanTexture2D : public Texture2D
 	{
-		VulkanGpuContext*		m_instance;
+		VulkanGpuContext* m_instance;
 		VkDeviceSize			m_memOff;
 		VkDeviceMemory			m_mem;
 		VmaAllocation			m_allocation;
@@ -44,11 +44,22 @@ namespace ge
 		VkImageView				m_imageView;
 		VkImageAspectFlags		m_aspectFlags;
 		VkImageLayout			m_baseLayout;
+		VkFormat			    m_format;
 		bool					m_isInternal;
 		std::unordered_map<MipLayerView, VkImageView, MipLayerViewHash> m_views;
 	public:
 		VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance);
 		~VulkanTexture2D();
+
+		constexpr VkImageLayout baseLayout() const noexcept
+		{
+			return m_baseLayout;
+		}
+
+		constexpr VkFormat vulkanFormat() const noexcept
+		{
+			return m_format;
+		}
 
 		constexpr VkImageAspectFlags aspectFlags() const noexcept 
 		{

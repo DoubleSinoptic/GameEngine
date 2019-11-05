@@ -10,7 +10,6 @@ namespace ge
 {
 	class VulkanUniform : public Uniform
 	{
-		VulkanGpuContext*	m_instance;
 		VkDescriptorSet		m_set;
 		VkDescriptorPool	m_pool;
 	public:
@@ -26,6 +25,12 @@ namespace ge
 
 		VulkanUniform(const UNIFORM_DESC& desc, VulkanGpuContext* context);
 		~VulkanUniform();
+
+		// Унаследовано через Uniform
+		virtual void setSampler(Sampler* sampler, int32 slot) override;
+		virtual void setTexture(Texture2D* texture, int32 slot) override;
+		virtual void setBuffer(Buffer* buffer, int32 slot) override;
+		virtual void setBuffer(Buffer* buffer, usize offset, usize length, int32 slot) override;
 	};
 }
 

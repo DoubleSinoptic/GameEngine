@@ -1,13 +1,13 @@
 #include "VulkanPipeline.h"
+#include "VulkanShaderModule.h"
 namespace ge 
 {
 	VulkanPipeline::VulkanPipeline(const PIPELINE_DESC& desc, VulkanGpuContext* context) :
-		m_instance(context),
 		Pipeline(desc, context)
 	{
 		VkDescriptorSetLayout descirptorSetsLayouts[16];
 		for (usize i = 0; i < desc.enabledUniforms; i++) {
-			descirptorSetsLayouts[i] = m_instance->getLayoutFromDesc(desc.uniforms[i]);
+			descirptorSetsLayouts[i] = gpuContextT<VulkanGpuContext>().getLayoutFromDesc(desc.uniforms[i]);
 		}
 
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
@@ -16,16 +16,16 @@ namespace ge
 		pipelineLayoutInfo.pushConstantRangeCount = 0;
 		pipelineLayoutInfo.pSetLayouts = descirptorSetsLayouts;
 
-		CHECK_VULKAN(vkCreatePipelineLayout(m_instance->device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout));
+		CHECK_VULKAN(vkCreatePipelineLayout(gpuContextT<VulkanGpuContext>().device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout));
 	}
 
 	VulkanPipeline::~VulkanPipeline()
 	{
 		for (auto& x : m_pipelines) {
 			if (x.second)
-				vkDestroyPipeline(m_instance->device, x.second, nullptr);
+				vkDestroyPipeline(gpuContextT<VulkanGpuContext>().device, x.second, nullptr);
 		}
-		vkDestroyPipelineLayout(m_instance->device, m_pipelineLayout, nullptr);
+		vkDestroyPipelineLayout(gpuContextT<VulkanGpuContext>().device, m_pipelineLayout, nullptr);
 	}
 
 
@@ -88,12 +88,12 @@ namespace ge
 
 		usize sindex = 0;
 		VkPipelineShaderStageCreateInfo shaderStages[3] = {};
-	/*	if (desc.vertex)
-			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.vertex.Get())->vertShaderStageInfo;
+		if (desc.vertex)
+			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.vertex.get())->stageCreationInfo();
 		if (desc.geometry)
-			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.geometry.Get())->vertShaderStageInfo;
+			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.geometry.get())->stageCreationInfo();
 		if (desc.fragment)
-			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.fragment.Get())->vertShaderStageInfo;*/
+			shaderStages[sindex++] = static_cast<VulkanShaderModule*>(desc.fragment.get())->stageCreationInfo();
 
 		VkVertexInputAttributeDescription	m_vertexInputAttributeDescs[32];
 		VkVertexInputBindingDescription		m_vertexBindingDescs[32];
@@ -111,7 +111,7 @@ namespace ge
 			auto& x = desc.attributes[i];
 			auto& bindingDescription = m_vertexInputAttributeDescs[i];
 			bindingDescription.binding = x.binding;
-			bindingDescription.format = m_instance->getVkFormat(x.format);
+			bindingDescription.format = gpuContextT<VulkanGpuContext>().getVkFormat(x.format);
 			bindingDescription.location = x.location;
 			bindingDescription.offset = x.offset;
 		}
@@ -259,7 +259,7 @@ namespace ge
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 		pipelineInfo.pDepthStencilState = &depthStencil;
 		VkPipeline pipe;
-		CHECK_VULKAN(vkCreateGraphicsPipelines(m_instance->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipe));
+		CHECK_VULKAN(vkCreateGraphicsPipelines(gpuContextT<VulkanGpuContext>().device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipe));
 
 		m_pipelines[{ renerPass, w, h}] =  pipe;
 		return pipe;

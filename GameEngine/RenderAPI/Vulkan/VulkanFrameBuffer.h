@@ -11,15 +11,19 @@ namespace ge
 	class VulkanFramebuffer : public Framebuffer
 	{
 		VulkanGpuContext*	  m_instance;
-		VkFramebuffer		  m_sampler;
+		VkFramebuffer		  m_framebuffer;
+		VkRenderPass          m_renderPass;
 	public:
 		VulkanFramebuffer(const FRAMEBUFFER_DESC& desc, VulkanGpuContext* context);
 		~VulkanFramebuffer();
 
 		constexpr VkRenderPass vulkanRenderPass() const {
-			return nullptr;
+			return m_renderPass;
 		}
 
+		constexpr VkFramebuffer vulkanFramebuffer() const {
+			return m_framebuffer;
+		}
 	};
 }
 

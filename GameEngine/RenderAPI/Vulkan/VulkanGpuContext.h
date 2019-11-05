@@ -49,8 +49,6 @@ namespace ge
 		VkPhysicalDevice	physicalDevice;
 		VmaAllocator		allocator;
 
-		std::set<RPtr<VulkanCommandBuffer>>	 activeCommandBuffers;
-
 		VulkanGpuContext();
 		~VulkanGpuContext();
 
@@ -60,6 +58,24 @@ namespace ge
 		PixelFormat getGeFormat(VkFormat fmt) const;
 
 		VkDescriptorSetLayout getLayoutFromDesc(const UNIFORM_DESC& a);
+
+		virtual void submit(CommandBuffer* cmdBuffer) override;
+
+		virtual Uniform* createUniform(const UNIFORM_DESC& desc) override;
+
+		virtual Texture2D* createTexture2D(const TEXTURE2D_DESC& desc) override;
+
+		virtual Buffer* createBuffer(const BUFFER_DESC& desc) override;
+
+		virtual Sampler* createSampler(const SAMPLER_DESC& desc) override;
+
+		virtual CommandBuffer* createCommandBuffer(const COMMAND_BUFFER_DESC& desc) override;
+
+		virtual Pipeline* createPipeline(const PIPELINE_DESC& desc) override;
+
+		virtual Framebuffer* createFramebuffer(const FRAMEBUFFER_DESC& desc) override;
+
+		virtual usize allignUniform(usize length) const override;
 
 	};
 }

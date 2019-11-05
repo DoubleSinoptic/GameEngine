@@ -11,7 +11,6 @@ namespace ge
 {
 	class VulkanPipeline : public Pipeline
 	{
-		VulkanGpuContext*					m_instance;
 		VkPipelineLayout					m_pipelineLayout;
 
 		struct VkSizedRenderPass

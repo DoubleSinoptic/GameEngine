@@ -23,17 +23,23 @@ namespace ge
 		uint32 y;
 	};
 
-	template<typename T>
-	struct ClearColor4
-	{
-		T x, y, z, w;
+
+
+	struct CLEAR_DEPTH_STENCIL_VALUE {
+		scalar       depth;
+		uint32       stencil;
+	};
+
+	union CLEAR_COLOR_VALUE {
+		scalar    float32[4];
+		int32     int32[4];
+		uint32    uint32[4];
 	};
 
 	union CLEAR_COLOR
-	{
-		ClearColor4<scalar>  scalars;
-		ClearColor4<int32>   sint;
-		ClearColor4<uint32>  uint;
+	{		
+		CLEAR_COLOR_VALUE         color;
+		CLEAR_DEPTH_STENCIL_VALUE depthStencil;
 	};
 
 	enum QueueType 
@@ -56,7 +62,9 @@ namespace ge
 		* 
 		* Если стоит true то все ресурсы удаленные
 		* на момент существования этого коммандного буфера
-		* будут зарегестрированны в него,
+		* будут зарегестрированны в него. это очень важно
+		* так-как не приходится производить трекинг
+		* во время bindDescriptorSets (drawcall)
 		*/
 		bool	usePredictedResourceTrack = true;
 	};

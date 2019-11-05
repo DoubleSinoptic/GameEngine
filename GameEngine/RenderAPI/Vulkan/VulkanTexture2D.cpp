@@ -12,6 +12,7 @@ namespace ge
 		imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
 		imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
 		imageCreateInfo.format = instance->getVkFormat(desc.format);
+		m_format = imageCreateInfo.format;
 		imageCreateInfo.extent = { desc.width, desc.height, 1 };
 		imageCreateInfo.mipLevels = desc.mipCount;
 		imageCreateInfo.arrayLayers = desc.layerCount;

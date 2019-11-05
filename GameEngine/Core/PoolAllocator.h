@@ -10,7 +10,7 @@ namespace ge
 	{
 	public:
 		static void* allocateBlock(usize length);
-		static void  freeBlock(void*);
+		static void  freeBlock(void*, usize);
 
 		template<typename T, typename... Args>
 		static T* allocate(Args&&... args) 
@@ -28,7 +28,7 @@ namespace ge
 		static void free(T* object) 
 		{
 #ifdef NDEBUG
-			freeBlock(const_cast<void*>(reinterpret_cast<const void*>(object)));
+			freeBlock(const_cast<void*>(reinterpret_cast<const void*>(object)), sizeof(T));
 #else
 			delete object;
 #endif		

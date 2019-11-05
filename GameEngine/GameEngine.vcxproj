@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB;;_HAS_EXCEPTIONS=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
@@ -115,7 +115,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB;;_HAS_EXCEPTIONS=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
@@ -135,7 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB;;_HAS_EXCEPTIONS=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
@@ -157,7 +157,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PX_PHYSX_STATIC_LIB;;_HAS_EXCEPTIONS=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)\PhysX\include;C:\VulkanSDK\1.1.106.0\Include</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
@@ -200,10 +200,13 @@
     <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanCommandBuffer.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanFrameBuffer.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanPipeline.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanShaderModule.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanUniform.cpp" />
     <ClCompile Include="Rendering\Material.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Renderable.cpp" />
@@ -221,6 +224,7 @@
     <ClCompile Include="Window\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\AllignTools.h" />
     <ClInclude Include="Core\Any.h" />
     <ClInclude Include="Core\CommandQueue.h" />
     <ClInclude Include="Core\Config.h" />
@@ -253,6 +257,7 @@
     <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanUniform.h" />
     <ClInclude Include="Rendering\Material.h" />

@@ -13,9 +13,9 @@ namespace ge
 		m_instance(context),
 		CommandBuffer(desc, context),
 		m_clearColorsNum(0),
-		m_finishFence(VK_NULL_HANDLE)
+		m_finishFence(VK_NULL_HANDLE),
+		m_currentFramebuffer(nullptr)
 	{
-		m_instance->activeCommandBuffers.insert(this);
 		VkCommandBufferBeginInfo begin = {};
 		begin.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 		CHECK_VULKAN(vkBeginCommandBuffer(m_buffer, &begin));
@@ -29,6 +29,9 @@ namespace ge
 
 	VkFence VulkanCommandBuffer::prepareForSubmit()
 	{
+		if (m_currentFramebuffer)
+			vkCmdEndRenderPass(m_buffer);
+		
 		CHECK_VULKAN(vkEndCommandBuffer(m_buffer));
 		VkFenceCreateInfo fenceCreateInfo = {};
 		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
@@ -164,6 +167,7 @@ namespace ge
 
 	void VulkanCommandBuffer::setPipeline(Pipeline* pipeline)
 	{
+		geAssert(m_currentFramebuffer);
 		VulkanPipeline* vulkanPipeline = static_cast<VulkanPipeline*>(pipeline);
 		m_currentPipelineLayout = vulkanPipeline->vulkanPipelineLayout();
 		const auto& frmDesc = m_currentFramebuffer->getDesc();
@@ -174,6 +178,26 @@ namespace ge
 
 	void VulkanCommandBuffer::setFrameBuffer(Framebuffer* framebuffer)
 	{
+		if (m_currentFramebuffer)
+		{
+			vkCmdEndRenderPass(m_buffer);
+			m_currentFramebuffer = nullptr;
+		}
+			
+		if (!framebuffer)
+			return;
+
+		m_currentFramebuffer = static_cast<VulkanFramebuffer*>(framebuffer);
+
+		VkRenderPassBeginInfo pass = {};
+		pass.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		pass.framebuffer = static_cast<VulkanFramebuffer*>(m_currentFramebuffer)->vulkanFramebuffer();
+		pass.renderPass = static_cast<VulkanFramebuffer*>(m_currentFramebuffer)->vulkanRenderPass();
+		pass.renderArea.extent.width = static_cast<VulkanFramebuffer*>(m_currentFramebuffer)->getDesc().width;
+		pass.renderArea.extent.height = static_cast<VulkanFramebuffer*>(m_currentFramebuffer)->getDesc().heigth;
+		pass.pClearValues = (VkClearValue*)m_clearColors;
+		pass.clearValueCount = m_clearColorsNum;
+		vkCmdBeginRenderPass(m_buffer, &pass, VK_SUBPASS_CONTENTS_INLINE);
 	}
 
 	void VulkanCommandBuffer::setUniforms(Uniform* const* uniform, uint32 start, uint32 num)

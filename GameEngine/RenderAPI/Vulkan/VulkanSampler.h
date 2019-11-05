@@ -10,7 +10,6 @@ namespace ge
 {
 	class VulkanSampler : public Sampler
 	{
-		VulkanGpuContext* m_instance;
 		VkSampler		  m_sampler;
 	public:
 		VulkanSampler(const SAMPLER_DESC& desc, VulkanGpuContext* context);

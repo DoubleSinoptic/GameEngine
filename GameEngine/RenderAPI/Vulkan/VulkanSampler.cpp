@@ -3,7 +3,6 @@
 namespace ge 
 {
 	VulkanSampler::VulkanSampler(const SAMPLER_DESC& desc, VulkanGpuContext* context) :
-		m_instance(context),
 		Sampler(desc, context)
 	{
 		static std::map<AddressMod, VkSamplerAddressMode> addresse =
@@ -34,12 +33,12 @@ namespace ge
 		samplerInfo.maxLod = desc.maxLod;
 		samplerInfo.mipLodBias = 0;
 
-		CHECK_VULKAN(vkCreateSampler(m_instance->device, &samplerInfo, nullptr, &m_sampler));
+		CHECK_VULKAN(vkCreateSampler(gpuContextT<VulkanGpuContext>().device, &samplerInfo, nullptr, &m_sampler));
 	}
 
 	VulkanSampler::~VulkanSampler()
 	{
-		vkDestroySampler(m_instance->device, m_sampler, nullptr);
+		vkDestroySampler(gpuContextT<VulkanGpuContext>().device, m_sampler, nullptr);
 	}
 
 }
