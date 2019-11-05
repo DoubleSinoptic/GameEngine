@@ -4,14 +4,13 @@
 namespace ge 
 {
 	VulkanTexture2D::VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance) :
-		m_instance(instance),
 		Texture2D(desc, instance),
 		m_isInternal(false)
 	{
 		VkImageCreateInfo imageCreateInfo = {};
 		imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
 		imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
-		imageCreateInfo.format = instance->getVkFormat(desc.format);
+		imageCreateInfo.format = gpuContextT<VulkanGpuContext>().getVkFormat(desc.format);
 		m_format = imageCreateInfo.format;
 		imageCreateInfo.extent = { desc.width, desc.height, 1 };
 		imageCreateInfo.mipLevels = desc.mipCount;
@@ -38,21 +37,21 @@ namespace ge
 		imageCreateInfo.flags = (desc.layerCount > 1) ? VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT : 0;
 		imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		CHECK_VULKAN(vkCreateImage(instance->device, &imageCreateInfo, nullptr, &m_image));
+		CHECK_VULKAN(vkCreateImage(gpuContextT<VulkanGpuContext>().device, &imageCreateInfo, nullptr, &m_image));
 
 
 		VmaAllocationCreateInfo allocCI = {};
 		allocCI.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 
 		VmaAllocationInfo allocInfo;
-		CHECK_VULKAN(vmaAllocateMemoryForImage(m_instance->allocator, m_image, &allocCI, &m_allocation, &allocInfo));
+		CHECK_VULKAN(vmaAllocateMemoryForImage(gpuContextT<VulkanGpuContext>().allocator, m_image, &allocCI, &m_allocation, &allocInfo));
 		m_memOff = allocInfo.offset;
 		m_mem = allocInfo.deviceMemory;
 
-		CHECK_VULKAN(vkBindImageMemory(instance->device, m_image, m_mem, m_memOff));
+		CHECK_VULKAN(vkBindImageMemory(gpuContextT<VulkanGpuContext>().device, m_image, m_mem, m_memOff));
 
 		auto toInfo = baseLayoutInfo();
-		static_cast<VulkanCommandBuffer&>(m_instance->transferCb()).switchLayout(m_image, m_aspectFlags, 0, 0, desc.mipCount, desc.layerCount, 
+		static_cast<VulkanCommandBuffer&>(gpuContextT<VulkanGpuContext>().transferCb()).switchLayout(m_image, m_aspectFlags, 0, 0, desc.mipCount, desc.layerCount,
 			{ VK_IMAGE_LAYOUT_UNDEFINED, 0, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT},
 			{ toInfo.layout, toInfo.access, toInfo.stage }
 		);
@@ -60,7 +59,7 @@ namespace ge
 		VkImageViewCreateInfo createInfo = {};
 		createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		createInfo.viewType = (desc.layerCount == 1) ? VK_IMAGE_VIEW_TYPE_2D : VK_IMAGE_VIEW_TYPE_CUBE;
-		createInfo.format = instance->getVkFormat(desc.format);
+		createInfo.format = gpuContextT<VulkanGpuContext>().getVkFormat(desc.format);
 		createInfo.image = m_image;
 		createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
 		createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -73,20 +72,20 @@ namespace ge
 		createInfo.subresourceRange.baseArrayLayer = 0;
 		createInfo.subresourceRange.layerCount = desc.layerCount;
 
-		CHECK_VULKAN(vkCreateImageView(m_instance->device, &createInfo, nullptr, &m_samplerView));
+		CHECK_VULKAN(vkCreateImageView(gpuContextT<VulkanGpuContext>().device, &createInfo, nullptr, &m_samplerView));
 	}
 
 	VulkanTexture2D::~VulkanTexture2D()
 	{
-		vkDestroyImageView(m_instance->device, m_samplerView, nullptr);
+		vkDestroyImageView(gpuContextT<VulkanGpuContext>().device, m_samplerView, nullptr);
 		for (auto& x : m_views) {
 			if (x.second) {
-				vkDestroyImageView(m_instance->device, x.second, nullptr);
+				vkDestroyImageView(gpuContextT<VulkanGpuContext>().device, x.second, nullptr);
 			}
 		}
 		if (!m_isInternal) {
-			vkDestroyImage(m_instance->device, m_image, nullptr);
-			vmaFreeMemory(m_instance->allocator, m_allocation);
+			vkDestroyImage(gpuContextT<VulkanGpuContext>().device, m_image, nullptr);
+			vmaFreeMemory(gpuContextT<VulkanGpuContext>().allocator, m_allocation);
 		}
 	}
 
@@ -101,7 +100,7 @@ namespace ge
 		VkImageViewCreateInfo createInfo = {};
 		createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		createInfo.format =	m_instance->getVkFormat(getDesc().format);
+		createInfo.format = gpuContextT<VulkanGpuContext>().getVkFormat(getDesc().format);
 		createInfo.image = m_image;
 		createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
 		createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -114,7 +113,7 @@ namespace ge
 		createInfo.subresourceRange.baseArrayLayer = layer;
 		createInfo.subresourceRange.layerCount = 1;
 
-		CHECK_VULKAN(vkCreateImageView(m_instance->device, &createInfo, nullptr, &view));
+		CHECK_VULKAN(vkCreateImageView(gpuContextT<VulkanGpuContext>().device, &createInfo, nullptr, &view));
 		m_views.emplace(wanted, view);
 		return view;
 	}

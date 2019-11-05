@@ -10,7 +10,6 @@ namespace ge
 {
 	class VulkanFramebuffer : public Framebuffer
 	{
-		VulkanGpuContext*	  m_instance;
 		VkFramebuffer		  m_framebuffer;
 		VkRenderPass          m_renderPass;
 	public:

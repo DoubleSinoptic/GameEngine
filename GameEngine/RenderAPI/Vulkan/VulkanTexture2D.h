@@ -35,7 +35,6 @@ namespace ge
 
 	class VulkanTexture2D : public Texture2D
 	{
-		VulkanGpuContext* m_instance;
 		VkDeviceSize			m_memOff;
 		VkDeviceMemory			m_mem;
 		VmaAllocation			m_allocation;

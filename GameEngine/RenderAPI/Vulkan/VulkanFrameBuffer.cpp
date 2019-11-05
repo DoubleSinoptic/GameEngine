@@ -117,7 +117,7 @@ namespace ge
 		m_renderPassCreateionInfo.dependencyCount = 2;
 		m_renderPassCreateionInfo.pDependencies = m_dependencies;
 
-		CHECK_VULKAN(vkCreateRenderPass(m_instance->device, &m_renderPassCreateionInfo, nullptr, &m_renderPass));
+		CHECK_VULKAN(vkCreateRenderPass(gpuContextT<VulkanGpuContext>().device, &m_renderPassCreateionInfo, nullptr, &m_renderPass));
 
 		VkFramebufferCreateInfo	info = {};
 		info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
@@ -128,7 +128,7 @@ namespace ge
 		info.height = d.heigth;
 		info.layers = 1;
 
-		CHECK_VULKAN(vkCreateFramebuffer(m_instance->device, &info, nullptr, &m_framebuffer));
+		CHECK_VULKAN(vkCreateFramebuffer(gpuContextT<VulkanGpuContext>().device, &info, nullptr, &m_framebuffer));
 	}
 
 	VulkanFramebuffer::~VulkanFramebuffer()

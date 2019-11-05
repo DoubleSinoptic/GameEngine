@@ -46,8 +46,9 @@ namespace ge
 		auto result = vkWaitForFences(m_instance->device, 1, &m_finishFence, true, 0);
 		if (result == VK_TIMEOUT)
 			return false;
-		geAssert(result == VK_SUCCESS);
-		return true;
+		if (result == VK_SUCCESS)
+			return true;
+		CHECK_VULKAN(result);
 	}
 
 	void VulkanCommandBuffer::copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart)
