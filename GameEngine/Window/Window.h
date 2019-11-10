@@ -4,7 +4,8 @@
 
 #include "Core/Core.h"
 #include "Core/Any.h"
-#include "WindowManager.h"
+#include <map>
+#include "Core/ResourceObject.h"
 
 namespace ge
 {
@@ -32,10 +33,14 @@ namespace ge
 
 	class Window 
 	{
+		std::map<String, RPtr<ResourceObject>> m_resources;
 	protected:
 		Window() {}
 	public:
 		virtual ~Window() = default;
+
+		RPtr<ResourceObject> getResource(const String& resource);
+		void setResource(const String& name, RPtr<ResourceObject>);
 
 		virtual Any getNativeHandle() const noexcept = 0;
 

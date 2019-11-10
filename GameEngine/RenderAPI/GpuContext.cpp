@@ -1,16 +1,11 @@
 #include "GpuContext.h"
 #include "CommandBuffer.h"
+#include "../Rendering/RenderManager.h"
 namespace ge 
 {
-	Ptr<GpuContext> currentGpuContext;
-	void GpuContext::setCurrentGpuContext(Ptr<GpuContext> context)
-	{
-		currentGpuContext = context;
-	}
-
 	GpuContext& GpuContext::instance()
 	{
-		return *currentGpuContext;
+		return rt::RenderManager::instance().gpuContext();
 	}
 
 	void GpuContext::releaseResource(const RPtr<const GpuResource>& resource)

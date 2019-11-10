@@ -12,6 +12,7 @@ namespace ge
 {
 	namespace glfw
 	{
+		struct HWND__ { int unused; }; typedef struct HWND__* HWND;
 		typedef struct GLFWmonitor GLFWmonitor;
 		typedef struct GLFWwindow GLFWwindow;
 		typedef struct GLFWvidmode
@@ -39,7 +40,7 @@ namespace ge
 		{
 			return m_monitors;
 		}
-
+		glfw::HWND			(*glfwGetWin32Window)(glfw::GLFWwindow* window);
 		int					(*glfwInit)(void);
 		void				(*glfwTerminate)(void);
 		glfw::GLFWwindow*   (*glfwCreateWindow)(int width, int height, const char* title, glfw::GLFWmonitor* monitor, glfw::GLFWwindow* share);

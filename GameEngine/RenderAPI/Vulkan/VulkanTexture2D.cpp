@@ -3,7 +3,30 @@
 
 namespace ge 
 {
-	VulkanTexture2D::VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance) :
+	TEXTURE2D_DESC customDesc(const VULKAN_CUSTOM_IMAGE_DESC& desc, VulkanGpuContext* instance)
+	{
+		TEXTURE2D_DESC d = {};
+		d.format = instance->getGeFormat(desc.format);
+		d.layerCount = 1;
+		d.mipCount = 1;
+		d.height = desc.height;
+		d.width = desc.width;
+		d.usage = TU_COLORATTACHMENT;
+		return d;
+	}
+
+	VulkanTexture2D::VulkanTexture2D(const VULKAN_CUSTOM_IMAGE_DESC& desc, VulkanGpuContext* instance) :
+		Texture2D(customDesc(desc, instance), instance),
+		m_format(desc.format),
+		m_baseLayout(desc.baseLayout),
+		m_isInternal(true),
+		m_image(desc.image)
+	{
+		
+	}
+
+
+	VulkanTexture2D::VulkanTexture2D(const TEXTURE2D_DESC& desc, VulkanGpuContext* instance) :
 		Texture2D(desc, instance),
 		m_isInternal(false)
 	{

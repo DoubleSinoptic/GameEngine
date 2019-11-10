@@ -91,8 +91,8 @@ namespace ge
 		}
 
 		virtual Any getNativeHandle() const noexcept override
-		{
-			return nullptr;
+		{ 
+			return m_instance->glfwGetWin32Window(m_window);
 		}
 
 		GlfwWindow(const WINDOW_DESC& desc, GlfwWindowManager* manager) :
@@ -222,6 +222,7 @@ namespace ge
 		LinkProc(glfwGetPrimaryMonitor);
 		LinkProc(glfwGetMonitors);
 		LinkProc(glfwGetVideoMode);
+		LinkProc(glfwGetWin32Window);
 
 		glfwInit();
 	}

@@ -199,9 +199,8 @@ int main()
 		WindowManager::setCurrentWindowManager(std::static_pointer_cast<GlfwWindowManager>(manager));
 
 		WINDOW_DESC desc;
-		desc.videoMod = WindowManager::instance().primaryMonitor()->getCurrentVideoMod();
+		desc.videoMod = {-1, 800, 600};
 		desc.title = u"pizdec";
-		desc.monitor = WindowManager::instance().primaryMonitor();	
 		Ptr<Window> window = WindowManager::instance().create(desc);
 	
 		{

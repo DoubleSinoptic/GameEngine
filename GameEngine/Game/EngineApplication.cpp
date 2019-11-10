@@ -15,7 +15,7 @@ namespace ge
 		Physics::setCurrentPhysics(m_physics);
 		GameObjectManager::setCurrentObjectManager(m_manager);
 		Config::setCurrentConfig(m_config);
-		GpuPool::setCurrentGpuPool(m_gpuPool);
+		RenderManager::setCurrentRenderManager(m_renderManager);
 	}
 
 	EngineApplication::EngineApplication() :
@@ -24,10 +24,11 @@ namespace ge
 		m_manager(snew<GameObjectManager>()),
 		m_config(snew<Config>(u"settings.bcfg")),
 		m_physics(snew<Physics>(0)),
-		m_gpuPool(snew<GpuPool>()),
 		m_renderFinished(true)
 	{
 		bind();
+		/*has SyncManager dependency*/
+		m_renderManager = snew<RenderManager>();
 
 		int64 tickRate = m_config->getValueInt64(u"tickRate", 60);
 		m_tickLocker.setDelta(tickRate ? (1000000 / tickRate) : 0);
@@ -61,9 +62,8 @@ namespace ge
 		ThreadPool::setCurrentThreadPool(nullptr);
 		GameObjectManager::setCurrentObjectManager(nullptr);
 		Config::setCurrentConfig(nullptr);
-		GpuContext::setCurrentGpuContext(nullptr);
 		Physics::setCurrentPhysics(nullptr);
-		GpuPool::setCurrentGpuPool(nullptr);
+		RenderManager::setCurrentRenderManager(nullptr);
 		SyncManager::setCurrentSyncManager(nullptr);
 	}
 
@@ -94,11 +94,7 @@ namespace ge
 
 			SyncManager::instance().sync();
 			SyncManager::instance().collect();
-
-			SyncManager::instance().getQueue().queue([=]()
-			{
-				render();
-			});
+			RenderManager::instance().render();
 			
 			{
 				std::unique_lock<std::mutex> _(m_renderLock);

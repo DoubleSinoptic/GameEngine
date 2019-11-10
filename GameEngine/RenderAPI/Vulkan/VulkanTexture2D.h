@@ -33,6 +33,15 @@ namespace ge
 		}
 	};
 
+	struct VULKAN_CUSTOM_IMAGE_DESC 
+	{
+		uint32			width = 1;
+		uint32			height = 1;
+		VkImageLayout	baseLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+		VkImage			image = VK_NULL_HANDLE;
+		VkFormat		format = VK_FORMAT_R8G8B8A8_UNORM;
+	};
+
 	class VulkanTexture2D : public Texture2D
 	{
 		VkDeviceSize			m_memOff;
@@ -47,7 +56,8 @@ namespace ge
 		bool					m_isInternal;
 		std::unordered_map<MipLayerView, VkImageView, MipLayerViewHash> m_views;
 	public:
-		VulkanTexture2D(TEXTURE2D_DESC& desc, VulkanGpuContext* instance);
+		VulkanTexture2D(const VULKAN_CUSTOM_IMAGE_DESC& desc, VulkanGpuContext* instance);
+		VulkanTexture2D(const TEXTURE2D_DESC& desc, VulkanGpuContext* instance);
 		~VulkanTexture2D();
 
 		constexpr VkImageLayout baseLayout() const noexcept

@@ -222,6 +222,7 @@
     <ClCompile Include="SyncSystem\SyncObject.cpp" />
     <ClCompile Include="Core\Thread.cpp" />
     <ClCompile Include="Window\GlfwWindowManager.cpp" />
+    <ClCompile Include="Window\Window.cpp" />
     <ClCompile Include="Window\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>

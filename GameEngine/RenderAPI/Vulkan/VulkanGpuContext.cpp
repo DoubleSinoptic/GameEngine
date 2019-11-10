@@ -2,9 +2,63 @@
 #include "VulkanTexture2D.h"
 #include "VulkanBuffer.h"
 #include "VulkanCommandBuffer.h"
-
+#include "Core/Debug.h"
 namespace ge
 {
+	const std::vector<const char*> deviceExtensions = {
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+	#ifdef _DEBUG
+		VK_EXT_DEBUG_MARKER_EXTENSION_NAME
+	#endif	
+	};
+
+	const std::vector<const char*> extensions = {
+	#ifdef _DEBUG
+			VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+			VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
+	#endif	
+			VK_KHR_SURFACE_EXTENSION_NAME,
+			"VK_KHR_win32_surface"
+	};
+	const std::vector<const char*> validationLayers = {
+	#ifdef _DEBUG
+		   "VK_LAYER_LUNARG_standard_validation"
+	#endif
+	};
+
+	VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
+		Debug::log("Vulkan: {0}", pCallbackData->pMessage);
+	
+		/*if (
+			(String(pCallbackData->pMessage).Token("Type mismatch on descriptor slot") != -1) ||
+			(String(pCallbackData->pMessage).Token("vkWaitForFences called for fence") != -1) ||
+			(String(pCallbackData->pMessage).Token("OBJ ERROR :") != -1)
+			) {
+
+			throw std::runtime_error("ebah");
+		}
+*/
+		return VK_FALSE;
+	}
+
+	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
+		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+		if (func != nullptr) {
+			return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+		}
+		else {
+			return VK_ERROR_EXTENSION_NOT_PRESENT;
+		}
+	}
+
+	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator) {
+		auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+		if (func != nullptr) {
+			func(instance, debugMessenger, pAllocator);
+		}
+	}
+
+
 	struct FormatPair
 	{
 		PixelFormat geFormat;
@@ -50,7 +104,6 @@ namespace ge
 	};
 
 
-	
 
 	VulkanGpuContext::VulkanGpuContext()
 	{
@@ -59,10 +112,215 @@ namespace ge
 			m_toGeFormats.emplace(x.vkFormat, x.geFormat);
 			m_toVkFormats.emplace(x.geFormat, x.vkFormat);
 		}
+
+		{
+			VkApplicationInfo appInfo = {};
+			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+			appInfo.pApplicationName = "(null)";
+			appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+			appInfo.pEngineName = "(null)";
+			appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+			appInfo.apiVersion = VK_API_VERSION_1_0;
+
+			VkInstanceCreateInfo createInfo = {};
+			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+			createInfo.pApplicationInfo = &appInfo;
+			createInfo.enabledLayerCount = validationLayers.size();
+			createInfo.ppEnabledLayerNames = validationLayers.data();
+			createInfo.ppEnabledExtensionNames = extensions.data();
+			createInfo.enabledExtensionCount = extensions.size();
+			CHECK_VULKAN(vkCreateInstance(&createInfo, nullptr, &instance));
+
+		/*	VkWin32SurfaceCreateInfoKHR createInfo2 = {};
+			createInfo2.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+			createInfo2.hwnd = surfinter;
+			createInfo2.hinstance = GetModuleHandleW(nullptr);
+			CHECK_VULKAN(vkCreateWin32SurfaceKHR(instance, &createInfo2, nullptr, &surface));
+
+			if (!surface)
+				throw std::runtime_error("error of acquire surface");*/
+		}
+
+#ifdef _DEBUG
+		{
+			VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
+			createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+			createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+			createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+			createInfo.pfnUserCallback = debugCallback;
+			createInfo.pUserData = nullptr; // Optional
+
+			CHECK_VULKAN(CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger));
+		}
+#endif
+		uint32_t deviceCount = 0;
+		vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+		devices.resize(deviceCount);
+		vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+
+		for (auto& x : devices)
+		{
+			VkPhysicalDeviceProperties deviceProperties;
+			vkGetPhysicalDeviceProperties(x, &deviceProperties);
+			physicalDevice = x;
+			Debug::log("Vulkan: device detected api: {0}, drv-ver: {1}, {2}", deviceProperties.apiVersion, deviceProperties.driverVersion, deviceProperties.deviceName);
+		}
+
+		uint32_t queueFamilyCount = 0;
+		vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
+
+		std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+		vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
+
+		int i = 0;
+		for (const auto& queueFamily : queueFamilies) {
+			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT)
+				compute.famaly = i;
+			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+				graphics.famaly = i;
+			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT)
+				transport.famaly = i;
+			/*VkBool32 presentSupport = false;
+			vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
+			if (queueFamily.queueCount > 0 && presentSupport)
+				present.famaly = i;*/
+			i++;
+		}
+
+
+		if (graphics.famaly == UINT32_MAX || present.famaly == UINT32_MAX || transport.famaly == UINT32_MAX || compute.famaly == UINT32_MAX)
+			throw std::runtime_error("failed to find graphics famaly");
+
+		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+		std::set<uint32_t> uniqueQueueFamilies = { graphics.famaly, present.famaly, transport.famaly, compute.famaly };
+
+		float queuePriority = 1.0f;
+		for (uint32_t queueFamily : uniqueQueueFamilies) {
+			VkDeviceQueueCreateInfo queueCreateInfo = {};
+			queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+			queueCreateInfo.queueFamilyIndex = queueFamily;
+			queueCreateInfo.queueCount = 1;
+			queueCreateInfo.pQueuePriorities = &queuePriority;
+			queueCreateInfos.push_back(queueCreateInfo);
+		}
+
+		VkPhysicalDeviceFeatures deviceFeatures = {};
+		vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
+		vkGetPhysicalDeviceProperties(physicalDevice, &props);
+
+		VkDeviceCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+		createInfo.pQueueCreateInfos = queueCreateInfos.data();
+		createInfo.queueCreateInfoCount = queueCreateInfos.size();
+		createInfo.pEnabledFeatures = &deviceFeatures;
+		createInfo.enabledExtensionCount = deviceExtensions.size();
+		createInfo.ppEnabledExtensionNames = deviceExtensions.data();
+		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+		createInfo.ppEnabledLayerNames = validationLayers.data();
+		CHECK_VULKAN(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
+
+		O_vkDebugMarkerSetObjectNameEXT = (decltype(O_vkDebugMarkerSetObjectNameEXT))vkGetDeviceProcAddr(device, "vkDebugMarkerSetObjectNameEXT");
+
+		compute.acquireQueuePool(device);
+		graphics.acquireQueuePool(device);
+		present.acquireQueuePool(device);
+		transport.acquireQueuePool(device);
+
+		VmaAllocatorCreateInfo allocatorInfo = {};
+		allocatorInfo.physicalDevice = physicalDevice;
+		allocatorInfo.device = device;
+		CHECK_VULKAN(vmaCreateAllocator(&allocatorInfo, &allocator));
 	}
 
 	VulkanGpuContext::~VulkanGpuContext()
 	{
+		vkDeviceWaitIdle(device);
+		if (allocator) 
+		{
+			vmaDestroyAllocator(allocator);
+			allocator = nullptr;
+		}
+
+		for (auto& x : m_descriptorSetLayouts)
+			vkDestroyDescriptorSetLayout(device, x.second, nullptr);
+
+		for (auto& x : m_pools) 
+			vkDestroyDescriptorPool(device, x, nullptr);
+
+		compute.freePools();
+		graphics.freePools();
+		transport.freePools();
+		present.freePools();
+
+		if (device) 
+		{
+			vkDestroyDevice(device, nullptr);
+			device = VK_NULL_HANDLE;
+		}
+#ifdef _DEBUG
+		if (debugMessenger) 
+		{
+			DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+			debugMessenger = VK_NULL_HANDLE;
+		}
+#endif
+		if (instance)
+		{
+			vkDestroyInstance(instance, nullptr);
+			instance = nullptr;
+		}
+	}
+
+	VulkanGpuContext::DesckAlloc VulkanGpuContext::createSet(const UNIFORM_DESC& desc)
+	{
+		VkDescriptorSet		  set;
+		VkDescriptorSetLayout lay = getLayoutFromDesc(desc);
+
+		auto alloc = [&]()
+		{
+			VkDescriptorPoolSize poolSize = {};
+			poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+			poolSize.descriptorCount = 1 << 11;
+
+			VkDescriptorPoolSize poolSize1 = {};
+			poolSize1.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+			poolSize1.descriptorCount = 1 << 5;
+
+			VkDescriptorPoolSize kea[] = { poolSize, poolSize1 };
+			VkDescriptorPool pool;
+			VkDescriptorPoolCreateInfo poolInfo = {};
+			poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+			poolInfo.poolSizeCount = 2;
+			poolInfo.pPoolSizes = kea;
+			poolInfo.maxSets = 1 << 15;
+			poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+			CHECK_VULKAN(vkCreateDescriptorPool(device, &poolInfo, nullptr, &pool));
+			Debug::log("Vulkan: allocated new descriptor pool.");
+			m_pools.push_back(pool);
+		};
+
+		if (!m_pools.size()) {
+			alloc();
+		}
+		bool reallocSigned = false;
+
+		for (auto x = m_pools.rbegin(); x != m_pools.rend(); x++) {
+			VkDescriptorSetAllocateInfo allocInfo = {};
+			allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+			allocInfo.descriptorPool = *x;
+			allocInfo.descriptorSetCount = 1;
+			allocInfo.pSetLayouts = &lay;
+			if (vkAllocateDescriptorSets(device, &allocInfo, &set) == VK_SUCCESS)
+				return  { set, *x };
+		}
+		alloc();
+		VkDescriptorSetAllocateInfo allocInfo = {};
+		allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+		allocInfo.descriptorPool = m_pools.back();
+		allocInfo.descriptorSetCount = 1;
+		allocInfo.pSetLayouts = &lay;
+		CHECK_VULKAN(vkAllocateDescriptorSets(device, &allocInfo, &set));
+		return { set, m_pools.back() };
 	}
 
 	int32 VulkanGpuContext::getQueueFamailyIndex(QueueType type) const

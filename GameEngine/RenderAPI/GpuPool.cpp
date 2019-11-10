@@ -1,6 +1,7 @@
 #include "GpuPool.h"
 #include "GpuContext.h"
 #include "Core/PoolAllocator.h"
+#include "../Rendering/RenderManager.h"
 
 namespace ge
 {
@@ -27,20 +28,13 @@ namespace ge
 			PoolAllocator::free(this);
 	}
 
-	Ptr<GpuPool> currentGpuPool;
-
 	GpuPool::~GpuPool()
 	{
 	}
 
 	GpuPool& GpuPool::instance()
 	{
-		return *currentGpuPool;
-	}
-
-	void GpuPool::setCurrentGpuPool(Ptr<GpuPool> pool)
-	{
-		currentGpuPool = pool;
+		return rt::RenderManager::instance().gpuPool();
 	}
 
 	RPtr<PTexture> GpuPool::allocate(const TEXTURE2D_DESC& tDesc, const SAMPLER_DESC& sDesc)

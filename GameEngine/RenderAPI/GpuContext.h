@@ -39,7 +39,6 @@ namespace ge
 	protected:
 		virtual void		submit(CommandBuffer* cmdBuffer) = 0;
 	public:
-		static void			setCurrentGpuContext(Ptr<GpuContext> context);
 		static GpuContext&	instance();
 
 		void				releaseResource(const RPtr<const GpuResource>& resource);
