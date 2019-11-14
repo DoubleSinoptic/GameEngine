@@ -26,10 +26,12 @@ namespace ge
 		m_physics(snew<Physics>(0)),
 		m_renderFinished(true)
 	{
-		bind();
+		SyncManager::setCurrentSyncManager(m_syncManager);	
 		/*has SyncManager dependency*/
 		m_renderManager = snew<RenderManager>();
 
+		bind();
+		
 		int64 tickRate = m_config->getValueInt64(u"tickRate", 60);
 		m_tickLocker.setDelta(tickRate ? (1000000 / tickRate) : 0);
 
@@ -53,6 +55,11 @@ namespace ge
 
 	EngineApplication::~EngineApplication()
 	{
+		m_pool->barrier(BT_STRONG);
+
+		SyncManager::setCurrentSyncManager(m_syncManager);
+		RenderManager::setCurrentRenderManager(nullptr);
+
 		bind();
 		m_renderThread->close();
 		m_renderThread->join();
@@ -63,7 +70,7 @@ namespace ge
 		GameObjectManager::setCurrentObjectManager(nullptr);
 		Config::setCurrentConfig(nullptr);
 		Physics::setCurrentPhysics(nullptr);
-		RenderManager::setCurrentRenderManager(nullptr);
+	
 		SyncManager::setCurrentSyncManager(nullptr);
 	}
 

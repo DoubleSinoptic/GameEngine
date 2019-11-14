@@ -177,7 +177,7 @@ namespace ge
 	{
 		if (expr)
 			return;
-		String errorMessage = format("======== GameEngine submited critical error.========\n\n@in file: {0}\n@in line: {1}\n@code: {2}", utf8(file), line, str);
+		String errorMessage = format("         GameEngine submited critical error.        \n\nfile: {0}\n\tline: {1}\n{2}", utf8(file), line, str);
 		MessageBox::showInfo(errorMessage, u"GameEngine submited critical error", MBT_ERROR);
 		exit(-1);
 	}

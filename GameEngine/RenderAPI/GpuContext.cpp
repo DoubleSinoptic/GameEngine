@@ -49,12 +49,9 @@ namespace ge
 
 	void GpuContext::sumbit(CommandBufferTypeFlags types)
 	{
-		Vector<typename std::vector<RPtr<CommandBuffer>>::iterator> removedCommandBuffers;
-		for (auto i = m_submitedBuffers.begin(); i != m_submitedBuffers.end(); i++)
-			if ((*i)->isFinished())
-				removedCommandBuffers.push_back(i);
-		for (auto& x : removedCommandBuffers)
-			m_submitedBuffers.erase(x);
+		m_submitedBuffers.erase(std::remove_if(m_submitedBuffers.begin(), m_submitedBuffers.end(), [](const RPtr<CommandBuffer>& a) {
+			return a->isFinished();
+		}), m_submitedBuffers.end());
 
 		if (types & CBT_MAIN)
 		{

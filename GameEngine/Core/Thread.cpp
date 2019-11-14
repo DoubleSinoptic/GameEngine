@@ -19,7 +19,6 @@ namespace ge
 			m_thisId = selectedId;
 			try {
 				Debug::log("Thread started: {0}", selectedId);
-				printf("Thread started: %d.\n", selectedId);
 				f();
 			}
 			catch (const std::exception& ex) {

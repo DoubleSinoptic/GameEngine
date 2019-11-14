@@ -188,11 +188,11 @@ namespace ge
 		}
 
 
-		if (graphics.famaly == UINT32_MAX || present.famaly == UINT32_MAX || transport.famaly == UINT32_MAX || compute.famaly == UINT32_MAX)
-			throw std::runtime_error("failed to find graphics famaly");
+		if (graphics.famaly == UINT32_MAX ||/* present.famaly == UINT32_MAX ||*/ transport.famaly == UINT32_MAX || compute.famaly == UINT32_MAX)
+			geAssertFalse("failed to find graphics famaly");
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<uint32_t> uniqueQueueFamilies = { graphics.famaly, present.famaly, transport.famaly, compute.famaly };
+		std::set<uint32_t> uniqueQueueFamilies = { graphics.famaly, /*present.famaly,*/ transport.famaly, compute.famaly };
 
 		float queuePriority = 1.0f;
 		for (uint32_t queueFamily : uniqueQueueFamilies) {
@@ -223,7 +223,7 @@ namespace ge
 
 		compute.acquireQueuePool(device);
 		graphics.acquireQueuePool(device);
-		present.acquireQueuePool(device);
+		/*present.acquireQueuePool(device);*/
 		transport.acquireQueuePool(device);
 
 		VmaAllocatorCreateInfo allocatorInfo = {};

@@ -35,11 +35,9 @@ namespace ge
 
 		void acquireQueuePool(VkDevice device)
 		{
-			if (famaly == UInt32Max)
-				throw std::runtime_error("invalid queue famaly");
+			geAssert(famaly != UInt32Max);
 			vkGetDeviceQueue(device, famaly, 0, &queue);
-			if (!queue)
-				throw std::runtime_error("failed to get graphics queue!");
+			geAssert(queue);
 			attachedDevice = device;
 		}
 
