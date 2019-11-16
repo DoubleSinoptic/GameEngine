@@ -16,10 +16,10 @@ namespace ge
 	};
 	class ThreadPool 
 	{
+		std::mutex								m_lock;
+		std::condition_variable					m_var;
 		std::atomic_bool						m_isClosed;
 		Vector<Ptr<Thread>>						m_threads;
-		std::condition_variable					m_var;
-		std::mutex								m_lock;
 		std::queue<std::function<void(void)>>	m_tasks;
 		void threadMain();
 	public:
