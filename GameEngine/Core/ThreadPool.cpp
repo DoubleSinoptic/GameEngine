@@ -37,6 +37,7 @@ namespace ge
 
 	void ThreadPool::threadMain()
 	{
+		Thread::setThreadMarker(utf8("Task thread"));
 		std::function<void(void)> f;
 		{
 			std::unique_lock<std::mutex> _(m_lock);

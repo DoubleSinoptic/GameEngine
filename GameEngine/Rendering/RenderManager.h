@@ -24,7 +24,7 @@ namespace ge
 			Ptr<GpuPool>				m_gpuPool;
 		public:
 			static RenderManager& instance();
-			static void setCurrentRenderManager(Ptr<RenderManager> manager);
+			static void setCurrentRenderManager(RenderManager* manager);
 
 			void initialize();
 			void prepareToDestory();
@@ -60,7 +60,7 @@ namespace ge
 
 	class RenderManager 
 	{
-		Ptr<rt::RenderManager> m_rt;
+		rt::RenderManager* m_rt;
 	public:
 		RenderManager();
 		~RenderManager();

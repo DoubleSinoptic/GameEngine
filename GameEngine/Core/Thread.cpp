@@ -3,7 +3,10 @@
 #include "Debug.h"
 #include <map>
 #include <atomic>
-
+#ifdef _WIN32
+#	include <Windows.h>
+#	undef MessageBox
+#endif
 namespace ge
 {
 	std::atomic_uint32_t       m_incrementer(0);
@@ -26,6 +29,15 @@ namespace ge
 			}
 			Debug::log("Thread destroyed: {0}", selectedId);
 		});
+	}
+
+	void Thread::setThreadMarker(const String& name)
+	{
+#ifdef _WIN32
+		SetThreadDescription(GetCurrentThread(), (const wchar_t*)name.c_str());
+#else
+		(void)name;
+#endif
 	}
 
 	void Thread::sleep(uint32 ms)

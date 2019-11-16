@@ -8,16 +8,6 @@
 
 namespace ge
 {
-	void EngineApplication::bind()
-	{
-		ThreadPool::setCurrentThreadPool(m_pool);
-		SyncManager::setCurrentSyncManager(m_syncManager);
-		Physics::setCurrentPhysics(m_physics);
-		GameObjectManager::setCurrentObjectManager(m_manager);
-		Config::setCurrentConfig(m_config);
-		RenderManager::setCurrentRenderManager(m_renderManager);
-	}
-
 	EngineApplication::EngineApplication() :
 		m_syncManager(snew<SyncManager>()),
 		m_pool(snew<ThreadPool>()),
@@ -26,58 +16,38 @@ namespace ge
 		m_physics(snew<Physics>(0)),
 		m_renderFinished(true)
 	{
-		SyncManager::setCurrentSyncManager(m_syncManager);	
-		/*has SyncManager dependency*/
-		m_renderManager = snew<RenderManager>();
-
-		bind();
-		
+		Thread::setThreadMarker(utf8("Main Thread"));
+		ThreadPool::setCurrentThreadPool(m_pool);
+		SyncManager::setCurrentSyncManager(m_syncManager);
+		Physics::setCurrentPhysics(m_physics);
+		GameObjectManager::setCurrentObjectManager(m_manager);
+		Config::setCurrentConfig(m_config);
+	
 		int64 tickRate = m_config->getValueInt64(u"tickRate", 60);
 		m_tickLocker.setDelta(tickRate ? (1000000 / tickRate) : 0);
 
-		m_renderThread = snew<Thread>([=]() { renderThread(); });
+		m_renderManager = snew<RenderManager>();
+		RenderManager::setCurrentRenderManager(m_renderManager);
 	}
 
-	void EngineApplication::renderThread()
-	{
-		while (!Thread::isClosed())
-		{
-			if (&SyncManager::instance() == &*m_syncManager)
-				SyncManager::instance().playback();
-		}
-	}
-
-	void EngineApplication::render()
-	{
-	}
-
-	
 
 	EngineApplication::~EngineApplication()
 	{
-		m_pool->barrier(BT_STRONG);
-
-		SyncManager::setCurrentSyncManager(m_syncManager);
-		RenderManager::setCurrentRenderManager(nullptr);
-
-		bind();
-		m_renderThread->close();
-		m_renderThread->join();
-		m_pool->barrier(BT_STRONG);
-		
 		GameObject::clearScene();
+		m_pool->barrier(BT_STRONG);
+		RenderManager::setCurrentRenderManager(nullptr);
+		m_renderManager = nullptr;
+
 		ThreadPool::setCurrentThreadPool(nullptr);
+		SyncManager::setCurrentSyncManager(nullptr);
+		Physics::setCurrentPhysics(nullptr);
 		GameObjectManager::setCurrentObjectManager(nullptr);
 		Config::setCurrentConfig(nullptr);
-		Physics::setCurrentPhysics(nullptr);
-	
-		SyncManager::setCurrentSyncManager(nullptr);
+		RenderManager::setCurrentRenderManager(nullptr);
 	}
 
 	void EngineApplication::run()
 	{
-		bind();
-
 		uint64 point = 0;
 		while (!m_manager->isExited())
 		{

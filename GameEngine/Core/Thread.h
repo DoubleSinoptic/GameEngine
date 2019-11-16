@@ -20,6 +20,7 @@ namespace ge
 		Thread(const Thread&) = delete;
 		Thread& operator=(const Thread&) = delete;
 
+		static void setThreadMarker(const String& name);
 		static void sleep(uint32 ms);
 		static void yield();
 

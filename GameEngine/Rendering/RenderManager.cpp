@@ -7,14 +7,14 @@ namespace ge
 {
 	namespace rt 
 	{	
-		Ptr<RenderManager> currentRenderManagerRt;
+		RenderManager* currentRenderManagerRt = nullptr;
 
 		RenderManager& RenderManager::instance()
 		{
 			return *currentRenderManagerRt;
 		}
 
-		void RenderManager::setCurrentRenderManager(Ptr<RenderManager> manager)
+		void RenderManager::setCurrentRenderManager(RenderManager* manager)
 		{
 			currentRenderManagerRt = manager;
 		}
@@ -45,18 +45,26 @@ namespace ge
 	Ptr<RenderManager> currentRenderManager;
 
 	RenderManager::RenderManager() :
-		m_rt(snew<rt::RenderManager>())
+		m_rt(new rt::RenderManager())
 	{
-		SyncManager::instance().getQueue().queue([=]() {
+		SpinLock wait(true);
+		SyncManager::instance().getQueue().queue([&]() {
 			m_rt->initialize();
+			wait.unlock();
 		});
+		wait.lock();
 	}
 
 	RenderManager::~RenderManager()
 	{
-		SyncManager::instance().getQueue().queue([=]() {
+		SpinLock wait(true);
+		SyncManager::instance().getQueue().queue([&]() {
 			m_rt->prepareToDestory();
+			delete m_rt;
+			m_rt = nullptr;
+			wait.unlock();
 		});
+		wait.lock();
 	}
 
 	void RenderManager::render()
@@ -74,8 +82,9 @@ namespace ge
 	void RenderManager::setCurrentRenderManager(Ptr<RenderManager> manager)
 	{
 		currentRenderManager = manager;
-		SyncManager::instance().getQueue().queue([=]() {
-			rt::RenderManager::setCurrentRenderManager(manager->m_rt);
-		});
+		if (manager)
+			SyncManager::instance().getQueue().queue([=]() {
+				rt::RenderManager::setCurrentRenderManager(manager->m_rt);
+			});
 	}
 }

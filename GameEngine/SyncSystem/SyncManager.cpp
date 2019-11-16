@@ -6,6 +6,28 @@ namespace ge
 
 	Ptr<SyncManager> currentSyncManager;
 
+	void SyncManager::workThread()
+	{
+		Thread::setThreadMarker(utf8("Render Thread"));
+		while (!Thread::isClosed())
+		{
+			playback();
+		}
+		playback();
+	}
+
+	SyncManager::SyncManager() :
+		m_workThread([=]() { workThread(); })
+	{}
+
+	SyncManager::~SyncManager()
+	{
+		m_queue.queue([=]() {
+			m_workThread.close();
+		});
+		m_workThread.join();
+	}
+
 	void SyncManager::setCurrentSyncManager(Ptr<SyncManager> m_current)
 	{
 		currentSyncManager = m_current;

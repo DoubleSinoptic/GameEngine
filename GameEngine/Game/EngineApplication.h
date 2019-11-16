@@ -21,20 +21,15 @@ namespace ge
 		Ptr<ThreadPool>		    m_pool;
 		Ptr<GameObjectManager>  m_manager;
 		Ptr<Config>			    m_config;		
-		Ptr<Thread>			    m_renderThread;
 		Ptr<Physics>		    m_physics;
 		Ptr<RenderManager>		m_renderManager;
 		std::condition_variable m_renderVariable;
 		std::mutex				m_renderLock;
 		bool					m_renderFinished;
-		void renderThread();
-		void render();
 	public:
 		Event	disptach;
 		Event	rise;
-
-		void bind();
-
+	
 		EngineApplication();
 		~EngineApplication();
 

@@ -3,7 +3,7 @@
 #include "Core/CommandQueue.h"
 #include "Core/ObjectPool.h"
 #include "SyncAllocator.h"
-
+#include "Core/Thread.h"
 namespace ge
 {
 
@@ -29,8 +29,12 @@ namespace ge
 		ObjectPool<Vector<SyncInfo>>      m_objectsPool;
 		CommandQueue					  m_queue;
 		Vector<SyncObject*>               m_dirtyObjects;
-
+		Thread							  m_workThread;
+		void							  workThread();
 	public:
+
+		SyncManager();
+		~SyncManager();
 
 		static void setCurrentSyncManager(Ptr<SyncManager> m_current);
 		static SyncManager& instance();

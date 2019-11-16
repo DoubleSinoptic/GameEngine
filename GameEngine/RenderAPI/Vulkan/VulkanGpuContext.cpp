@@ -107,6 +107,7 @@ namespace ge
 
 	VulkanGpuContext::VulkanGpuContext()
 	{
+		Debug::log("Vulkan: VulkanGpuContext::VulkanGpuContext");
 		for (auto& x : translatedFormats)
 		{
 			m_toGeFormats.emplace(x.vkFormat, x.geFormat);
@@ -230,10 +231,13 @@ namespace ge
 		allocatorInfo.physicalDevice = physicalDevice;
 		allocatorInfo.device = device;
 		CHECK_VULKAN(vmaCreateAllocator(&allocatorInfo, &allocator));
+
+		Debug::log("Vulkan: legacy interface inited.");
 	}
 
 	VulkanGpuContext::~VulkanGpuContext()
 	{
+		Debug::log("Vulkan: VulkanGpuContext::~VulkanGpuContext");
 		vkDeviceWaitIdle(device);
 		if (allocator) 
 		{

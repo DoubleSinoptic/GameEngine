@@ -9,8 +9,22 @@
 
 namespace ge 
 {
+	class SpinLock 
+	{
+		std::atomic_bool m_locked;
+	public:
+		SpinLock(bool createLocked = false);
+
+		bool try_lock();
+
+		void unlock();
+
+		void lock();
+	};
+
 	class CommandQueue
 	{
+		std::atomic_size_t									m_opCount;
 		std::mutex										    m_lock;
 		ObjectPool<Vector<std::function<void(void)>>>	    m_queues;
 		Ptr<Vector<std::function<void(void)>>>				m_currentQueue;
@@ -32,7 +46,8 @@ namespace ge
 		std::lock_guard<std::mutex> _(m_lock);
 		m_currentQueue->push_back([=]() {
 			(o->*f)(std::forward<Args>(args)...);
-			});
+		});
+		m_opCount.fetch_add(1);
 	}
 
 	template<typename F>
@@ -40,6 +55,7 @@ namespace ge
 	{
 		std::lock_guard<std::mutex> _(m_lock);
 		m_currentQueue->push_back(f);
+		m_opCount.fetch_add(1);
 	}
 }
 
