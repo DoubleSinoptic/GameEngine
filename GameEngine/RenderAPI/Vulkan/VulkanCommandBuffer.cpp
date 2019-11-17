@@ -268,6 +268,7 @@ namespace ge
 
 	VulkanCommandPool::~VulkanCommandPool()
 	{
+		vkFreeCommandBuffers(m_instance->device, m_cmdPool, m_buffers.size(), m_buffers.data());
 		vkDestroyCommandPool(m_instance->device, m_cmdPool, nullptr);
 	}
 

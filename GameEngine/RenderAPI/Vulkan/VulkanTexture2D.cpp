@@ -112,6 +112,11 @@ namespace ge
 		}
 	}
 
+	VkImageView VulkanTexture2D::baseView()
+	{
+		return m_samplerView;
+	}
+
 	VkImageView VulkanTexture2D::getImageView(uint32 mip, uint32 layer)
 	{
 		MipLayerView wanted = { uint16(mip), uint16(layer) };

@@ -14,6 +14,10 @@ namespace ge
 	public:
 		VulkanSampler(const SAMPLER_DESC& desc, VulkanGpuContext* context);
 		~VulkanSampler();
+		constexpr VkSampler vulkanHandle() const noexcept
+		{
+			return m_sampler;
+		}
 	};
 }
 

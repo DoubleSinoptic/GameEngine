@@ -10,7 +10,7 @@ namespace ge
 {
 	struct SHADER_MODULE_DESC
 	{
-		Ptr<Vector<byte>> code;
+		Ptr<const Vector<byte>> code;
 		PipelineStage	  stage;
 		String			  entryPoint;
 	};

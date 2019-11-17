@@ -79,7 +79,7 @@ namespace ge
 		{
 			return m_image;
 		}
-
+		VkImageView baseView();
 		VkImageView getImageView(uint32 mip, uint32 layer);
 
 		ImageBarrierTriple baseLayoutInfo() const;
