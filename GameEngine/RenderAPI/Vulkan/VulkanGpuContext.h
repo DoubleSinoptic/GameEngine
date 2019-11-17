@@ -26,58 +26,28 @@ namespace ge
 
 	class VulkanQueuePoolPair
 	{
-		Vector<VkCommandPool>   pools;
-		std::mutex				mutex;
-		VkDevice				attachedDevice = nullptr;
+		std::map<uint32, Ptr<VulkanCommandPool>>pools;
+		std::mutex								mutex;
+		VulkanGpuContext* context;
 	public:
-		VkQueue					queue = nullptr;
-		uint32					famaly = UInt32Max;
+		VulkanQueuePoolPair(VulkanGpuContext* ctx, QueueType type) :
+			context(ctx)
+		{}
 
-		void acquireQueuePool(VkDevice device)
+		Ptr<VulkanCommandPool> getPool(uint32 poolIndex)
 		{
-			geAssert(famaly != UInt32Max);
-			vkGetDeviceQueue(device, famaly, 0, &queue);
-			geAssert(queue);
-			attachedDevice = device;
-		}
-
-		VkCommandPool getPool(uint32 pool)
-		{
-			std::lock_guard<decltype(mutex)> _(mutex);
-			if (pools.size() <= pool)
-				pools.resize((pool + 1) * 2);
-			VkCommandPool& p = pools[pool];
-			if (!p)
+			auto iter = pools.find(poolIndex);
+			if (iter == pools.end())
 			{
-				VkCommandPoolCreateInfo poolInfo = {};
-				poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-				poolInfo.queueFamilyIndex = famaly;
-				poolInfo.flags = 0;
-				CHECK_VULKAN(vkCreateCommandPool(attachedDevice, &poolInfo, nullptr, &p));
+				Ptr<VulkanCommandPool> pool = snew<VulkanCommandPool>(context, );
+				pools.emplace(poolIndex, pool);
+				return pool;
 			}
-			return p;
-		}
-
-		bool m_freePools = false;
-		void freePools()
-		{
-			if (m_freePools)
-				return;
-			m_freePools = true;
-			for (auto& pool : pools)
-			{
-				if (pool) {
-					vkDestroyCommandPool(attachedDevice, pool, nullptr);
-					pool = VK_NULL_HANDLE;
-				}
-			}
+			return iter->second;
 		}
 
 		~VulkanQueuePoolPair()
-		{
-			freePools();
-		}
-
+		{}
 	};
 
 	class VulkanGpuContext : public GpuContext
@@ -129,7 +99,8 @@ namespace ge
 
 		DesckAlloc createSet(const UNIFORM_DESC& desc);
 
-		int32 getQueueFamailyIndex(QueueType type) const;
+		uint32 getQueueFamailyIndex(QueueType type) const;
+		VkQueue getQueue(QueueType type) const;
 
 		VkFormat	getVkFormat(PixelFormat fmt) const;
 		PixelFormat getGeFormat(VkFormat fmt) const;

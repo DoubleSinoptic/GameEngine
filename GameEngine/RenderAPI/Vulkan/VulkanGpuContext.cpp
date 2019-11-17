@@ -327,9 +327,30 @@ namespace ge
 		return { set, m_pools.back() };
 	}
 
-	int32 VulkanGpuContext::getQueueFamailyIndex(QueueType type) const
+	uint32 VulkanGpuContext::getQueueFamailyIndex(QueueType type) const
 	{
-		return int32();
+		switch (type)
+		{
+		case ge::QT_TRANSFER:
+			return transport.famaly;
+			break;
+		case ge::QT_GRAPHICS:
+			return graphics.famaly;
+			break;
+		case ge::QT_COMPUTE:
+			return compute.famaly;
+			break;
+		default:
+			break;
+		}
+		return uint32();
+	}
+
+	VkQueue VulkanGpuContext::getQueue(QueueType type) const
+	{
+		VkQueue queue;
+		vkGetDeviceQueue(device, getQueueFamailyIndex(type), 0, &queue);
+		return queue;
 	}
 
 	VkFormat VulkanGpuContext::getVkFormat(PixelFormat fmt) const
