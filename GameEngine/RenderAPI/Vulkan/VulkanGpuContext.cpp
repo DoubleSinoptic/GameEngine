@@ -2,6 +2,7 @@
 #include "VulkanTexture2D.h"
 #include "VulkanBuffer.h"
 #include "VulkanCommandBuffer.h"
+#include "VulkanPipeline.h"
 #include "Core/Debug.h"
 namespace ge
 {
@@ -105,6 +106,18 @@ namespace ge
 
 
 
+	VulkanCommandPool* VulkanGpuContext::getCommandPool(const COMMAND_BUFFER_DESC& desc)
+	{
+		auto iter = m_commandPools.find(desc);
+		if (iter == m_commandPools.end())
+		{
+			VulkanCommandPool* cmdPool = new VulkanCommandPool(this, desc);
+			m_commandPools.emplace(desc, cmdPool);
+			return cmdPool;
+		}
+		return iter->second;
+	}
+
 	VulkanGpuContext::VulkanGpuContext()
 	{
 		Debug::log("Vulkan: VulkanGpuContext::VulkanGpuContext");
@@ -176,11 +189,11 @@ namespace ge
 		int i = 0;
 		for (const auto& queueFamily : queueFamilies) {
 			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT)
-				compute.famaly = i;
+				m_computeFamily = i;
 			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
-				graphics.famaly = i;
+				m_graphicsFamily = i;
 			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT)
-				transport.famaly = i;
+				m_transportFamily = i;
 			/*VkBool32 presentSupport = false;
 			vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
 			if (queueFamily.queueCount > 0 && presentSupport)
@@ -189,11 +202,11 @@ namespace ge
 		}
 
 
-		if (graphics.famaly == UINT32_MAX ||/* present.famaly == UINT32_MAX ||*/ transport.famaly == UINT32_MAX || compute.famaly == UINT32_MAX)
+		if (m_graphicsFamily == UINT32_MAX ||/* present.famaly == UINT32_MAX ||*/ m_transportFamily == UINT32_MAX || m_computeFamily == UINT32_MAX)
 			geAssertFalse("failed to find graphics famaly");
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<uint32_t> uniqueQueueFamilies = { graphics.famaly, /*present.famaly,*/ transport.famaly, compute.famaly };
+		std::set<uint32_t> uniqueQueueFamilies = { m_graphicsFamily, /*present.famaly,*/ m_transportFamily, m_computeFamily };
 
 		float queuePriority = 1.0f;
 		for (uint32_t queueFamily : uniqueQueueFamilies) {
@@ -222,11 +235,6 @@ namespace ge
 
 		O_vkDebugMarkerSetObjectNameEXT = (decltype(O_vkDebugMarkerSetObjectNameEXT))vkGetDeviceProcAddr(device, "vkDebugMarkerSetObjectNameEXT");
 
-		compute.acquireQueuePool(device);
-		graphics.acquireQueuePool(device);
-		/*present.acquireQueuePool(device);*/
-		transport.acquireQueuePool(device);
-
 		VmaAllocatorCreateInfo allocatorInfo = {};
 		allocatorInfo.physicalDevice = physicalDevice;
 		allocatorInfo.device = device;
@@ -239,6 +247,12 @@ namespace ge
 	{
 		Debug::log("Vulkan: VulkanGpuContext::~VulkanGpuContext");
 		vkDeviceWaitIdle(device);
+
+		for (auto& x : m_commandPools) {
+			if (x.second)
+				delete x.second;
+		}
+
 		if (allocator) 
 		{
 			vmaDestroyAllocator(allocator);
@@ -250,11 +264,6 @@ namespace ge
 
 		for (auto& x : m_pools) 
 			vkDestroyDescriptorPool(device, x, nullptr);
-
-		compute.freePools();
-		graphics.freePools();
-		transport.freePools();
-		present.freePools();
 
 		if (device) 
 		{
@@ -332,13 +341,13 @@ namespace ge
 		switch (type)
 		{
 		case ge::QT_TRANSFER:
-			return transport.famaly;
+			return m_transportFamily;
 			break;
 		case ge::QT_GRAPHICS:
-			return graphics.famaly;
+			return m_graphicsFamily;
 			break;
 		case ge::QT_COMPUTE:
-			return compute.famaly;
+			return m_computeFamily;
 			break;
 		default:
 			break;
@@ -433,11 +442,12 @@ namespace ge
 	}
 	CommandBuffer* VulkanGpuContext::createCommandBuffer(const COMMAND_BUFFER_DESC& desc)
 	{
-		return nullptr;
+		VulkanCommandPool* m_pool = getCommandPool(desc);
+		return m_pool->allocate();
 	}
 	Pipeline* VulkanGpuContext::createPipeline(const PIPELINE_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanPipeline(desc, this);
 	}
 	Framebuffer* VulkanGpuContext::createFramebuffer(const FRAMEBUFFER_DESC& desc)
 	{

@@ -173,6 +173,12 @@ namespace ge
 		return hash;	
 	}
 
+	bool byteArrayEqual(const byte* a, const byte* b, usize dataSize)
+	{
+		
+		return false;
+	}
+
 	void nativeAssert(bool expr, const char* str, const char* file, int line)
 	{
 		if (expr)

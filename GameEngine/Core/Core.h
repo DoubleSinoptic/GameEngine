@@ -168,6 +168,7 @@ namespace ge
 	}
 
 	usize byteArrayHash(const byte* data, usize dataSize);
+	bool  byteArrayEqual(const byte* a, const byte* b, usize dataSize);
 }
 
 #endif

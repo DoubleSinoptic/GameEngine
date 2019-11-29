@@ -255,13 +255,13 @@ namespace ge
 		vkCmdPipelineBarrier(m_buffer, oldState.stage, newState.stage, 0, 0, 0, 0, 0, 1, &barrier);
 	}
 
-	VulkanCommandPool::VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& desc) :
-		m_desc(desc),
+	VulkanCommandPool::VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& type) :
+		m_desc(type),
 		m_instance(instance)
 	{
 		VkCommandPoolCreateInfo cmdPoolCreationInfo = {};
 		cmdPoolCreationInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-		cmdPoolCreationInfo.queueFamilyIndex = m_instance->getQueueFamailyIndex(desc.queueType);
+		cmdPoolCreationInfo.queueFamilyIndex = m_instance->getQueueFamailyIndex(type.queueType);
 		cmdPoolCreationInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 		CHECK_VULKAN(vkCreateCommandPool(m_instance->device, &cmdPoolCreationInfo, nullptr, &m_cmdPool));
 	}

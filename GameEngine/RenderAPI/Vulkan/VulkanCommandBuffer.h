@@ -21,7 +21,7 @@ namespace ge
 		COMMAND_BUFFER_DESC			 m_desc;
 
 	public:
-		VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& desc);
+		VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& type);
 
 		~VulkanCommandPool();
 

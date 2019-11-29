@@ -24,32 +24,7 @@ namespace ge
 		VkPipelineStageFlags stage;
 	};
 
-	class VulkanQueuePoolPair
-	{
-		std::map<uint32, Ptr<VulkanCommandPool>>pools;
-		std::mutex								mutex;
-		VulkanGpuContext* context;
-	public:
-		VulkanQueuePoolPair(VulkanGpuContext* ctx, QueueType type) :
-			context(ctx)
-		{}
-
-		Ptr<VulkanCommandPool> getPool(uint32 poolIndex)
-		{
-			auto iter = pools.find(poolIndex);
-			if (iter == pools.end())
-			{
-				Ptr<VulkanCommandPool> pool = snew<VulkanCommandPool>(context, );
-				pools.emplace(poolIndex, pool);
-				return pool;
-			}
-			return iter->second;
-		}
-
-		~VulkanQueuePoolPair()
-		{}
-	};
-
+	class VulkanCommandPool;
 	class VulkanGpuContext : public GpuContext
 	{
 		std::unordered_map<PixelFormat, VkFormat>				m_toVkFormats;
@@ -71,6 +46,12 @@ namespace ge
 		};
 		Vector<VkDescriptorPool>	m_pools;
 		std::unordered_map<UNIFORM_DESC, VkDescriptorSetLayout, UniformDescHash, UniformDescEqual> m_descriptorSetLayouts;
+		std::unordered_map<COMMAND_BUFFER_DESC, VulkanCommandPool*, COMMAND_BUFFER_DESC::Hash, COMMAND_BUFFER_DESC::Equal> m_commandPools;
+
+		uint32 m_computeFamily;
+		uint32 m_graphicsFamily;
+		uint32 m_transportFamily;
+		uint32 m_presentFamily;
 	public:
 		VkPhysicalDevice							physicalDevice = VK_NULL_HANDLE;
 		VmaAllocator								allocator;
@@ -79,10 +60,7 @@ namespace ge
 		VkInstance									instance = nullptr;
 		Vector<VkPhysicalDevice>					devices;
 
-		VulkanQueuePoolPair							compute;
-		VulkanQueuePoolPair							graphics;
-		VulkanQueuePoolPair							transport;
-		VulkanQueuePoolPair							present;
+		VulkanCommandPool* getCommandPool(const COMMAND_BUFFER_DESC& desc);
 
 		PFN_vkDebugMarkerSetObjectNameEXT		    O_vkDebugMarkerSetObjectNameEXT;
 

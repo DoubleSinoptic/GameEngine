@@ -258,6 +258,7 @@
     <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanQueue.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanSync.h" />

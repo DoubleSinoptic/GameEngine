@@ -46,7 +46,11 @@ namespace ge
 	{
 		QT_TRANSFER,
 		QT_GRAPHICS,
-		QT_COMPUTE
+		QT_COMPUTE,
+		/**
+		* ext*
+		*/
+		QT_PRESENT
 	};
 
 	struct COMMAND_BUFFER_DESC 
@@ -67,6 +71,26 @@ namespace ge
 		* во время bindDescriptorSets (drawcall)
 		*/
 		bool	usePredictedResourceTrack = true;
+
+		struct Hash 
+		{
+			size_t operator()(const COMMAND_BUFFER_DESC& desc) const noexcept 
+			{
+				return byteArrayHash((const ge::byte*)&desc, sizeof(COMMAND_BUFFER_DESC));
+			}
+		};
+		struct Equal
+		{
+			bool operator()(const COMMAND_BUFFER_DESC& a, const COMMAND_BUFFER_DESC& b) const noexcept
+			{
+				if (a.isSecondary != b.isSecondary || 
+					a.poolIndex != b.poolIndex || 
+					a.queueType != b.queueType || 
+					a.usePredictedResourceTrack != b.usePredictedResourceTrack)
+					return false;
+				return true;
+			}
+		};
 	};
 
 	class CommandBuffer : public GpuResource
