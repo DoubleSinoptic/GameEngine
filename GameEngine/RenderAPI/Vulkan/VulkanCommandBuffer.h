@@ -7,6 +7,7 @@
 #include "VulkanGpuContext.h"
 #include "../CommandBuffer.h"
 #include "Core/PoolAllocator.h"
+#include "VulkanSync.h"
 
 namespace ge
 {
@@ -40,7 +41,12 @@ namespace ge
 		CLEAR_COLOR								m_clearColors[16];
 		usize								    m_clearColorsNum;
 		VkFence									m_finishFence;
+		Vector<RPtr<VulkanSemaphore>>			m_waitSemaphores;
+		Vector<RPtr<VulkanSemaphore>>			m_signalSemaphores;
 	public:
+		void registerWait(VulkanSemaphore* semaphore);
+		void registerSignal(VulkanSemaphore* semaphore);
+
 		constexpr VkCommandBuffer vulkanCb() const noexcept
 		{
 			return m_buffer;

@@ -3,7 +3,12 @@
 #include "VulkanBuffer.h"
 #include "VulkanCommandBuffer.h"
 #include "VulkanPipeline.h"
+#include "VulkanUniform.h"
+#include "VulkanFrameBuffer.h"
+#include "VulkanShaderModule.h"
+#include "VulkanSampler.h"
 #include "Core/Debug.h"
+
 namespace ge
 {
 	const std::vector<const char*> deviceExtensions = {
@@ -118,7 +123,7 @@ namespace ge
 		return iter->second;
 	}
 
-	VulkanGpuContext::VulkanGpuContext()
+	VulkanGpuContext::VulkanGpuContext(const VulkanSurfaceCreator& surfaceCreator)
 	{
 		Debug::log("Vulkan: VulkanGpuContext::VulkanGpuContext");
 		for (auto& x : translatedFormats)
@@ -144,15 +149,11 @@ namespace ge
 			createInfo.ppEnabledExtensionNames = extensions.data();
 			createInfo.enabledExtensionCount = extensions.size();
 			CHECK_VULKAN(vkCreateInstance(&createInfo, nullptr, &instance));
-
-		/*	VkWin32SurfaceCreateInfoKHR createInfo2 = {};
-			createInfo2.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-			createInfo2.hwnd = surfinter;
-			createInfo2.hinstance = GetModuleHandleW(nullptr);
-			CHECK_VULKAN(vkCreateWin32SurfaceKHR(instance, &createInfo2, nullptr, &surface));
+	
+			CHECK_VULKAN(surfaceCreator(surface, this));
 
 			if (!surface)
-				throw std::runtime_error("error of acquire surface");*/
+				throw std::runtime_error("error of acquire surface");
 		}
 
 #ifdef _DEBUG
@@ -194,19 +195,19 @@ namespace ge
 				m_graphicsFamily = i;
 			if (queueFamily.queueCount > 0 && queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT)
 				m_transportFamily = i;
-			/*VkBool32 presentSupport = false;
+			VkBool32 presentSupport = false;
 			vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
 			if (queueFamily.queueCount > 0 && presentSupport)
-				present.famaly = i;*/
+				m_presentFamily = i;
 			i++;
 		}
 
 
-		if (m_graphicsFamily == UINT32_MAX ||/* present.famaly == UINT32_MAX ||*/ m_transportFamily == UINT32_MAX || m_computeFamily == UINT32_MAX)
+		if (m_graphicsFamily == UINT32_MAX || m_presentFamily == UINT32_MAX || m_transportFamily == UINT32_MAX || m_computeFamily == UINT32_MAX)
 			geAssertFalse("failed to find graphics famaly");
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<uint32_t> uniqueQueueFamilies = { m_graphicsFamily, /*present.famaly,*/ m_transportFamily, m_computeFamily };
+		std::set<uint32_t> uniqueQueueFamilies = { m_graphicsFamily, m_presentFamily, m_transportFamily, m_computeFamily };
 
 		float queuePriority = 1.0f;
 		for (uint32_t queueFamily : uniqueQueueFamilies) {
@@ -349,6 +350,8 @@ namespace ge
 		case ge::QT_COMPUTE:
 			return m_computeFamily;
 			break;
+		case ge::QT_PRESENT:
+			return m_presentFamily;
 		default:
 			break;
 		}
@@ -426,19 +429,19 @@ namespace ge
 	}
 	Uniform* VulkanGpuContext::createUniform(const UNIFORM_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanUniform(desc, this);
 	}
 	Texture2D* VulkanGpuContext::createTexture2D(const TEXTURE2D_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanTexture2D(desc, this);
 	}
 	Buffer* VulkanGpuContext::createBuffer(const BUFFER_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanBuffer(desc, false, this);
 	}
 	Sampler* VulkanGpuContext::createSampler(const SAMPLER_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanSampler(desc, this);
 	}
 	CommandBuffer* VulkanGpuContext::createCommandBuffer(const COMMAND_BUFFER_DESC& desc)
 	{
@@ -451,7 +454,7 @@ namespace ge
 	}
 	Framebuffer* VulkanGpuContext::createFramebuffer(const FRAMEBUFFER_DESC& desc)
 	{
-		return nullptr;
+		return new VulkanFramebuffer(desc, this);
 	}
 	usize VulkanGpuContext::allignUniform(usize length) const
 	{

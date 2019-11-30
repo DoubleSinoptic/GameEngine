@@ -205,6 +205,7 @@
     <ClCompile Include="RenderAPI\Vulkan\VulkanPipeline.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanShaderModule.cpp" />
+    <ClCompile Include="RenderAPI\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanSync.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp" />
     <ClCompile Include="RenderAPI\Vulkan\VulkanUniform.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="Game\InputKeys.h" />
     <ClInclude Include="RenderAPI\CommandBuffer.h" />
     <ClInclude Include="RenderAPI\GpuResource.h" />
+    <ClInclude Include="RenderAPI\Swapchain.h" />
     <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanCommandBuffer.h" />
@@ -261,6 +263,7 @@
     <ClInclude Include="RenderAPI\Vulkan\VulkanQueue.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h" />
+    <ClInclude Include="RenderAPI\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanSync.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h" />
     <ClInclude Include="RenderAPI\Vulkan\VulkanUniform.h" />

@@ -7,6 +7,14 @@
 #include "VulkanTexture2D.h"
 namespace ge 
 {
+	void VulkanCommandBuffer::registerWait(VulkanSemaphore* semaphore)
+	{
+		m_waitSemaphores.push_back(semaphore);
+	}
+	void VulkanCommandBuffer::registerSignal(VulkanSemaphore* semaphore)
+	{
+		m_signalSemaphores.push_back(semaphore);
+	}
 	VulkanCommandBuffer::VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer) :
 		m_buffer(buffer),
 		m_pool(m_pool),

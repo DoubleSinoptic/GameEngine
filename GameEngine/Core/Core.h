@@ -169,6 +169,17 @@ namespace ge
 
 	usize byteArrayHash(const byte* data, usize dataSize);
 	bool  byteArrayEqual(const byte* a, const byte* b, usize dataSize);
+
+	template<typename T>
+	constexpr T max(T a, T b) noexcept
+	{
+		return a > b ? a : b;
+	}
+	template<typename T>
+	constexpr T min(T a, T b) noexcept
+	{
+		return a < b ? a : b;
+	}
 }
 
 #endif

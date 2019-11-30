@@ -92,7 +92,7 @@ namespace ge
 			}
 		};
 	};
-
+	class Swapchain;
 	class CommandBuffer : public GpuResource
 	{		
 		COMMAND_BUFFER_DESC						m_desc;
@@ -122,6 +122,7 @@ namespace ge
 		virtual void setUniforms(Uniform* const* uniform, uint32 start, uint32 num) = 0;
 		virtual void setUniform(Uniform* uniform, uint32 start = 0) = 0;
 		virtual void execute(CommandBuffer* secondryCommandBuffer) = 0;
+		virtual void present(Swapchain* swapchain, Texture2D* image) = 0;
 	};
 }
 

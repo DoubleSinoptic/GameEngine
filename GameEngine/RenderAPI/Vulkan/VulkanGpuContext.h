@@ -23,7 +23,8 @@ namespace ge
 		VkAccessFlags		 access;
 		VkPipelineStageFlags stage;
 	};
-
+	class VulkanGpuContext;
+	typedef std::function<VkResult(VkSurfaceKHR&, VulkanGpuContext*)> VulkanSurfaceCreator;
 	class VulkanCommandPool;
 	class VulkanGpuContext : public GpuContext
 	{
@@ -48,10 +49,7 @@ namespace ge
 		std::unordered_map<UNIFORM_DESC, VkDescriptorSetLayout, UniformDescHash, UniformDescEqual> m_descriptorSetLayouts;
 		std::unordered_map<COMMAND_BUFFER_DESC, VulkanCommandPool*, COMMAND_BUFFER_DESC::Hash, COMMAND_BUFFER_DESC::Equal> m_commandPools;
 
-		uint32 m_computeFamily;
-		uint32 m_graphicsFamily;
-		uint32 m_transportFamily;
-		uint32 m_presentFamily;
+		
 	public:
 		VkPhysicalDevice							physicalDevice = VK_NULL_HANDLE;
 		VmaAllocator								allocator;
@@ -59,6 +57,12 @@ namespace ge
 		VkDebugUtilsMessengerEXT					debugMessenger = VK_NULL_HANDLE;
 		VkInstance									instance = nullptr;
 		Vector<VkPhysicalDevice>					devices;
+		VkSurfaceKHR								surface;
+
+		uint32 m_computeFamily;
+		uint32 m_graphicsFamily;
+		uint32 m_transportFamily;
+		uint32 m_presentFamily;
 
 		VulkanCommandPool* getCommandPool(const COMMAND_BUFFER_DESC& desc);
 
@@ -66,7 +70,7 @@ namespace ge
 
 		VkPhysicalDeviceProperties props;
 
-		VulkanGpuContext();
+		VulkanGpuContext(const VulkanSurfaceCreator& creator);
 		~VulkanGpuContext();
 
 		struct DesckAlloc
