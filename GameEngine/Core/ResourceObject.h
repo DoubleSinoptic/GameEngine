@@ -162,6 +162,43 @@ namespace ge
 				m_ptr->release();
 		}
 	};
+
+	template<typename T>
+	bool operator ==(const RPtr<T>& a, const T* np) noexcept
+	{
+		return a.get() == np;
+	}
+
+	template<typename T>
+	bool operator !=(const RPtr<T>& a, const T* np) noexcept
+	{
+		return a.get() != np;
+	}
+
+
+	template<typename T>
+	bool operator ==(const RPtr<T>& a, std::nullptr_t np) noexcept
+	{
+		return a.get() == np;
+	}
+
+	template<typename T>
+	bool operator !=(const RPtr<T>& a, std::nullptr_t np) noexcept
+	{
+		return a.get() != np;
+	}
+
+	template<typename T>
+	bool operator ==(const RPtr<T>& a, const RPtr<T>& b) noexcept
+	{
+		return a.get() == b.get();
+	}
+
+	template<typename T>
+	bool operator !=(const RPtr<T>& a, const RPtr<T>& b) noexcept
+	{
+		return a.get() != b.get();
+	}
 }
 
 #endif

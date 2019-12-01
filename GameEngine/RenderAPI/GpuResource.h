@@ -7,11 +7,13 @@
 
 namespace ge
 {
+	class CommandBuffer;
 	class GpuContext;
 	class GpuResource : public ResourceObject
 	{
-		mutable bool m_isReleased;
-		GpuContext*  m_context;
+		mutable bool   m_isReleased;
+		GpuContext*    m_context;
+		CommandBuffer* m_writeOwner;
 	public:
 		GpuResource(GpuContext* context);
 
@@ -21,6 +23,9 @@ namespace ge
 		{
 			return *m_context;
 		}
+
+		CommandBuffer* getWriteOwner() const;
+		void setWriteOwner(CommandBuffer* cmdBuffer);
 
 		template<typename T>
 		constexpr T& gpuContextT() const noexcept

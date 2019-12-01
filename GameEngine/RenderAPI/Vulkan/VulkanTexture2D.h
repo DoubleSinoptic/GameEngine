@@ -59,7 +59,7 @@ namespace ge
 		VulkanTexture2D(const VULKAN_CUSTOM_IMAGE_DESC& desc, VulkanGpuContext* instance);
 		VulkanTexture2D(const TEXTURE2D_DESC& desc, VulkanGpuContext* instance);
 		~VulkanTexture2D();
-
+		
 		constexpr VkImageLayout baseLayout() const noexcept
 		{
 			return m_baseLayout;

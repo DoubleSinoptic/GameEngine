@@ -11,10 +11,12 @@ namespace ge
 	{
 		m_waitSemaphores.push_back(semaphore);
 	}
-	void VulkanCommandBuffer::registerSignal(VulkanSemaphore* semaphore)
+
+	RPtr<VulkanSemaphore> VulkanCommandBuffer::getFinishSemaphore()
 	{
-		m_signalSemaphores.push_back(semaphore);
+		return m_finishSemaphore;
 	}
+	
 	VulkanCommandBuffer::VulkanCommandBuffer(const COMMAND_BUFFER_DESC& desc, VulkanGpuContext* context, VulkanCommandPool* m_pool, VkCommandBuffer buffer) :
 		m_buffer(buffer),
 		m_pool(m_pool),
@@ -23,6 +25,7 @@ namespace ge
 		m_clearColorsNum(0),
 		m_finishFence(VK_NULL_HANDLE),
 		m_currentFramebuffer(nullptr)
+		,m_finishSemaphore(new VulkanSemaphore(context))
 	{
 		VkCommandBufferBeginInfo begin = {};
 		begin.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -59,7 +62,7 @@ namespace ge
 		CHECK_VULKAN(result);
 	}
 
-	void VulkanCommandBuffer::copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart)
+	void VulkanCommandBuffer::copyBufferWR(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart)
 	{
 		VulkanBuffer* vdst = static_cast<VulkanBuffer*>(dst);
 		VulkanBuffer* vsrc = static_cast<VulkanBuffer*>(src);
@@ -68,11 +71,9 @@ namespace ge
 		cpy.srcOffset = srcStart;
 		cpy.size = size;
 		vkCmdCopyBuffer(m_buffer, vsrc->vulkanHandle(), vdst->vulkanHandle(), 1, &cpy);
-		trackResource(dst);
-		trackResource(src);
 	}
 
-	void VulkanCommandBuffer::copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg)
+	void VulkanCommandBuffer::copyBufferToImageWR(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg)
 	{
 		VulkanTexture2D* tx = static_cast<VulkanTexture2D*>(dst);
 		VulkanBuffer* bf = static_cast<VulkanBuffer*>(src);
@@ -102,12 +103,9 @@ namespace ge
 			{ VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT },
 			tx->baseLayoutInfo()
 		);
-
-		trackResource(dst);
-		trackResource(src);
 	}
 
-	void VulkanCommandBuffer::copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter)
+	void VulkanCommandBuffer::copyImageWR(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter)
 	{
 		VulkanTexture2D* d = static_cast<VulkanTexture2D*>(dst);
 		VulkanTexture2D* s = static_cast<VulkanTexture2D*>(src);
@@ -147,9 +145,6 @@ namespace ge
 		commandBuffer.switchLayout(d->vulkanHandle(), d->aspectFlags(), dstReg->mipLevel, dstReg->arrayLayer, 1, 1,
 			{ VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT }, d->baseLayoutInfo()
 		);
-
-		trackResource(dst);
-		trackResource(src);
 	}
 
 	void VulkanCommandBuffer::drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces)
@@ -185,7 +180,7 @@ namespace ge
 
 	}
 
-	void VulkanCommandBuffer::setFrameBuffer(Framebuffer* framebuffer)
+	void VulkanCommandBuffer::setFrameBufferWR(Framebuffer* framebuffer)
 	{
 		if (m_currentFramebuffer)
 		{
@@ -261,6 +256,20 @@ namespace ge
 		barrier.dstAccessMask = newState.access;
 
 		vkCmdPipelineBarrier(m_buffer, oldState.stage, newState.stage, 0, 0, 0, 0, 0, 1, &barrier);
+	}
+
+	void VulkanCommandBuffer::waitForFinish()
+	{
+		if (m_finishFence == VK_NULL_HANDLE)
+			return;
+		auto result = vkWaitForFences(m_instance->device, 1, &m_finishFence, true, 0);
+		if (result == VK_TIMEOUT)
+			return;
+		CHECK_VULKAN(result);
+	}
+
+	void VulkanCommandBuffer::present(Swapchain* swapchain, Texture2D* image)
+	{
 	}
 
 	VulkanCommandPool::VulkanCommandPool(VulkanGpuContext* instance, const COMMAND_BUFFER_DESC& type) :

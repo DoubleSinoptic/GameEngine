@@ -6,10 +6,12 @@
 #include "VulkanGpuContext.h"
 #include "../Swapchain.h"
 #include "Core/Config.h"
+#include "VulkanSync.h"
 namespace ge
 {
 	class VulkanSwapchain : public Swapchain
 	{
+		std::vector<RPtr<VulkanSemaphore>>    m_semaphores;
 		std::vector<VkImage>			m_swapChainImages;
 		VkFormat						m_swapChainImageFormat;
 		VkExtent2D						m_swapChainExtent;

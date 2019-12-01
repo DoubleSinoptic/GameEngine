@@ -41,11 +41,11 @@ namespace ge
 		CLEAR_COLOR								m_clearColors[16];
 		usize								    m_clearColorsNum;
 		VkFence									m_finishFence;
+		RPtr<VulkanSemaphore>					m_finishSemaphore;
 		Vector<RPtr<VulkanSemaphore>>			m_waitSemaphores;
-		Vector<RPtr<VulkanSemaphore>>			m_signalSemaphores;
 	public:
 		void registerWait(VulkanSemaphore* semaphore);
-		void registerSignal(VulkanSemaphore* semaphore);
+		RPtr<VulkanSemaphore> getFinishSemaphore();
 
 		constexpr VkCommandBuffer vulkanCb() const noexcept
 		{
@@ -59,11 +59,11 @@ namespace ge
 
 		virtual bool isFinished() override;
 
-		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) override;
+		virtual void copyBufferWR(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) override;
 
-		virtual void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) override;
+		virtual void copyBufferToImageWR(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) override;
 
-		virtual void copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter) override;
+		virtual void copyImageWR(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter) override;
 
 		virtual void drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces) override;
 
@@ -75,7 +75,7 @@ namespace ge
 
 		virtual void setPipeline(Pipeline* pipeline) override;
 
-		virtual void setFrameBuffer(Framebuffer* framebuffer) override;
+		virtual void setFrameBufferWR(Framebuffer* framebuffer) override;
 
 		virtual void setUniforms(Uniform* const* uniform, uint32 start, uint32 num) override;
 
@@ -93,6 +93,10 @@ namespace ge
 			ImageBarrierTriple oldState,
 			ImageBarrierTriple newState
 		);
+
+		// Унаследовано через CommandBuffer
+		virtual void waitForFinish() override;
+		virtual void present(Swapchain* swapchain, Texture2D* image) override;
 	};
 }
 

@@ -97,17 +97,27 @@ namespace ge
 	{		
 		COMMAND_BUFFER_DESC						m_desc;
 		Vector<RPtr<const GpuResource>>			m_resources;
+		Vector<RPtr<GpuResource>>			    m_writeResources;
 		bool									m_enabledTraking;
+	protected:
+		virtual void copyBufferWR(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
+		virtual void copyBufferToImageWR(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) = 0;
+		virtual void copyImageWR(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter) = 0;
+		virtual void setFrameBufferWR(Framebuffer* framebuffer) = 0;
 	public:
 		~CommandBuffer();
 		CommandBuffer(const COMMAND_BUFFER_DESC& desc, GpuContext* context);
 		const COMMAND_BUFFER_DESC& getDesc() const;
 		void trackResource(const RPtr<const GpuResource>& resource);
-		
+		void ownAllResources();
+
+		virtual void waitForFinish() = 0;
 		virtual bool isFinished() = 0;
-		virtual void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart) = 0;;
-		virtual void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg) = 0;
-		virtual void copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter) = 0;
+		
+		void copyBuffer(Buffer* dst, Buffer* src, usize size, usize dstStart, usize srcStart);
+		void copyBufferToImage(Texture2D* dst, Buffer* src, usize size, usize srcStart, const TEXTURE2D_COPY_DESC* dstReg);
+		void copyImage(Texture2D* dst, Texture2D* src, const TEXTURE2D_COPY_DESC* dstReg, const TEXTURE2D_COPY_DESC* srcReg, SampledFilter filter);
+		void setFrameBuffer(Framebuffer* framebuffer);
 
 		virtual void drawIndexed(uint32 firstIndeces, uint32 numIndeces, uint32 firstVerteces) = 0;
 		virtual void draw(uint32 firstVerteces, uint32 numVerteces) = 0;
@@ -118,7 +128,7 @@ namespace ge
 
 		virtual void setClearColors(const CLEAR_COLOR* clearColors, usize num) = 0;
 		virtual void setPipeline(Pipeline* pipeline) = 0;
-		virtual void setFrameBuffer(Framebuffer* framebuffer) = 0;
+		
 		virtual void setUniforms(Uniform* const* uniform, uint32 start, uint32 num) = 0;
 		virtual void setUniform(Uniform* uniform, uint32 start = 0) = 0;
 		virtual void execute(CommandBuffer* secondryCommandBuffer) = 0;

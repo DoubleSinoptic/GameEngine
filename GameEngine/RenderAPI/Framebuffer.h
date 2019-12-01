@@ -12,7 +12,7 @@ namespace ge
 
 	struct RENDERTARGET_DESC 
 	{
-		Texture2D*	texture = nullptr;
+		RPtr<Texture2D>	texture;
 		uint32		mip = 0;
 		uint32		layer = 0;
 	};
@@ -29,7 +29,7 @@ namespace ge
 
 	class Framebuffer : public GpuResource
 	{
-		const FRAMEBUFFER_DESC m_desc;
+		const FRAMEBUFFER_DESC		 m_desc;
 	public:
 		Framebuffer(const FRAMEBUFFER_DESC& desc, GpuContext* context) :
 			m_desc(desc),

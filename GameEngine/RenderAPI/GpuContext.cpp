@@ -55,12 +55,14 @@ namespace ge
 
 		if (types & CBT_MAIN)
 		{
+			m_mainCb->ownAllResources();
 			submit(m_mainCb);
 			m_submitedBuffers.push_back(m_mainCb);
 			m_mainCb = nullptr;
 		}
 		if (types & CBT_TRANSFER)
 		{
+			m_transferCb->ownAllResources();
 			submit(m_transferCb);
 			m_submitedBuffers.push_back(m_transferCb);
 			m_transferCb = nullptr;
