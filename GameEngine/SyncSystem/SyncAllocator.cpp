@@ -32,8 +32,9 @@ namespace ge
 		resetBack();
 	}
 
-	void* SyncAllocator::allocate(usize n)
+	void* SyncAllocator::allocate(usize r)
 	{
+		const usize n = (r + 15) & ~15;
 		if (m_offset + n >= m_max)
 		{
 			m_frames.push_back(Vector<byte>(m_max * 2));
@@ -44,14 +45,4 @@ namespace ge
 		m_offset += n;
 		return p;
 	}
-
-	void* SyncAllocator::alignedAllocate(usize size, usize alignment) {
-		usize request_size = size + alignment;
-		byte* buf = (byte*)allocate(request_size);
-		usize remainder = ((usize)buf) % alignment;
-		usize offset = alignment - remainder;
-		byte* ret = buf + (byte)offset;
-		return (void*)ret;
-	}
-
 }

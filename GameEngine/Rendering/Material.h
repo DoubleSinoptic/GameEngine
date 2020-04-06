@@ -3,9 +3,7 @@
 #define __MATERIAL_H__
 
 #include "Core/Core.h"
-#include "RenderAPI/Texture2D.h"
-#include "RenderAPI/Buffer.h"
-#include "RenderAPI/GpuContext.h"
+#include "RenderFramework/IContext.h"
 #include "Mesh.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"
@@ -27,8 +25,8 @@ namespace ge
 			virtual void initialize() override;
 			virtual void sync(void* data, uint32 flags) override;
 	
-			virtual void setPassInstancedCall(CommandBuffer& context);
-			virtual void setPassCall(CommandBuffer& context);
+			virtual void setPassInstancedCall(ICommandBuffer& context);
+			virtual void setPassCall(ICommandBuffer& context);
 		};
 	
 	}

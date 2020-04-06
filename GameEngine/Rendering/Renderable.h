@@ -8,8 +8,7 @@
 #include "Math/Matrix4.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"
-#include "RenderAPI/Buffer.h"
-#include "RenderAPI/Uniform.h"
+#include "RenderFramework/IContext.h"
 
 namespace ge
 {
@@ -90,8 +89,8 @@ namespace ge
 			Mesh*					m_mesh;
 			Vector<RenderElement>	m_renderables;
 
-			RPtr<Buffer>			m_globalTransform;
-			RPtr<Uniform>			m_globalTransformUniform;
+			IBufferRef				m_globalTransform;
+			IResourceSetRef			m_globalTransformUniform;
 
 			uint32					m_techque;
 			scalar					m_cullDistance;
@@ -115,7 +114,7 @@ namespace ge
 				return m_mesh;
 			}
 
-			constexpr Uniform* transform() const 
+			constexpr IResourceSet* transform() const 
 			{
 				return m_globalTransformUniform;
 			}

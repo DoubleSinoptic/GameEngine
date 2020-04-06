@@ -2,6 +2,7 @@
 #include "Core/StringFormat.h"
 #include "Core/Library.h"
 
+#include <Windows.h>
 
 namespace ge 
 {
@@ -92,7 +93,7 @@ namespace ge
 
 		virtual Any getNativeHandle() const noexcept override
 		{ 
-			return m_instance->glfwGetWin32Window(m_window);
+			return (::HWND)m_instance->glfwGetWin32Window(m_window);
 		}
 
 		GlfwWindow(const WINDOW_DESC& desc, GlfwWindowManager* manager) :
@@ -131,7 +132,7 @@ namespace ge
 			m_instance->glfwSetWindowSize(m_window, w, h);
 		}
 
-		virtual void getSize(uint32& w, uint32 h) const noexcept override
+		virtual void getSize(uint32& w, uint32& h) const noexcept override
 		{
 			int x, y;
 			m_instance->glfwGetWindowSize(m_window, &x, &y);
@@ -139,7 +140,7 @@ namespace ge
 			h = y;
 		}
 
-		virtual void getLocation(int32& x, int32 y) const noexcept  override
+		virtual void getLocation(int32& x, int32& y) const noexcept  override
 		{
 			m_instance->glfwGetWindowPos(m_window, &x, &y);
 		}
@@ -193,10 +194,10 @@ namespace ge
 			String buildType = u"Release";
 #		endif
 
-		String libraryName = format("glfw3_{0}_{1}", (sizeof(void*) == 4) ? "32" : "64", buildType);
+		String libraryName = format("GETP{0}_{1}", (sizeof(void*) == 4) ? "32" : "64", buildType);
 		m_glfwLibrary = snew<Library>(libraryName);
 		if (!m_glfwLibrary->isLoad())
-			geAssertFalse("Can not load glfw3@.dll triple.");
+			geAssertFalse("Can not load GETP@.dll triple.");
 #			define LinkProc(x) x = m_glfwLibrary->getProcessAddress<decltype(x)>(u ## # x); geAssert(x)
 
 		LinkProc(glfwInit);

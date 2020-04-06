@@ -17,12 +17,21 @@ namespace ge
 
 	class WindowManager
 	{
+		Ptr<Window> m_main;
 	protected:
 		WindowManager() {}
 	public:
 		static WindowManager& instance();
 		static void setCurrentWindowManager(Ptr<WindowManager> manager);
 
+		void setMainWindow(const Ptr<Window>& wnd) {
+			m_main = wnd;
+		}
+
+		Ptr<Window> mainWindow() const {
+			return m_main;
+		}
+	
 		virtual ~WindowManager() = default;
 		virtual Ptr<Monitor>			primaryMonitor() = 0;
 		virtual Vector<Ptr<Monitor>>	allMonitors() = 0;

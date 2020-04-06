@@ -16,8 +16,8 @@ namespace ge
 		public:
 			void drawGeometryAll(
 				RenderChunk& chunk, 
-				const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshCall, 
-				const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshInstanced,
+				const std::function<void(rt::Mesh*, ICommandBuffer& context)>& setMeshCall, 
+				const std::function<void(rt::Mesh*, ICommandBuffer& context)>& setMeshInstanced,
 				uint32 transformSet, 
 				const Vector3& viewPosition
 			);

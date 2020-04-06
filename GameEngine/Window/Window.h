@@ -5,7 +5,6 @@
 #include "Core/Core.h"
 #include "Core/Any.h"
 #include <map>
-#include "Core/ResourceObject.h"
 
 namespace ge
 {
@@ -33,14 +32,10 @@ namespace ge
 
 	class Window 
 	{
-		std::map<String, RPtr<ResourceObject>> m_resources;
 	protected:
 		Window() {}
 	public:
 		virtual ~Window() = default;
-
-		RPtr<ResourceObject> getResource(const String& resource);
-		void setResource(const String& name, RPtr<ResourceObject>);
 
 		virtual Any getNativeHandle() const noexcept = 0;
 
@@ -50,8 +45,8 @@ namespace ge
 		virtual void setLocation(int32 x, int32 y) = 0;
 		virtual void setSize(uint32 w, uint32 h) = 0;
 
-		virtual void getSize(uint32& w, uint32 h) const noexcept = 0;
-		virtual void getLocation(int32& x, int32 y) const noexcept = 0;
+		virtual void getSize(uint32& w, uint32& h) const noexcept = 0;
+		virtual void getLocation(int32& x, int32& y) const noexcept = 0;
 
 		virtual String getTitle() const = 0;
 		virtual void setTitle(const String& title) = 0;

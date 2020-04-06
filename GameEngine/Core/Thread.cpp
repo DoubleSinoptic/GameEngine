@@ -20,13 +20,17 @@ namespace ge
 		uint32 selectedId = m_id;
 		m_thread = snew<std::thread>([=]() {
 			m_thisId = selectedId;
+#ifdef NDEBUG
 			try {
+#endif
 				Debug::log("Thread started: {0}", selectedId);
 				f();
+#ifdef NDEBUG
 			}
 			catch (const std::exception& ex) {
 				MessageBox::showInfo(utf8(ex.what()), u"GameEngine error.", MBT_ERROR);
 			}
+#endif
 			Debug::log("Thread destroyed: {0}", selectedId);
 		});
 	}

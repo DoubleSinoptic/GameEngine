@@ -4,7 +4,7 @@ namespace ge
 {
 	namespace rt
 	{
-		void InstacedInstance::bindBuffers(CommandBuffer& context)
+		void InstacedInstance::bindBuffers(ICommandBuffer& context)
 		{
 		}
 		usize InstacedInstance::instanceCount() const

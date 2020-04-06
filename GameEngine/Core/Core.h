@@ -180,6 +180,40 @@ namespace ge
 	{
 		return a < b ? a : b;
 	}
+
+	template<typename T>
+	struct AnyLess {
+		constexpr bool operator()(const T& a, const T& b) const {
+			constexpr size_t int32SizeLength = sizeof(T) / 4;
+			static_assert(sizeof(T) % 4 == 0, "invalid type size");
+			const int32* ap = reinterpret_cast<const int32*>(&a);
+			const int32* bp = reinterpret_cast<const int32*>(&b);
+			for (size_t i = 0; i < int32SizeLength; i++) {
+				const int32 v0 = ap[i];
+				const int32 v1 = bp[i];
+				if (v0 != v1)
+					return v0 < v1 ? true : false;
+			}
+			return false;
+		}
+	};
+	template<typename T>
+	struct AnyCmp {
+		constexpr bool operator()(const T& a, const T& b) const {
+			constexpr size_t int32SizeLength = sizeof(T) / 4;
+			static_assert(sizeof(T) % 4 == 0, "invalid type size");
+			const int32* ap = reinterpret_cast<const int32*>(&a);
+			const int32* bp = reinterpret_cast<const int32*>(&b);
+			for (size_t i = 0; i < int32SizeLength; i++) {
+				const int32 v0 = ap[i];
+				const int32 v1 = bp[i];
+				if (v0 != v1)
+					return false;
+			}
+			return true;
+		}
+	};
+
 }
 
 #endif

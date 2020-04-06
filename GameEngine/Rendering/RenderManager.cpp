@@ -1,10 +1,12 @@
 #include "RenderManager.h"
 #include "../SyncSystem/SyncManager.h"
-
-#include "../RenderAPI/Vulkan/VulkanGpuContext.h"
-
+#include "Camera.h"
+#include "../Core/Any.h"
+//#include "../RenderAPI/Vulkan/VulkanGpuContext.h"
+#include "../Window/WindowManager.h"
 namespace ge 
 {
+	CmPtr<IContext> __cdecl CreateD3D11GraphicsContext(const Any& v);
 	namespace rt 
 	{	
 		RenderManager* currentRenderManagerRt = nullptr;
@@ -21,8 +23,8 @@ namespace ge
 
 		void RenderManager::initialize()
 		{
-			m_gpuContext = snew<VulkanGpuContext>();
-			m_gpuPool = snew<GpuPool>();
+			m_gpuContext = CreateD3D11GraphicsContext(WindowManager::instance().mainWindow()->getNativeHandle());
+		
 		}
 
 		void RenderManager::prepareToDestory()
@@ -38,7 +40,24 @@ namespace ge
 		}
 
 		void RenderManager::render() 
-		{
+		{			
+			for (auto x : m_camers) {
+				if (x->cameraState & CAMERA_STATE_RENDER_BIT) {
+					if (x->cameraState & CAMERA_STATE_MAIN_BIT) {
+						ITextureRef tex = m_gpuContext->nextDrawable();
+						x->render(tex);
+						m_gpuContext->present(tex);
+						uint32 we = 0, he = 0;
+						WindowManager::instance().mainWindow()->getSize(we, he);
+						if (we != tex->getDesc().width || he != tex->getDesc().heigh)
+							m_gpuContext->resizeDrawable(we, he);
+					} else {
+						geAssertFalse("not support now");
+					}
+
+
+				}
+			}
 		}
 	}
 

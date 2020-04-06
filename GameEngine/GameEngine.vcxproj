@@ -123,7 +123,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,7 +145,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib32\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib32\vulkan-1.lib";%(AdditionalDependencies);d3d11.lib;d3dcompiler.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,7 +167,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"C:\VulkanSDK\1.1.106.0\Lib\vulkan-1.lib";%(AdditionalDependencies);d3d11.lib;d3dcompiler.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -193,22 +193,26 @@
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\RigidBody.cpp" />
     <ClCompile Include="Physics\SphereCollider.cpp" />
-    <ClCompile Include="RenderAPI\CommandBuffer.cpp" />
-    <ClCompile Include="RenderAPI\GpuResource.cpp" />
-    <ClCompile Include="RenderAPI\GpuContext.cpp" />
-    <ClCompile Include="RenderAPI\GpuPool.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanCommandBuffer.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanFrameBuffer.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanPipeline.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanShaderModule.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSwapchain.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSync.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp" />
-    <ClCompile Include="RenderAPI\Vulkan\VulkanUniform.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11CommandBuffer.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Context.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Framebuffer.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Texture.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DBuffer.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DPipeline.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DSampler.cpp" />
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DShaderModule.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cfg.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cpp.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_c.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_parsed_ir.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_util.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_glsl.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_hlsl.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_msl.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_parser.cpp" />
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_reflect.cpp" />
+    <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\Material.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Renderable.cpp" />
@@ -238,8 +242,8 @@
     <ClInclude Include="Core\IO.h" />
     <ClInclude Include="Core\Library.h" />
     <ClInclude Include="Core\PoolAllocator.h" />
-    <ClInclude Include="Core\ResourceObject.h" />
     <ClInclude Include="Core\Serializer.h" />
+    <ClInclude Include="Core\SmallVector.h" />
     <ClInclude Include="Core\StringFormat.h" />
     <ClInclude Include="Core\ThreadPool.h" />
     <ClInclude Include="Core\TickLocker.h" />
@@ -251,22 +255,43 @@
     <ClInclude Include="Game\Indent.h" />
     <ClInclude Include="Game\Input.h" />
     <ClInclude Include="Game\InputKeys.h" />
-    <ClInclude Include="RenderAPI\CommandBuffer.h" />
-    <ClInclude Include="RenderAPI\GpuResource.h" />
-    <ClInclude Include="RenderAPI\Swapchain.h" />
-    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanCommandBuffer.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanQueue.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSwapchain.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSync.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h" />
-    <ClInclude Include="RenderAPI\Vulkan\VulkanUniform.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11CommandBuffer.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Context.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Framebuffer.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Texture.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DBuffer.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DPipeline.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DSampler.h" />
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DShaderModule.h" />
+    <ClInclude Include="RenderFramework\IBuffer.h" />
+    <ClInclude Include="RenderFramework\ICommandBuffer.h" />
+    <ClInclude Include="RenderFramework\IContext.h" />
+    <ClInclude Include="RenderFramework\IContextObject.h" />
+    <ClInclude Include="RenderFramework\IFrameBuffer.h" />
+    <ClInclude Include="RenderFramework\IPipeline.h" />
+    <ClInclude Include="RenderFramework\IResourceSet.h" />
+    <ClInclude Include="RenderFramework\ISampler.h" />
+    <ClInclude Include="RenderFramework\IShaderModule.h" />
+    <ClInclude Include="RenderFramework\ITexture.h" />
+    <ClInclude Include="RenderFramework\ThirdParty\GLSL.std.450.h" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv.h" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cfg.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_common.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cpp.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_c.h" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_containers.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_error_handling.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_parsed_ir.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_util.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_glsl.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_hlsl.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_msl.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_parser.hpp" />
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_reflect.hpp" />
+    <ClInclude Include="RenderFramework\UnionTypes.h" />
+    <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\Material.h" />
     <ClInclude Include="Rendering\RenderBase.h" />
     <ClInclude Include="Rendering\RenderGraph.h" />
@@ -346,17 +371,8 @@
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\RigidBody.h" />
     <ClInclude Include="Physics\SphereCollider.h" />
-    <ClInclude Include="RenderAPI\Buffer.h" />
-    <ClInclude Include="RenderAPI\Framebuffer.h" />
-    <ClInclude Include="RenderAPI\GpuPool.h" />
     <ClInclude Include="Rendering\Mesh.h" />
-    <ClInclude Include="RenderAPI\GpuContext.h" />
-    <ClInclude Include="RenderAPI\Pipeline.h" />
     <ClInclude Include="Rendering\Renderable.h" />
-    <ClInclude Include="RenderAPI\Sampler.h" />
-    <ClInclude Include="RenderAPI\ShaderModule.h" />
-    <ClInclude Include="RenderAPI\Texture2D.h" />
-    <ClInclude Include="RenderAPI\Uniform.h" />
     <ClInclude Include="SyncSystem\SyncAllocator.h" />
     <ClInclude Include="SyncSystem\SyncManager.h" />
     <ClInclude Include="SyncSystem\SyncObject.h" />

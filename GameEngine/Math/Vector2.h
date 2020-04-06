@@ -6,7 +6,7 @@
 
 namespace ge
 {
-	class alignas(16) Vector2
+	class alignas(8) Vector2
 	{
 	public:
 		union {

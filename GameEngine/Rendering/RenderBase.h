@@ -4,7 +4,6 @@
 
 #include "Core/Core.h"
 #include "Math/Matrix4.h"
-#include "RenderAPI/GpuContext.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Renderable.h"
@@ -18,7 +17,7 @@ namespace ge
 		{
 			Material* m_material;
 			Mesh* m_mesh;
-			RPtr<Buffer> m_buffer;
+			IBufferRef m_buffer;
 		public:
 			InstacedInstance(Mesh* mesh, Material* material) :
 				m_mesh(mesh),
@@ -35,7 +34,7 @@ namespace ge
 				return m_mesh;
 			}
 
-			void  bindBuffers(CommandBuffer& context);
+			void  bindBuffers(ICommandBuffer& context);
 			usize instanceCount() const;
 
 			void  updateTransform(const Matrix4& transform, usize index);

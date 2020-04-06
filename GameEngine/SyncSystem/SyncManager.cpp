@@ -59,7 +59,7 @@ namespace ge
 		m_dirtyObjects.clear();
 
 		m_queue.queue([=]()
-			{
+		{
 				for (auto x : *objects)
 				{
 					x.object->sync(x.data, x.flags);
@@ -68,7 +68,7 @@ namespace ge
 				m_objectsPool.free(objectsSmart);
 				allocator->reset();
 				m_allocatorsPool.free(allocatorsPoolSmart);
-			});
+		});
 	}
 
 	void SyncManager::playback()

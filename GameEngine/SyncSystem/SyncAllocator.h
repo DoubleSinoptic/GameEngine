@@ -24,19 +24,16 @@ namespace ge
 		}
 
 		void* allocate(usize n);
-		void* alignedAllocate(usize size, usize alignment = 16);
-
+		
 		template<typename T>
 		T* allocate()
 		{
-			return reinterpret_cast<T*>(allocate(sizeof(T)));
+			auto ptr = reinterpret_cast<T*>(allocate(sizeof(T)));
+			new(ptr) T();
+			return ptr;
 		}
 
-		template<typename T>
-		T* alignedAllocate(usize allign = 16)
-		{
-			return reinterpret_cast<T*>(alignedAllocate(sizeof(T), allign));
-		}
+		
 	};
 
 }

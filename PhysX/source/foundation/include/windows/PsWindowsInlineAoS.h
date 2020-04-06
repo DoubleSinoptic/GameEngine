@@ -360,7 +360,11 @@ PX_FORCE_INLINE Vec3V V3LoadUnsafeA(const PxVec3& f)
 	return _mm_load_ps(&f.x);
 }
 
-
+PX_FORCE_INLINE Vec3V V3LoadA(const PxF32* const f)
+{
+	ASSERT_ISALIGNED16(f);
+	return V4ClearW(_mm_load_ps(f));
+}
 
 PX_FORCE_INLINE Vec3V V3LoadU(const PxF32* const i)
 {

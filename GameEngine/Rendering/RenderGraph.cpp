@@ -6,10 +6,16 @@ namespace ge
 {
 	namespace rt
 	{
-		void RenderGraph::drawGeometryAll(RenderChunk& chunk, const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshCall, const std::function<void(rt::Mesh*, CommandBuffer& context)>& setMeshInstanced, uint32 transformSet, const Vector3& viewPosition)
+		void RenderGraph::drawGeometryAll(
+			RenderChunk& chunk,
+			const std::function<void(rt::Mesh*, ICommandBuffer& context)>& setMeshCall, 
+			const std::function<void(rt::Mesh*, ICommandBuffer& context)>& setMeshInstanced, 
+			uint32 transformSet, 
+			const Vector3& viewPosition
+			)
 		{
-			GpuContext& gpuContext = GpuContext::instance();
-			CommandBuffer& commandBuffer = gpuContext.mainCb();
+			IContext& gpuContext = RenderManager::instance().gpuContext();
+			ICommandBuffer& commandBuffer = *gpuContext.mainCommandBuffer();
 			RenderChunk::deffredforward_type& renderables = chunk.renderables;
 			RenderChunk::instanced_type& instancedRenderables = chunk.instanced;
 			uint32 meshId = UInt32Max;
@@ -28,8 +34,8 @@ namespace ge
 				}
 
 				auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
-				commandBuffer.setUniform(renderable->transform(), transformSet);
-				commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
+				commandBuffer.setResources(renderable->transform(), transformSet);
+				commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, 0, 1, subMesh.vertecesOffset);
 			}
 
 			meshId = UInt32Max;
@@ -46,7 +52,7 @@ namespace ge
 				for (usize i = 0; i < mesh->subMeshCount(); i++)
 				{
 					const SubMesh& subMesh = mesh->subMeshAt(i);
-					commandBuffer.drawIndexedInstanced(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset, 0, x.instance->instanceCount());
+					commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, 0, x.instance->instanceCount(), subMesh.vertecesOffset);
 				}
 			}
 		}
@@ -55,8 +61,8 @@ namespace ge
 		{
 			auto& materials = RenderManager::instance().materialsStorage();
 			auto& meshs = RenderManager::instance().meshStorage();
-			GpuContext& gpuContext = GpuContext::instance();
-			CommandBuffer& commandBuffer = gpuContext.mainCb();
+			IContext& gpuContext = RenderManager::instance().gpuContext();
+			ICommandBuffer& commandBuffer = *gpuContext.mainCommandBuffer();
 			RenderChunk::deffredforward_type& renderables = chunk.renderables;
 			RenderChunk::instanced_type& instancedRenderables = chunk.instanced;
 
@@ -85,8 +91,8 @@ namespace ge
 
 					auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
 
-					commandBuffer.setUniform(renderable->transform(), transformSet);
-					commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
+					commandBuffer.setResources(renderable->transform(), transformSet);
+					commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, 0, 1, subMesh.vertecesOffset);
 				}
 				else
 				{
@@ -121,7 +127,7 @@ namespace ge
 				for (usize i = 0; i < mesh->subMeshCount(); i++)
 				{
 					const SubMesh& subMesh = mesh->subMeshAt(i);
-					commandBuffer.drawIndexedInstanced(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset, 0, x.instance->instanceCount());
+					commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, 0, x.instance->instanceCount(), subMesh.vertecesOffset);
 				}
 			}
 
@@ -145,8 +151,8 @@ namespace ge
 				}
 
 				auto& subMesh = renderable->mesh()->subMeshAt(x.subMeshId);
-				commandBuffer.setUniform(renderable->transform(), transformSet);
-				commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, subMesh.vertecesOffset);
+				commandBuffer.setResources(renderable->transform(), transformSet);
+				commandBuffer.drawIndexed(subMesh.indecesOffset, subMesh.indecesCount, 0, 1, subMesh.vertecesOffset);
 			}
 
 			m_forwardRenderabees.clear();

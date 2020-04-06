@@ -3,14 +3,13 @@
 #define __MESH_H__
 
 #include "Core/Core.h"
-#include "Core/ResourceObject.h"
 #include "Core/Serializer.h"
 #include "SyncSystem/SyncManager.h"
 #include "SyncSystem/SyncObject.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
-#include "RenderAPI/Buffer.h"
-#include "RenderAPI/GpuContext.h"
+#include "RenderFramework/IContext.h"
+
 namespace ge
 {
 	struct BoneIndeces
@@ -43,14 +42,14 @@ namespace ge
 		class Mesh : public SyncObject
 		{
 			Ptr<Vector<SubMesh>>	 m_subMeshs;
-			RPtr<Buffer> m_verteces;
-			RPtr<Buffer> m_texcoords;
-			RPtr<Buffer> m_tangents;
-			RPtr<Buffer> m_normals;
-			RPtr<Buffer> m_indeces;
+			IBufferRef m_verteces;
+			IBufferRef m_texcoords;
+			IBufferRef m_tangents;
+			IBufferRef m_normals;
+			IBufferRef m_indeces;
 			usize		 m_subMeshCount;
-			RPtr<Buffer> m_bonesIndeces;
-			RPtr<Buffer> m_boneWeights;
+			IBufferRef m_bonesIndeces;
+			IBufferRef m_boneWeights;
 			SubMesh		 m_firstSubMesh;
 			uint32		 m_meshId;
 		public:
@@ -76,8 +75,8 @@ namespace ge
 					return m_firstSubMesh;
 			}
 
-			void setMeshCall(CommandBuffer& context);
-			void setMeshInstancedCall(CommandBuffer& context);
+			void setMeshCall(ICommandBuffer& context);
+			void setMeshInstancedCall(ICommandBuffer& context);
 		};
 	}
 

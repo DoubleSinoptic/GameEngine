@@ -20,10 +20,10 @@ namespace ge
 
 		}
 
-		void Material::setPassInstancedCall(CommandBuffer& context)
+		void Material::setPassInstancedCall(ICommandBuffer& context)
 		{
 		}
-		void Material::setPassCall(CommandBuffer& context)
+		void Material::setPassCall(ICommandBuffer& context)
 		{
 		}
 	}

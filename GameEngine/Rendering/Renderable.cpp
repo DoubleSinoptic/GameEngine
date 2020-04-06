@@ -35,17 +35,17 @@ namespace ge
 
 			BUFFER_DESC transformBufferDesc = {};
 			transformBufferDesc.size = sizeof(Matrix4);
-			transformBufferDesc.memType = MT_DYNAMIC;
+			transformBufferDesc.type = BT_DYNAMIC;
 			transformBufferDesc.usage = BU_UNIFORM;
 
-			m_globalTransform = GpuContext::instance().createBuffer(transformBufferDesc);
+			IContext& gpuContext = RenderManager::instance().gpuContext();
+			m_globalTransform = gpuContext.createBuffer(transformBufferDesc);
 
-			UNIFORM_DESC uniform = {};
-			uniform.resources[0].stages = PS_VERTEX;
-			uniform.resources[0].type = UT_BUFFER;
+			RESOURCESET_DESC desc = {};
+			desc.objects.push_back(m_globalTransform->contextObject());
+			desc.params.push_back({ PS_VERTEX, RT_BUFFER });
 
-			m_globalTransformUniform = GpuContext::instance().createUniform(uniform);
-			m_globalTransformUniform->setBuffer(m_globalTransform, 0);
+			m_globalTransformUniform = gpuContext.createResourceSet(desc);
 		}
 
 		Renderable::~Renderable()
@@ -59,8 +59,8 @@ namespace ge
 		{
 			if (flags == RSF_TRANSFORM)
 			{
-				Buffer* transformBuffer = m_globalTransform.get();
-				Matrix4* realTransform = (Matrix4*)transformBuffer->map(0, sizeof(Matrix4), AF_WRITE);
+				IBuffer* transformBuffer = m_globalTransform.get();
+				Matrix4* realTransform = (Matrix4*)transformBuffer->map(MT_WRITE);
 				*realTransform = *reinterpret_cast<Matrix4*>(data);
 				transformBuffer->unmap();
 			}
@@ -70,8 +70,8 @@ namespace ge
 
 				if (flags & RSF_TRANSFORM)
 				{
-					Buffer* transformBuffer = m_globalTransform.get();
-					Matrix4* realTransform = (Matrix4*)transformBuffer->map(0, sizeof(Matrix4), AF_WRITE);
+					IBuffer* transformBuffer = m_globalTransform.get();
+					Matrix4* realTransform = (Matrix4*)transformBuffer->map(MT_WRITE);
 					*realTransform = syncData->m_transform;
 					transformBuffer->unmap();
 				}
@@ -270,7 +270,7 @@ namespace ge
 	{
 		if (flags == RSF_TRANSFORM)
 		{
-			Matrix4* mat = allocator->allocate<Matrix4>();
+			Matrix4* mat = (Matrix4*)allocator->allocate(sizeof(Matrix4));
 			*mat = m_globalTransform;
 			return mat;
 		}

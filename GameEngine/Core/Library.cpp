@@ -38,24 +38,4 @@ namespace ge
 #		endif	
 		return proc;
 	}
-
-
-	class s 
-	{
-	public:
-		enum class sf {
-			A,
-			B,
-			C
-		} s;
-		void f() 
-		{
-			s = sf::A;
-		}
-
-
-	
-	
-	};
-
 }

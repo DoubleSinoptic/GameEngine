@@ -1,6 +1,5 @@
 #include "Mesh.h"
-#include "RenderAPI/Buffer.h"
-#include "RenderAPI/GpuContext.h"
+#include "RenderFramework/IContext.h"
 #include "RenderManager.h"
 
 namespace ge 
@@ -19,12 +18,22 @@ namespace ge
 			m_subMeshCount = 0;
 		}
 
-		void Mesh::setMeshCall(CommandBuffer& context)
+		void Mesh::setMeshCall(ICommandBuffer& context)
 		{
+			context.setVertexBuffer(m_verteces, 0, 0);
+			context.setVertexBuffer(m_texcoords, 1, 0);
+			context.setVertexBuffer(m_normals, 2, 0);
+			context.setVertexBuffer(m_tangents, 3, 0);
+			context.setIndecesBuffer(m_indeces, 0);
 		}
 
-		void Mesh::setMeshInstancedCall(CommandBuffer& context)
+		void Mesh::setMeshInstancedCall(ICommandBuffer& context)
 		{
+			context.setVertexBuffer(m_verteces, 0, 0);
+			context.setVertexBuffer(m_texcoords, 1, 0);
+			context.setVertexBuffer(m_normals, 2, 0);
+			context.setVertexBuffer(m_tangents, 3, 0);
+			context.setIndecesBuffer(m_indeces, 0);
 		}
 
 		void Mesh::sync(void* data, uint32 flags)
@@ -36,12 +45,13 @@ namespace ge
 				usize dataSize = realData->m_verteces->size() * sizeof(Vector3);
 
 				BUFFER_DESC bufferDesc = {};
-				bufferDesc.memType = MT_STATIC;
-				bufferDesc.usage = BU_VERTECES;
+				bufferDesc.type = BT_STATIC;
+				bufferDesc.usage = BU_VERTEX;
 				bufferDesc.size = dataSize;
 
-				m_verteces = GpuContext::instance().createBuffer(bufferDesc);
-				void* data = m_verteces->map(0, dataSize, AccessFlags::AF_WRITE);
+				IContext& gpuContext = RenderManager::instance().gpuContext();
+				m_verteces = gpuContext.createBuffer(bufferDesc);
+				void* data = m_verteces->map(MT_WRITE);
 				memcpy(data, realData->m_verteces->data(), dataSize);
 				m_verteces->unmap();
 
@@ -54,12 +64,13 @@ namespace ge
 				usize dataSize = realData->m_normals->size() * sizeof(Vector3);
 
 				BUFFER_DESC bufferDesc = {};
-				bufferDesc.memType = MT_STATIC;
-				bufferDesc.usage = BU_VERTECES;
+				bufferDesc.type = BT_STATIC;
+				bufferDesc.usage = BU_VERTEX;
 				bufferDesc.size = dataSize;
+				IContext& gpuContext = RenderManager::instance().gpuContext();
 
-				m_normals = GpuContext::instance().createBuffer(bufferDesc);
-				void* data = m_normals->map(0, dataSize, AccessFlags::AF_WRITE);
+				m_normals = gpuContext.createBuffer(bufferDesc);
+				void* data = m_normals->map(MT_WRITE);
 				memcpy(data, realData->m_normals->data(), dataSize);
 				m_normals->unmap();
 			}
@@ -69,12 +80,13 @@ namespace ge
 				usize dataSize = realData->m_tangets->size() * sizeof(Vector3);
 
 				BUFFER_DESC bufferDesc = {};
-				bufferDesc.memType = MT_STATIC;
-				bufferDesc.usage = BU_VERTECES;
+				bufferDesc.type = BT_STATIC;
+				bufferDesc.usage = BU_VERTEX;
 				bufferDesc.size = dataSize;
+				IContext& gpuContext = RenderManager::instance().gpuContext();
 
-				m_tangents = GpuContext::instance().createBuffer(bufferDesc);
-				void* data = m_tangents->map(0, dataSize, AccessFlags::AF_WRITE);
+				m_tangents = gpuContext.createBuffer(bufferDesc);
+				void* data = m_tangents->map(MT_WRITE);
 				memcpy(data, realData->m_tangets->data(), dataSize);
 				m_tangents->unmap();
 			}
@@ -84,12 +96,13 @@ namespace ge
 				usize dataSize = realData->m_texcoords->size() * sizeof(Vector2);
 
 				BUFFER_DESC bufferDesc = {};
-				bufferDesc.memType = MT_STATIC;
-				bufferDesc.usage = BU_VERTECES;
+				bufferDesc.type = BT_STATIC;
+				bufferDesc.usage = BU_VERTEX;
 				bufferDesc.size = dataSize;
+				IContext& gpuContext = RenderManager::instance().gpuContext();
 
-				m_texcoords = GpuContext::instance().createBuffer(bufferDesc);
-				void* data = m_texcoords->map(0, dataSize, AccessFlags::AF_WRITE);
+				m_texcoords = gpuContext.createBuffer(bufferDesc);
+				void* data = m_texcoords->map(MT_WRITE);
 				memcpy(data, realData->m_texcoords->data(), dataSize);
 				m_texcoords->unmap();
 			}
@@ -99,12 +112,13 @@ namespace ge
 				usize dataSize = realData->m_indeces->size() * sizeof(int);
 
 				BUFFER_DESC bufferDesc = {};
-				bufferDesc.memType = MT_STATIC;
+				bufferDesc.type = BT_STATIC;
 				bufferDesc.usage = BU_INDECES;
 				bufferDesc.size = dataSize;
+				IContext& gpuContext = RenderManager::instance().gpuContext();
 
-				m_indeces = GpuContext::instance().createBuffer(bufferDesc);
-				void* data = m_indeces->map(0, dataSize, AccessFlags::AF_WRITE);
+				m_indeces = gpuContext.createBuffer(bufferDesc);
+				void* data = m_indeces->map(MT_WRITE);
 				memcpy(data, realData->m_indeces->data(), dataSize);
 				m_indeces->unmap();
 
@@ -297,7 +311,7 @@ namespace ge
 
 	void* Mesh::sync(SyncAllocator* allocator, uint32 flags) const
 	{
-		rt::MeshSyncData* s = allocator->alignedAllocate<rt::MeshSyncData>();
+		rt::MeshSyncData* s = allocator->allocate<rt::MeshSyncData>();
 		if (flags & MSF_INDECES)
 			s->m_indeces = m_indeces;
 		if (flags & MSF_TANGENTS)

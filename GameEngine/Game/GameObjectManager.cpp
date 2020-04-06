@@ -58,21 +58,9 @@ namespace ge
 	void GameObjectManager::update(scalar dt)
 	{
 		m_delta = dt;
-
 		for (usize i = 0; i < m_components.size(); i++) {
 			m_components[i]->update();
 		}
-
-		//auto& currInvoke = _M_invokeTable[_M_firstInvoke];
-		//_M_firstInvoke = !_M_firstInvoke;
-		//for (USize i = 0; i < currInvoke.Length(); i++) {
-		//	auto& v = currInvoke[i];
-		//	if (v.component) {
-		//		v.component->_M_invokeId = UIntMax;
-		//		v.component->OnInvoke(v.invokeId);
-		//	}
-		//}
-		//currInvoke.Clear();
 	}
 
 	void GameObjectManager::fixedUpdate(scalar dt)

@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64-linux">
+      <Configuration>Debug</Configuration>
+      <Platform>x64-linux</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64-linux">
+      <Configuration>Release</Configuration>
+      <Platform>x64-linux</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -587,6 +595,9 @@
     <ClCompile Include="source\task\src\TaskManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="defines.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="include\characterkinematic\PxBoxController.h" />
     <ClInclude Include="include\characterkinematic\PxCapsuleController.h" />
     <ClInclude Include="include\characterkinematic\PxController.h" />
@@ -724,7 +735,6 @@
     <ClInclude Include="include\PxBatchQueryDesc.h" />
     <ClInclude Include="include\PxBroadPhase.h" />
     <ClInclude Include="include\PxClient.h" />
-    <ClInclude Include="include\PxConfig.h" />
     <ClInclude Include="include\PxConstraint.h" />
     <ClInclude Include="include\PxConstraintDesc.h" />
     <ClInclude Include="include\PxContact.h" />
@@ -804,6 +814,8 @@
     <ClInclude Include="source\common\src\CmTransformUtils.h" />
     <ClInclude Include="source\common\src\CmUtils.h" />
     <ClInclude Include="source\common\src\CmVisualization.h" />
+    <ClInclude Include="source\compiler\resource_x64\resource.h" />
+    <ClInclude Include="source\compiler\resource_x86\resource.h" />
     <ClInclude Include="source\fastxml\include\PsFastXml.h" />
     <ClInclude Include="source\filebuf\include\PsAsciiConversion.h" />
     <ClInclude Include="source\filebuf\include\PsFileBuffer.h" />
@@ -851,6 +863,15 @@
     <ClInclude Include="source\foundation\include\PsVecMathUtilities.h" />
     <ClInclude Include="source\foundation\include\PsVecQuat.h" />
     <ClInclude Include="source\foundation\include\PsVecTransform.h" />
+    <ClInclude Include="source\foundation\include\unix\neon\PsUnixNeonAoS.h" />
+    <ClInclude Include="source\foundation\include\unix\neon\PsUnixNeonInlineAoS.h" />
+    <ClInclude Include="source\foundation\include\unix\PsUnixAoS.h" />
+    <ClInclude Include="source\foundation\include\unix\PsUnixFPU.h" />
+    <ClInclude Include="source\foundation\include\unix\PsUnixInlineAoS.h" />
+    <ClInclude Include="source\foundation\include\unix\PsUnixIntrinsics.h" />
+    <ClInclude Include="source\foundation\include\unix\PsUnixTrigConstants.h" />
+    <ClInclude Include="source\foundation\include\unix\sse2\PsUnixSse2AoS.h" />
+    <ClInclude Include="source\foundation\include\unix\sse2\PsUnixSse2InlineAoS.h" />
     <ClInclude Include="source\foundation\include\windows\PsWindowsAoS.h" />
     <ClInclude Include="source\foundation\include\windows\PsWindowsFPU.h" />
     <ClInclude Include="source\foundation\include\windows\PsWindowsInclude.h" />
@@ -1375,11 +1396,18 @@
     <ClInclude Include="source\simulationcontroller\src\ScTriggerPairs.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\filebuf\include\PsAsciiConversion.inl" />
-    <None Include="source\filebuf\include\PsIOStream.inl" />
+    <ResourceCompile Include="source\compiler\resource_x64\PhysX.rc" />
+    <ResourceCompile Include="source\compiler\resource_x64\PhysXCommon.rc" />
+    <ResourceCompile Include="source\compiler\resource_x64\PhysXCooking.rc" />
+    <ResourceCompile Include="source\compiler\resource_x64\PhysXFoundation.rc" />
+    <ResourceCompile Include="source\compiler\resource_x86\PhysX.rc" />
+    <ResourceCompile Include="source\compiler\resource_x86\PhysXCommon.rc" />
+    <ResourceCompile Include="source\compiler\resource_x86\PhysXCooking.rc" />
+    <ResourceCompile Include="source\compiler\resource_x86\PhysXFoundation.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="defines.txt" />
+    <None Include="source\filebuf\include\PsAsciiConversion.inl" />
+    <None Include="source\filebuf\include\PsIOStream.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

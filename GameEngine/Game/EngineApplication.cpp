@@ -3,7 +3,6 @@
 #include "Core/Time.h"
 #include "Core/Debug.h"
 #include "GameObject.h"
-#include "RenderAPI/GpuContext.h"
 #include "Physics/Physics.h"
 
 namespace ge

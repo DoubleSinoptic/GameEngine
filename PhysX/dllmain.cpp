@@ -1,4 +1,5 @@
 ﻿#include <xmmintrin.h>
+/*
 namespace physx {
 	namespace shdfnd {
 		namespace aos {
@@ -11,3 +12,4 @@ namespace physx {
 		}
 	}
 }
+*/

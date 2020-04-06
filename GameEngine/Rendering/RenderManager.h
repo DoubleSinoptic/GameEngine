@@ -5,8 +5,7 @@
 #include "Core/Core.h"
 #include "Core/IndexedStorage.h"
 #include <set>
-#include "RenderAPI/GpuContext.h"
-#include "RenderAPI/GpuPool.h"
+#include "RenderFramework/IContext.h"
 #include "Renderable.h"
 #include "RenderBase.h"
 #include "Mesh.h"
@@ -16,13 +15,26 @@ namespace ge
 {
 	namespace rt 
 	{
+		class Camera;
+		class Renderer;
 		class RenderManager
 		{
 			IndexedStorage<Material*>	m_materials;
 			IndexedStorage<Mesh*>		m_mesh;
-			Ptr<GpuContext>				m_gpuContext;
-			Ptr<GpuPool>				m_gpuPool;
+			IContextRef					m_gpuContext;
+			Vector<Camera*>				m_camers;
 		public:
+
+			void addCamera(Camera* x)
+			{
+				m_camers.push_back(x);
+			}
+
+			void removeCamera(Camera* x)
+			{
+				removeFind(m_camers, x);
+			}
+
 			static RenderManager& instance();
 			static void setCurrentRenderManager(RenderManager* manager);
 
@@ -41,15 +53,11 @@ namespace ge
 				return m_materials;
 			}
 
-			GpuContext& gpuContext()
+			IContext& gpuContext()
 			{
 				return *m_gpuContext;
 			}
 
-		    GpuPool& gpuPool()
-			{
-				return *m_gpuPool;
-			}
 
 			IndexedStorage<Mesh*>& meshStorage()
 			{
@@ -57,7 +65,7 @@ namespace ge
 			}
 		};	
 	}
-
+	class Camera;
 	class RenderManager 
 	{
 		rt::RenderManager* m_rt;
@@ -65,6 +73,14 @@ namespace ge
 		RenderManager();
 		~RenderManager();
 		void render();
+		void setMainCamera(const Ptr<Camera>& cam) {
+
+		}
+
+		constexpr rt::RenderManager* rtObject() const {
+			return m_rt;
+		}
+
 		static RenderManager& instance();
 		static void setCurrentRenderManager(Ptr<RenderManager> manager);
 	};

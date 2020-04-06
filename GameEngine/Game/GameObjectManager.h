@@ -33,6 +33,7 @@ namespace ge
 
 		constexpr Vector<GameObject*>& gameObjects()
 		{
+			constexpr size_t s = 3139 / 2;
 			return m_gameObjects;
 		}
 		static void setCurrentObjectManager(Ptr<GameObjectManager> manager);

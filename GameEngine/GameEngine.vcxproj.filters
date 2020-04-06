@@ -111,12 +111,6 @@
     <ClCompile Include="SyncSystem\SyncObject.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPI\GpuContext.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\GpuPool.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\Material.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -132,49 +126,67 @@
     <ClCompile Include="Rendering\RenderBase.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPI\CommandBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\GpuResource.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\vk_mem_alloc.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanGpuContext.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanTexture2D.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSampler.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanPipeline.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanCommandBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanFrameBuffer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanUniform.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanShaderModule.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSync.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Window\Window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAPI\Vulkan\VulkanSwapchain.cpp">
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Context.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DBuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DPipeline.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DSampler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3DShaderModule.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cfg.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cpp.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_c.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_parsed_ir.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_cross_util.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_glsl.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_hlsl.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_msl.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_parser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\ThirdParty\spirv_reflect.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11CommandBuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Framebuffer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFramework\D3D11Backend\D3D11Texture.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Camera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -428,9 +440,6 @@
     <ClInclude Include="Game\InputKeys.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Core\ResourceObject.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Config.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -497,33 +506,6 @@
     <ClInclude Include="SyncSystem\SyncObject.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Buffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Framebuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\GpuContext.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\GpuPool.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Pipeline.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Sampler.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\ShaderModule.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Texture2D.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Uniform.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\RenderManager.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
@@ -539,55 +521,121 @@
     <ClInclude Include="Core\IndexedStorage.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\CommandBuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\GpuResource.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\vk_mem_alloc.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanCommandBuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanGpuContext.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanPipeline.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSampler.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanTexture2D.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanUniform.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanBuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanFrameBuffer.h">
-      <Filter>Исходные файлы\Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Core\AllignTools.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanShaderModule.h">
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Context.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSync.h">
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DBuffer.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanQueue.h">
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DPipeline.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Vulkan\VulkanSwapchain.h">
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DSampler.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAPI\Swapchain.h">
+    <ClInclude Include="RenderFramework\D3D11Backend\D3DShaderModule.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\GLSL.std.450.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cfg.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_common.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cpp.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_c.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_containers.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_error_handling.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_parsed_ir.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_cross_util.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_glsl.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_hlsl.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_msl.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_parser.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ThirdParty\spirv_reflect.hpp">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IContext.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IContextObject.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IFrameBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IPipeline.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IResourceSet.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ISampler.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\IShaderModule.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ITexture.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\UnionTypes.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\ICommandBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11CommandBuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Framebuffer.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFramework\D3D11Backend\D3D11Texture.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Camera.h">
+      <Filter>Исходные файлы\Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\SmallVector.h">
       <Filter>Исходные файлы\Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

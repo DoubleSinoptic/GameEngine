@@ -2,40 +2,7 @@
 
 namespace ge 
 {
-	CommandQueue::CommandQueue() :
-		m_opCount(0)
-	{
-		m_currentQueue = m_queues.allocate([]() {
-			return snew<Vector<std::function<void(void)>>>();
-		});
-	}
 
-	void CommandQueue::playback()
-	{
-		while (m_opCount.load())
-		{
-			std::shared_ptr<Vector<std::function<void(void)>>> queue;
-			{
-				std::lock_guard<std::mutex> _(m_lock);
-				queue = m_currentQueue;
-				m_currentQueue = m_queues.allocate([]() {
-					return snew<Vector<std::function<void(void)>>>();
-					});
-			}
-			size_t count = 0;
-			for (auto& f : *queue)
-			{
-				count++;				
-				if (f)
-					f();
-			}
-			queue->clear();
-			m_queues.free(queue);		
-	
-			m_opCount.fetch_sub(count);
-			
-		}
-	}
 
 	SpinLock::SpinLock(bool createLocked) :
 		m_locked(createLocked)
@@ -56,6 +23,52 @@ namespace ge
 	{
 		while (!try_lock())
 			std::this_thread::yield();
+	}
+
+	 void CommandQueue::addTask(CommandQueueTaskBase* t) noexcept {
+		if (m_left)
+		{
+			m_right->next = t;
+			m_right = t;
+		}
+		else
+		{
+			m_left = t;
+			m_right = t;
+		}
+	}
+
+	CommandQueue::CommandQueue() :
+		m_left(nullptr),
+		m_right(nullptr)
+	{}
+
+	void CommandQueue::playback()
+	{
+		CommandQueueTaskBase* left = nullptr;
+		{
+			std::lock_guard<std::mutex> _(m_lock);
+			left = m_left;
+			m_left = nullptr;
+			m_right = nullptr;
+		}
+		while (left) {
+			CommandQueueTaskBase* nextTask = left->next;
+			left->exec();
+			delete left;
+			left = nextTask;
+		}
+	}
+
+	CommandQueue::~CommandQueue()
+	{
+		std::lock_guard<std::mutex> _(m_lock);
+		while (m_left) {
+			CommandQueueTaskBase* nextTask = m_left->next;
+			delete m_left;
+			m_left = nextTask;
+		}
+		m_right = nullptr;
 	}
 
 }
